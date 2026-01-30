@@ -35,38 +35,4 @@
   button, a {
     cursor: pointer;
   }
-
-  /* Animation base states */
-  .animate-on-scroll {
-    opacity: 0;
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-  }
-
-  .animate-on-scroll.visible {
-    opacity: 1;
-    transform: translate(0, 0) !important;
-  }
-
-  /* Fade in from left */
-  .fade-in-left {
-    transform: translateX(-60px);
-  }
-
-  /* Fade in from right */
-  .fade-in-right {
-    transform: translateX(60px);
-  }
-
-  /* Fade in from bottom */
-  .fade-in-up {
-    transform: translateY(60px);
-  }
-
-  /* Staggered delays */
-  .delay-100 { transition-delay: 100ms; }
-  .delay-200 { transition-delay: 200ms; }
-  .delay-300 { transition-delay: 300ms; }
-  .delay-400 { transition-delay: 400ms; }
-  .delay-500 { transition-delay: 500ms; }
-  .delay-600 { transition-delay: 600ms; }
 }

@@ -2,7 +2,11 @@
 
 import Image from "next/image";
 import { Calendar, ArrowRight } from "lucide-react";
-import { useScrollAnimation } from "@/hooks";
+import { motion } from "motion/react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
 
 const events = [
   {
@@ -31,78 +35,140 @@ const events = [
   },
 ];
 
-const delayClasses = ["delay-100", "delay-200", "delay-300"];
+const fadeInLeft = {
+  hidden: { opacity: 0, x: -60 },
+  visible: { opacity: 1, x: 0 },
+};
+
+const fadeInRight = {
+  hidden: { opacity: 0, x: 60 },
+  visible: { opacity: 1, x: 0 },
+};
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 60 },
+  visible: { opacity: 1, y: 0 },
+};
+
+function EventCard({
+  event,
+  className = "",
+}: {
+  event: (typeof events)[0];
+  className?: string;
+}) {
+  return (
+    <div
+      className={`flex flex-col h-full rounded-lg bg-[var(--color-bg-section)] overflow-hidden ${className}`}
+    >
+      <div className="relative h-[160px] md:h-[180px] w-full">
+        <Image src={event.image} alt={event.title} fill className="object-cover" />
+      </div>
+      <div className="flex flex-col gap-3 md:gap-4 p-5 md:p-7">
+        <div className="flex items-center gap-2">
+          <Calendar className="w-3.5 h-3.5 text-[var(--color-primary)]" />
+          <span className="text-xs md:text-[13px] font-medium text-[var(--color-primary)]">
+            {event.date}
+          </span>
+        </div>
+        <h3 className="text-lg md:text-xl font-semibold text-white">{event.title}</h3>
+        <p className="text-sm text-[var(--color-text-secondary)] leading-[1.5]">
+          {event.description}
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export function EventsSection() {
-  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({
-    threshold: 0.2,
-  });
-  const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation({
-    threshold: 0.2,
-  });
-
   return (
-    <section className="flex flex-col gap-[60px] px-20 py-[100px] bg-[var(--color-bg-dark)]">
+    <section className="flex flex-col gap-8 md:gap-12 lg:gap-[60px] px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-[var(--color-bg-dark)]">
       {/* Header */}
-      <div ref={headerRef} className="flex items-end justify-between w-full">
-        <div className="flex flex-col gap-4">
-          <span
-            className={`text-xs font-semibold text-[var(--color-primary)] tracking-[2px] animate-on-scroll fade-in-left ${
-              headerVisible ? "visible" : ""
-            }`}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 w-full">
+        <div className="flex flex-col gap-2 md:gap-4">
+          <motion.span
+            variants={fadeInLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6 }}
+            className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px]"
           >
             UPCOMING EVENTS
-          </span>
-          <h2
-            className={`text-[42px] font-bold text-white animate-on-scroll fade-in-left delay-100 ${
-              headerVisible ? "visible" : ""
-            }`}
+          </motion.span>
+          <motion.h2
+            variants={fadeInLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white"
           >
             Programs & Webinars
-          </h2>
+          </motion.h2>
         </div>
-        <button
-          className={`flex items-center gap-2 px-6 py-3 rounded border border-[var(--color-border-gold)] hover:bg-white/5 transition-colors animate-on-scroll fade-in-right ${
-            headerVisible ? "visible" : ""
-          }`}
+        <motion.button
+          variants={fadeInRight}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center justify-center sm:justify-start gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded border border-[var(--color-border-gold)] hover:bg-white/5 transition-colors w-full sm:w-auto"
         >
           <span className="text-sm font-medium text-[var(--color-primary)]">
             View All Events
           </span>
           <ArrowRight className="w-4 h-4 text-[var(--color-primary)]" />
-        </button>
+        </motion.button>
       </div>
 
-      {/* Events Grid */}
-      <div ref={cardsRef} className="flex gap-6 w-full">
+      {/* Mobile Swiper Carousel */}
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+        className="block md:hidden"
+      >
+        <Swiper
+          modules={[Pagination, Autoplay]}
+          spaceBetween={16}
+          slidesPerView={1.15}
+          centeredSlides={false}
+          pagination={{
+            clickable: true,
+            bulletClass: "swiper-pagination-bullet !bg-[var(--color-primary)] !opacity-30",
+            bulletActiveClass: "!opacity-100",
+          }}
+          autoplay={{
+            delay: 4000,
+            disableOnInteraction: false,
+          }}
+          className="!pb-10"
+        >
+          {events.map((event) => (
+            <SwiperSlide key={event.title}>
+              <EventCard event={event} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </motion.div>
+
+      {/* Desktop Grid */}
+      <div className="hidden md:flex gap-4 lg:gap-6 w-full">
         {events.map((event, index) => (
-          <div
+          <motion.div
             key={event.title}
-            className={`flex flex-col flex-1 rounded-lg bg-[var(--color-bg-section)] overflow-hidden animate-on-scroll fade-in-up ${
-              delayClasses[index]
-            } ${cardsVisible ? "visible" : ""}`}
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            className="flex-1"
           >
-            <div className="relative h-[180px] w-full">
-              <Image
-                src={event.image}
-                alt={event.title}
-                fill
-                className="object-cover"
-              />
-            </div>
-            <div className="flex flex-col gap-4 p-7">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-3.5 h-3.5 text-[var(--color-primary)]" />
-                <span className="text-[13px] font-medium text-[var(--color-primary)]">
-                  {event.date}
-                </span>
-              </div>
-              <h3 className="text-xl font-semibold text-white">{event.title}</h3>
-              <p className="text-sm text-[var(--color-text-secondary)] leading-[1.5]">
-                {event.description}
-              </p>
-            </div>
-          </div>
+            <EventCard event={event} />
+          </motion.div>
         ))}
       </div>
     </section>

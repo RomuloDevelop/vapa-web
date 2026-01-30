@@ -4,3 +4,4 @@ export { AboutSection } from "./AboutSection";
 export { EventsSection } from "./EventsSection";
 export { CTASection } from "./CTASection";
 export { Footer } from "./Footer";
+export { ParallaxImage } from "./ParallaxImage";

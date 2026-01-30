@@ -1,7 +1,7 @@
 "use client";
 
 import { Users, GraduationCap, Globe } from "lucide-react";
-import { useScrollAnimation } from "@/hooks";
+import { motion } from "motion/react";
 
 const stats = [
   { value: "2019", label: "Founded" },
@@ -30,90 +30,100 @@ const pillars = [
   },
 ];
 
-const delayClasses = ["delay-100", "delay-200", "delay-300"];
+const fadeInRight = {
+  hidden: { opacity: 0, x: 60 },
+  visible: { opacity: 1, x: 0 },
+};
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 60 },
+  visible: { opacity: 1, y: 0 },
+};
 
 export function AboutSection() {
-  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation({
-    threshold: 0.2,
-  });
-  const { ref: statsRef, isVisible: statsVisible } = useScrollAnimation({
-    threshold: 0.2,
-  });
-  const { ref: pillarsRef, isVisible: pillarsVisible } = useScrollAnimation({
-    threshold: 0.2,
-  });
-
   return (
-    <section className="flex flex-col gap-20 px-20 py-[100px] bg-[var(--color-bg-section)]">
+    <section className="flex flex-col gap-10 md:gap-16 lg:gap-20 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-[var(--color-bg-section)]">
       {/* Header */}
-      <div
-        ref={headerRef}
-        className="flex flex-col items-center gap-5 w-full"
-      >
-        <span
-          className={`text-xs font-semibold text-[var(--color-primary)] tracking-[2px] animate-on-scroll fade-in-right ${
-            headerVisible ? "visible" : ""
-          }`}
+      <div className="flex flex-col items-center gap-4 md:gap-5 w-full">
+        <motion.span
+          variants={fadeInRight}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px]"
         >
           ABOUT VAPA
-        </span>
-        <h2
-          className={`text-5xl font-bold text-white text-center animate-on-scroll fade-in-right delay-100 ${
-            headerVisible ? "visible" : ""
-          }`}
+        </motion.span>
+        <motion.h2
+          variants={fadeInRight}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-3xl sm:text-4xl md:text-5xl font-bold text-white text-center"
         >
           United for Energy Excellence
-        </h2>
-        <p
-          className={`text-lg text-[var(--color-text-muted)] leading-[1.6] text-center max-w-[800px] animate-on-scroll fade-in-right delay-200 ${
-            headerVisible ? "visible" : ""
-          }`}
+        </motion.h2>
+        <motion.p
+          variants={fadeInRight}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-sm md:text-base lg:text-lg text-[var(--color-text-muted)] leading-[1.6] text-center max-w-full md:max-w-[600px] lg:max-w-[800px]"
         >
           Venezuelan-American Petroleum Association aims to establish
           relationships with organizations and institutions that can provide
           technical support, education and training for the sustainable
           development of the energy sector.
-        </p>
+        </motion.p>
       </div>
 
       {/* Stats */}
-      <div ref={statsRef} className="flex justify-center gap-10 w-full">
+      <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 lg:gap-10 w-full">
         {stats.map((stat, index) => (
-          <div
+          <motion.div
             key={stat.label}
-            className={`flex flex-col items-center gap-2 px-[60px] py-10 rounded border border-[var(--color-border-gold-light)] animate-on-scroll fade-in-up ${
-              delayClasses[index]
-            } ${statsVisible ? "visible" : ""}`}
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            className="flex flex-col items-center gap-2 px-8 sm:px-10 md:px-[60px] py-6 md:py-10 rounded border border-[var(--color-border-gold-light)]"
           >
-            <span className="text-5xl font-bold text-[var(--color-primary)]">
+            <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-primary)]">
               {stat.value}
             </span>
-            <span className="text-sm font-medium text-[var(--color-text-muted)]">
+            <span className="text-xs md:text-sm font-medium text-[var(--color-text-muted)]">
               {stat.label}
             </span>
-          </div>
+          </motion.div>
         ))}
       </div>
 
       {/* Pillars */}
-      <div ref={pillarsRef} className="flex gap-6 w-full">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6 w-full">
         {pillars.map((pillar, index) => (
-          <div
+          <motion.div
             key={pillar.title}
-            className={`flex flex-col gap-5 flex-1 p-10 rounded-lg bg-[var(--color-bg-dark)] animate-on-scroll fade-in-up ${
-              delayClasses[index]
-            } ${pillarsVisible ? "visible" : ""}`}
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            className="flex flex-col gap-4 md:gap-5 flex-1 p-6 md:p-8 lg:p-10 rounded-lg bg-[var(--color-bg-dark)]"
           >
-            <div className="flex items-center justify-center w-14 h-14 rounded-lg bg-[#D4A85315]">
-              <pillar.icon className="w-7 h-7 text-[var(--color-primary)]" />
+            <div className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-lg bg-[#D4A85315]">
+              <pillar.icon className="w-6 h-6 md:w-7 md:h-7 text-[var(--color-primary)]" />
             </div>
-            <h3 className="text-[22px] font-semibold text-white">
+            <h3 className="text-lg md:text-xl lg:text-[22px] font-semibold text-white">
               {pillar.title}
             </h3>
-            <p className="text-[15px] text-[var(--color-text-secondary)] leading-[1.6]">
+            <p className="text-sm md:text-[15px] text-[var(--color-text-secondary)] leading-[1.6]">
               {pillar.description}
             </p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

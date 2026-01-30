@@ -1,20 +1,22 @@
 "use client";
 
-import Image from "next/image";
-import { useScrollAnimation } from "@/hooks";
+import { motion } from "motion/react";
+import { ParallaxImage } from "./ParallaxImage";
+
+const fadeInLeft = {
+  hidden: { opacity: 0, x: -60 },
+  visible: { opacity: 1, x: 0 },
+};
 
 export function HeroSection() {
-  const { ref, isVisible } = useScrollAnimation({ threshold: 0.2 });
-
   return (
-    <section ref={ref} className="relative h-[700px] w-full overflow-hidden">
-      {/* Background Image */}
-      <Image
+    <section className="relative min-h-[600px] md:min-h-[650px] lg:h-[700px] w-full overflow-hidden">
+      {/* Background Image with Parallax */}
+      <ParallaxImage
         src="https://images.unsplash.com/photo-1726111265336-6bf825e549ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk3MzU5OTN8&ixlib=rb-4.1.0&q=80&w=1080"
         alt="Oil refinery at dusk"
-        fill
-        className="object-cover"
         priority
+        speed={0.2}
       />
 
       {/* Gradient Overlay */}
@@ -27,54 +29,66 @@ export function HeroSection() {
       />
 
       {/* Content */}
-      <div className="absolute top-[120px] left-20 flex flex-col gap-8 max-w-[700px]">
+      <div className="absolute top-16 md:top-24 lg:top-[120px] left-5 md:left-10 lg:left-20 xl:left-[5%] 2xl:left-[8%] flex flex-col gap-5 md:gap-6 lg:gap-8 max-w-full sm:max-w-[600px] lg:max-w-[700px] xl:max-w-[750px] 2xl:max-w-[800px]">
         {/* Badge */}
-        <div
-          className={`flex items-center gap-2 px-5 py-2 rounded-[20px] border border-[var(--color-border-gold)] w-fit animate-on-scroll fade-in-left ${
-            isVisible ? "visible" : ""
-          }`}
+        <motion.div
+          variants={fadeInLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-2 px-4 md:px-5 py-2 rounded-[20px] border border-[var(--color-border-gold)] w-fit"
         >
           <div className="w-2 h-2 rounded-full bg-[var(--color-primary)]" />
-          <span className="text-[13px] font-medium text-[var(--color-primary)]">
+          <span className="text-xs md:text-[13px] font-medium text-[var(--color-primary)]">
             Established 2019 • Texas, USA
           </span>
-        </div>
+        </motion.div>
 
         {/* Title */}
-        <h1
-          className={`text-[64px] font-bold text-white leading-[1.1] animate-on-scroll fade-in-left delay-100 ${
-            isVisible ? "visible" : ""
-          }`}
+        <motion.h1
+          variants={fadeInLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] xl:text-[72px] 2xl:text-[80px] font-bold text-white leading-[1.1]"
         >
           Empowering Venezuelan
           <br />
           Energy Professionals
-        </h1>
+        </motion.h1>
 
         {/* Subtitle */}
-        <p
-          className={`text-lg text-[var(--color-text-muted)] leading-[1.6] max-w-[580px] animate-on-scroll fade-in-left delay-200 ${
-            isVisible ? "visible" : ""
-          }`}
+        <motion.p
+          variants={fadeInLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-sm sm:text-base md:text-lg xl:text-xl text-[var(--color-text-muted)] leading-[1.6] max-w-full md:max-w-[500px] lg:max-w-[580px] xl:max-w-[620px] 2xl:max-w-[680px]"
         >
           A nonprofit professional organization uniting experts in the
           Hydrocarbon industry and related energies to promote technical
           advancement, education, and sustainable development.
-        </p>
+        </motion.p>
 
         {/* Buttons */}
-        <div
-          className={`flex items-center gap-4 animate-on-scroll fade-in-left delay-300 ${
-            isVisible ? "visible" : ""
-          }`}
+        <motion.div
+          variants={fadeInLeft}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4"
         >
-          <button className="px-9 py-[18px] bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-base font-semibold rounded hover:opacity-90 transition-opacity">
+          <button className="px-6 md:px-9 py-4 md:py-[18px] bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity">
             Become a Member
           </button>
-          <button className="px-9 py-[18px] text-white text-base font-medium rounded border border-[var(--color-border-gold-strong)] hover:bg-white/5 transition-colors">
+          <button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-[var(--color-border-gold-strong)] hover:bg-white/5 transition-colors">
             Learn More
           </button>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
