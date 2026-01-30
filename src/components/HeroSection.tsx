@@ -17,6 +17,7 @@ export function HeroSection() {
         alt="Oil refinery at dusk"
         priority
         speed={0.2}
+        flip
       />
 
       {/* Gradient Overlay */}
@@ -66,7 +67,7 @@ export function HeroSection() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm sm:text-base md:text-lg xl:text-xl text-[var(--color-text-muted)] leading-[1.6] max-w-full md:max-w-[500px] lg:max-w-[580px] xl:max-w-[620px] 2xl:max-w-[680px]"
+          className="text-sm sm:text-base md:text-lg xl:text-xl text-white/85 leading-[1.6] max-w-full md:max-w-[500px] lg:max-w-[580px] xl:max-w-[620px] 2xl:max-w-[680px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]"
         >
           A nonprofit professional organization uniting experts in the
           Hydrocarbon industry and related energies to promote technical
@@ -85,7 +86,7 @@ export function HeroSection() {
           <button className="px-6 md:px-9 py-4 md:py-[18px] bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity">
             Become a Member
           </button>
-          <button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-[var(--color-border-gold-strong)] hover:bg-white/5 transition-colors">
+          <button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-[var(--color-border-gold-strong)] bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors">
             Learn More
           </button>
         </motion.div>

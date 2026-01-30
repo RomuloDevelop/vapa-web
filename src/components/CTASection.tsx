@@ -75,9 +75,14 @@ export function CTASection() {
             Register Now
             <ArrowRight className="w-4 h-4 md:w-[18px] md:h-[18px]" />
           </button>
-          <button className="px-8 md:px-12 py-4 md:py-5 text-white text-sm md:text-base font-medium rounded border border-[var(--color-border-white)] hover:bg-white/5 transition-colors">
+          <a
+            href="https://www.memberplanet.com/Groups/GroupJoinLoginNew.aspx?ISPUB=true&invitee=p7vh47274p43y&mid"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-8 md:px-12 py-4 md:py-5 text-white text-sm md:text-base font-medium rounded border border-[var(--color-border-white)] bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors text-center"
+          >
             Make a Donation
-          </button>
+          </a>
         </motion.div>
       </div>
     </section>

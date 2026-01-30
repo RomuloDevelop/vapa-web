@@ -5,3 +5,5 @@ export { EventsSection } from "./EventsSection";
 export { CTASection } from "./CTASection";
 export { Footer } from "./Footer";
 export { ParallaxImage } from "./ParallaxImage";
+export { PageHero } from "./PageHero";
+export { PersonCard } from "./PersonCard";
