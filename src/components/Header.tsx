@@ -12,7 +12,7 @@ const navItems = [
   { label: "Membership", href: "/membership" },
   { label: "Donations", href: "/donations" },
   { label: "Digital Library", href: "/digital-library" },
-  { label: "Contact", href: "#" },
+  { label: "Contact", href: "#contact-form", scrollTo: true },
 ] as const;
 
 interface HeaderProps {
@@ -36,6 +36,14 @@ export function Header({ variant = "solid", activeNav = "Home" }: HeaderProps) {
   }, [isMenuOpen]);
 
   const isGradient = variant === "gradient";
+
+  const scrollToElement = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <>
@@ -80,6 +88,18 @@ export function Header({ variant = "solid", activeNav = "Home" }: HeaderProps) {
                 >
                   {item.label}
                 </a>
+              ) : "scrollTo" in item && item.scrollTo ? (
+                <button
+                  key={item.label}
+                  onClick={(e) => scrollToElement(e, item.href)}
+                  className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-[var(--color-primary)] ${
+                    item.label === activeNav
+                      ? "text-[var(--color-primary)]"
+                      : "text-[var(--color-text-muted)]"
+                  }`}
+                >
+                  {item.label}
+                </button>
               ) : (
                 <Link
                   key={item.label}
@@ -169,6 +189,20 @@ export function Header({ variant = "solid", activeNav = "Home" }: HeaderProps) {
                         >
                           {item.label}
                         </a>
+                      ) : "scrollTo" in item && item.scrollTo ? (
+                        <button
+                          className={`block w-full text-left py-4 text-lg font-medium transition-colors hover:text-[var(--color-primary)] border-b border-[var(--color-border-gold-light)]/30 ${
+                            item.label === activeNav
+                              ? "text-[var(--color-primary)]"
+                              : "text-[var(--color-text-muted)]"
+                          }`}
+                          onClick={(e) => {
+                            setIsMenuOpen(false);
+                            setTimeout(() => scrollToElement(e, item.href), 300);
+                          }}
+                        >
+                          {item.label}
+                        </button>
                       ) : (
                         <Link
                           href={item.href}

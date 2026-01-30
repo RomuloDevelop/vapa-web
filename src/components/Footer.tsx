@@ -214,7 +214,7 @@ export function Footer() {
         </div>
 
         {/* Navigation Columns + Contact Form */}
-        <div className="flex flex-col lg:grid lg:grid-cols-4 lg:gap-16">
+        <div className="flex flex-col lg:grid lg:grid-cols-5 lg:gap-12 xl:gap-16">
           {/* Mobile: Accordion sections */}
           <div className="flex flex-col lg:contents">
             {Object.entries(footerLinks).map(([key, section]) => (
@@ -230,7 +230,7 @@ export function Footer() {
           </div>
 
           {/* Contact Form */}
-          <div className="col-span-2 sm:col-span-2 lg:col-span-1 w-full sm:max-w-[400px] lg:max-w-none pt-6 lg:pt-0">
+          <div className="lg:col-span-2 w-full sm:max-w-[400px] lg:max-w-none pt-6 lg:pt-0">
             <ContactForm id="contact-form" />
           </div>
         </div>
