@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+:root {
+  /* Primary Colors */
+  --color-primary: #D4A853;
+  --color-primary-dark: #B8923D;
+
+  /* Background Colors */
+  --color-bg-dark: #0A1628;
+  --color-bg-darker: #06101C;
+  --color-bg-section: #0D1E33;
+
+  /* Text Colors */
+  --color-text-white: #FFFFFF;
+  --color-text-muted: #B8C5D3;
+  --color-text-secondary: #8899AA;
+  --color-text-tertiary: #6B7A8A;
+
+  /* Border Colors */
+  --color-border-gold: #D4A85340;
+  --color-border-gold-light: #D4A85320;
+  --color-border-gold-strong: #D4A85380;
+  --color-border-white: #FFFFFF40;
+}
+
+@layer base {
+  html, body {
+    height: 100%;
+  }
+
+  .font-primary {
+    font-family: "Outfit", sans-serif;
+  }
+
+  button, a {
+    cursor: pointer;
+  }
+
+  /* Animation base states */
+  .animate-on-scroll {
+    opacity: 0;
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translate(0, 0) !important;
+  }
+
+  /* Fade in from left */
+  .fade-in-left {
+    transform: translateX(-60px);
+  }
+
+  /* Fade in from right */
+  .fade-in-right {
+    transform: translateX(60px);
+  }
+
+  /* Fade in from bottom */
+  .fade-in-up {
+    transform: translateY(60px);
+  }
+
+  /* Staggered delays */
+  .delay-100 { transition-delay: 100ms; }
+  .delay-200 { transition-delay: 200ms; }
+  .delay-300 { transition-delay: 300ms; }
+  .delay-400 { transition-delay: 400ms; }
+  .delay-500 { transition-delay: 500ms; }
+  .delay-600 { transition-delay: 600ms; }
+}
