@@ -22,8 +22,6 @@ export const eventImages = [
   "https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=800&fit=crop",
   // Oil field landscape
   "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&fit=crop",
-  // Energy infrastructure
-  "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=800&fit=crop",
 ];
 
 export function getImage(index: number): string {
