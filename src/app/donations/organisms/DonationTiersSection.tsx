@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "motion/react";
 import { Heart, HandHelping, Award, Trophy, Star } from "lucide-react";
 import {
@@ -8,7 +9,12 @@ import {
   defaultViewport,
   staggerDelay,
 } from "@/components/utils/animations";
-import { SectionHeader, DonationModal } from "@/components/molecules";
+import { SectionHeader } from "@/components/molecules";
+
+const DonationModal = dynamic(
+  () => import("@/components/molecules/DonationModal").then((mod) => mod.DonationModal),
+  { ssr: false }
+);
 
 const donationTiers = [
   {
