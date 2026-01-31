@@ -18,9 +18,13 @@ const navItems = [
 interface HeaderProps {
   variant?: "solid" | "gradient";
   activeNav?: string;
+  showJoinButton?: boolean;
 }
 
-export function Header({ variant = "solid", activeNav = "Home" }: HeaderProps) {
+const MEMBERSHIP_URL =
+  "https://www.memberplanet.com/Groups/GroupJoinLoginNew.aspx?ISPUB=true&invitee=p7vh47274p43y&mid";
+
+export function Header({ variant = "solid", activeNav = "Home", showJoinButton = true }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Prevent body scroll when menu is open
@@ -116,10 +120,17 @@ export function Header({ variant = "solid", activeNav = "Home" }: HeaderProps) {
             )}
           </nav>
 
-          {/* Desktop CTA Button */}
-          <button className="hidden md:block px-5 lg:px-7 py-3 lg:py-3.5 bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-sm font-semibold rounded hover:opacity-90 transition-opacity">
+          {/* Desktop CTA Button - always rendered to preserve layout, visibility controlled */}
+          <a
+            href={MEMBERSHIP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`hidden md:block px-5 lg:px-7 py-3 lg:py-3.5 bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-sm font-semibold rounded hover:opacity-90 transition-opacity ${
+              showJoinButton ? "" : "invisible"
+            }`}
+          >
             Join VAPA
-          </button>
+          </a>
 
           {/* Mobile Menu Button */}
           <button
@@ -220,17 +231,17 @@ export function Header({ variant = "solid", activeNav = "Home" }: HeaderProps) {
                   ))}
                 </nav>
 
-                {/* CTA Button */}
+                {/* CTA Button - always visible on mobile */}
                 <div className="px-6 py-6 mt-auto">
-                  <motion.button
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="w-full py-4 bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-base font-semibold rounded hover:opacity-90 transition-opacity"
+                  <a
+                    href={MEMBERSHIP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full py-4 bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-base font-semibold rounded hover:opacity-90 transition-opacity text-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Join VAPA
-                  </motion.button>
+                  </a>
                 </div>
               </div>
             </motion.div>

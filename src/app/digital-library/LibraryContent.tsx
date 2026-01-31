@@ -18,6 +18,11 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0 },
 };
 
+const fadeIn = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
 // Format date from ISO string to readable format
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -55,11 +60,11 @@ function EventCard({ event, index, animate }: EventCardProps) {
 
   return (
     <motion.article
-      variants={animate ? fadeInUp : undefined}
+      variants={animate ? fadeIn : undefined}
       initial={animate ? "hidden" : undefined}
       whileInView={animate ? "visible" : undefined}
       viewport={animate ? { once: true, amount: 0.2 } : undefined}
-      transition={animate ? { duration: 0.5, delay: (index % 2) * 0.1 } : undefined}
+      transition={animate ? { duration: 0.3 } : undefined}
       className="flex flex-col sm:flex-row bg-[var(--color-bg-dark)] rounded-xl overflow-hidden"
     >
       {/* Image */}
@@ -247,7 +252,14 @@ export function LibraryContent() {
         </motion.div>
 
         {/* Events List */}
-        <div className="flex flex-col gap-6 md:gap-8">
+        <motion.div
+          variants={shouldAnimate ? fadeInUp : undefined}
+          initial={shouldAnimate ? "hidden" : undefined}
+          whileInView={shouldAnimate ? "visible" : undefined}
+          viewport={shouldAnimate ? { once: true, amount: 0.1 } : undefined}
+          transition={shouldAnimate ? { duration: 0.5 } : undefined}
+          className="flex flex-col gap-6 md:gap-8"
+        >
           {filteredEvents.length > 0 ? (
             filteredEvents.map((event, index) => (
               <EventCard key={`${event.date}-${index}`} event={event} index={index} animate={shouldAnimate} />
@@ -259,7 +271,7 @@ export function LibraryContent() {
               </p>
             </div>
           )}
-        </div>
+        </motion.div>
 
         {/* Pagination */}
         {pageSize !== "All" && totalPages > 1 && (

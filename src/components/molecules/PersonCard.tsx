@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
+import { fadeInUp, smallViewport, staggerDelay } from "../utils/animations";
 
 interface PersonCardProps {
   image: string;
@@ -9,12 +10,8 @@ interface PersonCardProps {
   title: string;
   size?: "small" | "medium" | "large";
   index?: number;
+  animate?: boolean;
 }
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0 },
-};
 
 const sizeConfig = {
   small: {
@@ -49,16 +46,23 @@ export function PersonCard({
   title,
   size = "medium",
   index = 0,
+  animate = true,
 }: PersonCardProps) {
   const config = sizeConfig[size];
+  const Component = animate ? motion.div : "div";
+  const motionProps = animate
+    ? {
+        variants: fadeInUp,
+        initial: "hidden",
+        whileInView: "visible",
+        viewport: smallViewport,
+        transition: staggerDelay(index),
+      }
+    : {};
 
   return (
-    <motion.div
-      variants={fadeInUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+    <Component
+      {...motionProps}
       className={`flex flex-col overflow-hidden rounded-xl bg-[var(--color-bg-dark)] ${config.width}`}
     >
       <div className={`relative ${config.imageHeight} w-full`}>
@@ -78,6 +82,6 @@ export function PersonCard({
           {title}
         </span>
       </div>
-    </motion.div>
+    </Component>
   );
 }

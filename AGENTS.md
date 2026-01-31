@@ -4,11 +4,168 @@ This document outlines the design system, patterns, and conventions established 
 
 ## Tech Stack
 
-- **Framework**: Next.js 15 with React 19
+- **Framework**: Next.js 16 with React 19
 - **Styling**: Tailwind CSS v4
 - **Animations**: Framer Motion (`motion` package)
 - **Carousel**: Swiper.js
 - **Icons**: Lucide React
+- **Architecture**: Atomic Design (atoms, molecules, organisms)
+
+## Atomic Design Principles (REQUIRED)
+
+**This project strictly follows Atomic Design methodology.** All components must be organized into atoms, molecules, and organisms.
+
+### Component Hierarchy
+
+```
+src/components/
+├── atoms/           # Basic building blocks (cannot be broken down further)
+│   ├── Badge.tsx
+│   ├── Button.tsx
+│   ├── IconWrapper.tsx
+│   └── index.ts
+├── molecules/       # Combinations of atoms (reusable patterns)
+│   ├── SectionHeader.tsx
+│   ├── IconCard.tsx
+│   ├── PricingCard.tsx
+│   ├── EventCard.tsx
+│   ├── PersonCard.tsx
+│   ├── AccordionSection.tsx
+│   ├── ContactForm.tsx
+│   └── index.ts
+├── organisms/       # Complex UI sections (page-level components)
+│   ├── Header.tsx
+│   ├── Footer.tsx
+│   ├── HeroSection.tsx
+│   ├── PageHero.tsx
+│   ├── AboutSection.tsx
+│   ├── EventsSection.tsx
+│   ├── CTASection.tsx
+│   ├── ParallaxImage.tsx
+│   └── index.ts
+├── utils/
+│   └── animations.ts    # Shared animation variants
+└── index.ts             # Barrel exports from all folders
+```
+
+### Rules for Creating Components
+
+#### Atoms
+- **Definition**: Smallest possible UI elements that cannot be broken down further
+- **Examples**: Buttons, badges, icons, form inputs, labels
+- **Location**: `src/components/atoms/`
+- **Naming**: Descriptive noun (e.g., `Button`, `Badge`, `IconWrapper`)
+
+```tsx
+// Example atom: Badge.tsx
+export function Badge({ children, animate = true, className = "" }: BadgeProps) {
+  // Simple, single-purpose component
+}
+```
+
+#### Molecules
+- **Definition**: Combinations of 2+ atoms that work together as a unit
+- **Examples**: Cards, form groups, navigation items, section headers
+- **Location**: `src/components/molecules/`
+- **Pattern**: Should be reusable across multiple organisms
+
+```tsx
+// Example molecule: SectionHeader.tsx
+// Combines Badge atom + heading + optional subtitle
+export function SectionHeader({ label, title, subtitle, align = "center" }: Props) {
+  return (
+    <div>
+      <Badge>{label}</Badge>
+      <h2>{title}</h2>
+      {subtitle && <p>{subtitle}</p>}
+    </div>
+  );
+}
+```
+
+#### Organisms
+- **Definition**: Complex, distinct sections of a page composed of molecules and/or atoms
+- **Examples**: Headers, footers, hero sections, feature sections, pricing tables
+- **Location**: `src/components/organisms/` for shared organisms
+- **Page-specific organisms**: `src/app/[page]/organisms/` for page-specific sections
+
+```tsx
+// Example organism: HeroSection.tsx
+export function HeroSection() {
+  return (
+    <section>
+      <ParallaxImage />
+      <Badge>LABEL</Badge>
+      <h1>Title</h1>
+      <Button>CTA</Button>
+    </section>
+  );
+}
+```
+
+### Page Content Organization
+
+For pages with multiple sections, break down the content into organisms:
+
+```
+src/app/donations/
+├── organisms/
+│   ├── TaxBadge.tsx
+│   ├── DonationTiersSection.tsx
+│   ├── ImpactSection.tsx
+│   ├── PaymentMethodsSection.tsx
+│   └── index.ts
+├── DonationsContent.tsx    # Composes organisms
+└── page.tsx                # Main page file
+```
+
+### Import Patterns
+
+```tsx
+// Import from barrel exports
+import { Header, Footer } from "@/components";
+import { Button, Badge } from "@/components/atoms";
+import { SectionHeader, IconCard } from "@/components/molecules";
+import { HeroSection } from "@/components/organisms";
+
+// Page-specific organisms
+import { DonationTiersSection, ImpactSection } from "./organisms";
+```
+
+### Shared Utilities
+
+Animation variants are centralized in `src/components/utils/animations.ts`:
+
+```tsx
+import {
+  fadeInUp,
+  fadeInLeft,
+  fadeInRight,
+  fadeIn,
+  defaultViewport,
+  defaultTransition,
+  slowTransition,
+  staggerDelay,
+} from "@/components/utils/animations";
+```
+
+### When to Create New Components
+
+| Scenario | Action |
+|----------|--------|
+| Repeating UI pattern (3+ times) | Extract to molecule |
+| Single-purpose element | Create atom |
+| Full page section | Create organism |
+| Page-specific section | Create in `app/[page]/organisms/` |
+| Shared across pages | Create in `components/organisms/` |
+
+### Refactoring Guidelines
+
+1. **Identify repetition**: If the same pattern appears 3+ times, extract it
+2. **Start from atoms**: Build up from the smallest pieces
+3. **Use molecules for composition**: Combine atoms into reusable units
+4. **Keep organisms focused**: Each organism = one distinct page section
+5. **Use shared animations**: Import from `utils/animations.ts`
 
 ## Color Palette
 
@@ -369,29 +526,68 @@ import "swiper/css/pagination";
 ```
 src/
 ├── app/
-│   ├── globals.css          # CSS variables, base styles
-│   ├── layout.tsx           # Root layout with fonts
-│   ├── page.tsx             # Home page
+│   ├── globals.css              # CSS variables, base styles
+│   ├── layout.tsx               # Root layout with fonts
+│   ├── page.tsx                 # Home page
+│   ├── donations/
+│   │   ├── organisms/           # Page-specific organisms
+│   │   │   ├── TaxBadge.tsx
+│   │   │   ├── DonationTiersSection.tsx
+│   │   │   ├── ImpactSection.tsx
+│   │   │   ├── PaymentMethodsSection.tsx
+│   │   │   └── index.ts
+│   │   ├── DonationsContent.tsx
+│   │   └── page.tsx
+│   ├── membership/
+│   │   ├── organisms/
+│   │   │   ├── MembershipPlansSection.tsx
+│   │   │   ├── BenefitsSection.tsx
+│   │   │   ├── SponsorsSection.tsx
+│   │   │   └── index.ts
+│   │   ├── MembershipContent.tsx
+│   │   └── page.tsx
 │   └── about/
 │       ├── history/
-│       │   └── page.tsx     # History page
+│       │   ├── organisms/
+│       │   │   ├── MissionSection.tsx
+│       │   │   ├── TimelineSection.tsx
+│       │   │   ├── VisionSection.tsx
+│       │   │   └── index.ts
+│       │   ├── HistoryContent.tsx
+│       │   └── page.tsx
 │       ├── directors/
-│       │   └── page.tsx     # Board of Directors
 │       ├── advisory/
-│       │   └── page.tsx     # Advisory Board
 │       └── formers/
-│           └── page.tsx     # Former Members
 ├── components/
-│   ├── index.ts             # Barrel exports
-│   ├── Header.tsx           # Navigation header (solid/gradient variants)
-│   ├── Footer.tsx           # Site footer
-│   ├── ParallaxImage.tsx    # Reusable parallax background
-│   ├── PageHero.tsx         # Interior page hero with parallax
-│   ├── PersonCard.tsx       # Team member cards
-│   ├── HeroSection.tsx      # Home page hero
-│   ├── AboutSection.tsx
-│   ├── EventsSection.tsx
-│   └── CTASection.tsx
+│   ├── atoms/                   # Basic building blocks
+│   │   ├── Badge.tsx
+│   │   ├── Button.tsx
+│   │   ├── IconWrapper.tsx
+│   │   └── index.ts
+│   ├── molecules/               # Reusable component patterns
+│   │   ├── SectionHeader.tsx
+│   │   ├── IconCard.tsx
+│   │   ├── PricingCard.tsx
+│   │   ├── EventCard.tsx
+│   │   ├── PersonCard.tsx
+│   │   ├── AccordionSection.tsx
+│   │   ├── ContactForm.tsx
+│   │   └── index.ts
+│   ├── organisms/               # Complex page sections
+│   │   ├── Header.tsx
+│   │   ├── Footer.tsx
+│   │   ├── HeroSection.tsx
+│   │   ├── PageHero.tsx
+│   │   ├── AboutSection.tsx
+│   │   ├── EventsSection.tsx
+│   │   ├── CTASection.tsx
+│   │   ├── ParallaxImage.tsx
+│   │   └── index.ts
+│   ├── utils/
+│   │   └── animations.ts        # Shared animation variants
+│   ├── ui/                      # shadcn/ui components
+│   │   └── select.tsx
+│   └── index.ts                 # Barrel exports from all folders
 ```
 
 ## Accessibility

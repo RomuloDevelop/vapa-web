@@ -10,7 +10,7 @@ import {
 export default function Home() {
   return (
     <main className="flex flex-col min-h-screen bg-[var(--color-bg-dark)]">
-      <Header />
+      <Header showJoinButton={false} />
       <HeroSection />
       <AboutSection />
       <EventsSection />

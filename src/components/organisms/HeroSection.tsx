@@ -2,11 +2,11 @@
 
 import { motion } from "motion/react";
 import { ParallaxImage } from "./ParallaxImage";
+import { Button } from "../atoms/Button";
+import { fadeInLeft, defaultViewport, slowTransition } from "../utils/animations";
 
-const fadeInLeft = {
-  hidden: { opacity: 0, x: -60 },
-  visible: { opacity: 1, x: 0 },
-};
+const MEMBERSHIP_URL =
+  "https://www.memberplanet.com/Groups/GroupJoinLoginNew.aspx?ISPUB=true&invitee=p7vh47274p43y&mid";
 
 export function HeroSection() {
   return (
@@ -36,8 +36,8 @@ export function HeroSection() {
           variants={fadeInLeft}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
+          viewport={defaultViewport}
+          transition={slowTransition}
           className="flex items-center gap-2 px-4 md:px-5 py-2 rounded-[20px] border border-[var(--color-border-gold)] w-fit"
         >
           <div className="w-2 h-2 rounded-full bg-[var(--color-primary)]" />
@@ -51,8 +51,8 @@ export function HeroSection() {
           variants={fadeInLeft}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          viewport={defaultViewport}
+          transition={{ ...slowTransition, delay: 0.1 }}
           className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] xl:text-[72px] 2xl:text-[80px] font-bold text-white leading-[1.1]"
         >
           Empowering Venezuelan
@@ -65,8 +65,8 @@ export function HeroSection() {
           variants={fadeInLeft}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={defaultViewport}
+          transition={{ ...slowTransition, delay: 0.2 }}
           className="text-sm sm:text-base md:text-lg xl:text-xl text-white/85 leading-[1.6] max-w-full md:max-w-[500px] lg:max-w-[580px] xl:max-w-[620px] 2xl:max-w-[680px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]"
         >
           A nonprofit professional organization uniting experts in the
@@ -79,16 +79,14 @@ export function HeroSection() {
           variants={fadeInLeft}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          viewport={defaultViewport}
+          transition={{ ...slowTransition, delay: 0.3 }}
           className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4"
         >
-          <button className="px-6 md:px-9 py-4 md:py-[18px] bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity">
+          <Button href={MEMBERSHIP_URL} external variant="primary">
             Become a Member
-          </button>
-          <button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-[var(--color-border-gold-strong)] bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors">
-            Learn More
-          </button>
+          </Button>
+          <Button variant="secondary">Learn More</Button>
         </motion.div>
       </div>
     </section>

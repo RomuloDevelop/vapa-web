@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Linkedin, Instagram, Youtube, MapPin, Mail, ChevronDown } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { Linkedin, Instagram, Youtube, MapPin, Mail } from "lucide-react";
+import { AccordionSection, ContactForm } from "../molecules";
 
 const footerLinks = {
   organization: {
@@ -39,127 +39,6 @@ const socialLinks = [
   { icon: Instagram, href: "#" },
   { icon: Youtube, href: "#" },
 ];
-
-interface FooterLink {
-  label: string;
-  href: string;
-}
-
-interface AccordionSectionProps {
-  title: string;
-  links: FooterLink[];
-  isOpen: boolean;
-  onToggle: () => void;
-  onContactClick?: (e: React.MouseEvent) => void;
-}
-
-function AccordionSection({ title, links, isOpen, onToggle, onContactClick }: AccordionSectionProps) {
-  return (
-    <div className="border-b border-[var(--color-border-gold-light)] lg:border-none">
-      {/* Mobile: Clickable header */}
-      <button
-        onClick={onToggle}
-        className="flex items-center justify-between w-full py-4 lg:hidden"
-      >
-        <span className="text-[10px] md:text-[11px] font-semibold text-[var(--color-primary)] tracking-[1.5px]">
-          {title}
-        </span>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <ChevronDown className="w-4 h-4 text-[var(--color-primary)]" />
-        </motion.div>
-      </button>
-
-      {/* Desktop: Static header */}
-      <span className="hidden lg:block text-[10px] md:text-[11px] font-semibold text-[var(--color-primary)] tracking-[1.5px] mb-5">
-        {title}
-      </span>
-
-      {/* Mobile: Animated content */}
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden lg:hidden"
-          >
-            <div className="flex flex-col gap-2.5 pb-4">
-              {links.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={link.label === "Contact Us" ? onContactClick : undefined}
-                  className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"
-                >
-                  {link.label}
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Desktop: Always visible content */}
-      <div className="hidden lg:flex flex-col gap-3.5">
-        {links.map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            onClick={link.label === "Contact Us" ? onContactClick : undefined}
-            className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"
-          >
-            {link.label}
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ContactForm({ id }: { id?: string }) {
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission
-    console.log({ email, message });
-  };
-
-  return (
-    <div id={id} className="flex flex-col gap-4 scroll-mt-8">
-      <span className="text-[10px] md:text-[11px] font-semibold text-[var(--color-primary)] tracking-[1.5px]">
-        QUICK CONTACT
-      </span>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <input
-          type="email"
-          placeholder="Your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-3.5 py-3 text-[13px] text-white placeholder:text-[var(--color-text-tertiary)] bg-[var(--color-bg-dark)] border border-[var(--color-border-gold-light)] rounded-md focus:outline-none focus:border-[var(--color-primary)] transition-colors"
-        />
-        <textarea
-          placeholder="Your message..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          rows={3}
-          className="w-full px-3.5 py-3 text-[13px] text-white placeholder:text-[var(--color-text-tertiary)] bg-[var(--color-bg-dark)] border border-[var(--color-border-gold-light)] rounded-md resize-none focus:outline-none focus:border-[var(--color-primary)] transition-colors"
-        />
-        <button
-          type="submit"
-          className="px-5 py-2.5 bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-xs font-semibold rounded hover:opacity-90 transition-opacity"
-        >
-          Send Message
-        </button>
-      </form>
-    </div>
-  );
-}
 
 export function Footer() {
   const [openSection, setOpenSection] = useState<string | null>(null);

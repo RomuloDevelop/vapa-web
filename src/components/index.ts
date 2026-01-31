@@ -1,9 +1,4 @@
-export { Header } from "./Header";
-export { HeroSection } from "./HeroSection";
-export { AboutSection } from "./AboutSection";
-export { EventsSection } from "./EventsSection";
-export { CTASection } from "./CTASection";
-export { Footer } from "./Footer";
-export { ParallaxImage } from "./ParallaxImage";
-export { PageHero } from "./PageHero";
-export { PersonCard } from "./PersonCard";
+// Re-export from atomic design folders
+export * from "./atoms";
+export * from "./molecules";
+export * from "./organisms";

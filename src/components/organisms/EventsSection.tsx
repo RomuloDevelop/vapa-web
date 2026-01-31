@@ -7,6 +7,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import {
+  fadeInLeft,
+  fadeInRight,
+  fadeInUp,
+  defaultViewport,
+  smallViewport,
+  slowTransition,
+  staggerDelay,
+} from "../utils/animations";
 
 const events = [
   {
@@ -35,22 +44,7 @@ const events = [
   },
 ];
 
-const fadeInLeft = {
-  hidden: { opacity: 0, x: -60 },
-  visible: { opacity: 1, x: 0 },
-};
-
-const fadeInRight = {
-  hidden: { opacity: 0, x: 60 },
-  visible: { opacity: 1, x: 0 },
-};
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: { opacity: 1, y: 0 },
-};
-
-function EventCard({
+function EventCardInternal({
   event,
   className = "",
 }: {
@@ -90,8 +84,8 @@ export function EventsSection() {
             variants={fadeInLeft}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6 }}
+            viewport={defaultViewport}
+            transition={slowTransition}
             className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px]"
           >
             UPCOMING EVENTS
@@ -100,8 +94,8 @@ export function EventsSection() {
             variants={fadeInLeft}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={defaultViewport}
+            transition={{ ...slowTransition, delay: 0.1 }}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white"
           >
             Programs & Webinars
@@ -111,8 +105,8 @@ export function EventsSection() {
           variants={fadeInRight}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
+          viewport={defaultViewport}
+          transition={slowTransition}
           className="flex items-center justify-center sm:justify-start gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded border border-[var(--color-border-gold)] hover:bg-white/5 transition-colors w-full sm:w-auto"
         >
           <span className="text-sm font-medium text-[var(--color-primary)]">
@@ -127,8 +121,8 @@ export function EventsSection() {
         variants={fadeInUp}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.6 }}
+        viewport={smallViewport}
+        transition={slowTransition}
         className="block md:hidden"
       >
         <Swiper
@@ -149,7 +143,7 @@ export function EventsSection() {
         >
           {events.map((event) => (
             <SwiperSlide key={event.title}>
-              <EventCard event={event} />
+              <EventCardInternal event={event} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -163,11 +157,11 @@ export function EventsSection() {
             variants={fadeInUp}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
+            viewport={smallViewport}
+            transition={staggerDelay(index)}
             className="flex-1"
           >
-            <EventCard event={event} />
+            <EventCardInternal event={event} />
           </motion.div>
         ))}
       </div>

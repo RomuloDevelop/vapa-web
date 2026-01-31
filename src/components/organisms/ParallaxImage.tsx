@@ -8,8 +8,8 @@ interface ParallaxImageProps {
   src: string;
   alt: string;
   priority?: boolean;
-  speed?: number; // Parallax speed multiplier (default: 0.3)
-  flip?: boolean; // Flip image horizontally
+  speed?: number;
+  flip?: boolean;
 }
 
 export function ParallaxImage({

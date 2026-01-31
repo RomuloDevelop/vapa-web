@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import { ParallaxImage } from "./ParallaxImage";
+import { fadeInUp, slowTransition } from "../utils/animations";
 
 interface PageHeroProps {
   image: string;
@@ -11,11 +12,6 @@ interface PageHeroProps {
   subtitle: string;
   height?: number;
 }
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0 },
-};
 
 export function PageHero({
   image,
@@ -51,7 +47,7 @@ export function PageHero({
           variants={fadeInUp}
           initial="hidden"
           animate="visible"
-          transition={{ duration: 0.6 }}
+          transition={slowTransition}
           className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px]"
         >
           {label}
@@ -60,7 +56,7 @@ export function PageHero({
           variants={fadeInUp}
           initial="hidden"
           animate="visible"
-          transition={{ duration: 0.6, delay: 0.1 }}
+          transition={{ ...slowTransition, delay: 0.1 }}
           className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-bold text-white text-center"
         >
           {title}
@@ -69,7 +65,7 @@ export function PageHero({
           variants={fadeInUp}
           initial="hidden"
           animate="visible"
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ ...slowTransition, delay: 0.2 }}
           className="text-base md:text-lg lg:text-xl text-[var(--color-text-muted)] text-center"
         >
           {subtitle}
