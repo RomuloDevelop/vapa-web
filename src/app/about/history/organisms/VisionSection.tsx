@@ -28,15 +28,15 @@ export function VisionSection() {
       </div>
       <div className="flex flex-col justify-center gap-4 md:gap-5 p-8 md:p-10 lg:p-12">
         <span className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px]">
-          OUR VISION
+          CORE VALUE
         </span>
-        <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white">
+        <h3 className="text-xl md:text-2xl lg:text-[32px] font-bold text-white">
           Professional Networking
         </h3>
         <p className="text-sm md:text-base text-[var(--color-text-muted)] leading-[1.7]">
-          Our organization facilitates connections between professionals across
-          different fields in energy. We provide platforms for knowledge sharing,
-          career development, and strategic collaboration across the energy industry.
+          Networking that will offer unique opportunity to interchange expertise
+          and build strong professional connections among professionals in the
+          energy industry.
         </p>
       </div>
     </motion.div>

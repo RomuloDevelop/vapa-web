@@ -86,7 +86,7 @@ export function HeroSection() {
           <Button href={MEMBERSHIP_URL} external variant="primary">
             Become a Member
           </Button>
-          <Button variant="secondary">Learn More</Button>
+          <Button href="/about/history" variant="secondary">Learn More</Button>
         </motion.div>
       </div>
     </section>

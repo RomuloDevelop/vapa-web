@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "motion/react";
 import {
   fadeInUp,
@@ -8,15 +9,15 @@ import {
 import { SectionHeader } from "@/components/molecules";
 
 const partners = [
-  "Partner 1",
-  "Partner 2",
-  "Partner 3",
-  "Partner 4",
-  "Partner 5",
-  "Partner 6",
-  "Partner 7",
-  "Partner 8",
-  "Partner 9",
+  { name: "Partner 1", image: "/partners/Partner1.png" },
+  { name: "Partner 2", image: "/partners/Partner2.png" },
+  { name: "Partner 3", image: "/partners/Partner3.png" },
+  { name: "Partner 4", image: "/partners/Partner4.png" },
+  { name: "Partner 5", image: "/partners/Partner5.png" },
+  { name: "Partner 6", image: "/partners/Partner6.png" },
+  { name: "Partner 7", image: "/partners/Partner7.png" },
+  { name: "Partner 8", image: "/partners/Partner8.png" },
+  { name: "Partner 9", image: "/partners/Partner9.jpeg" },
 ];
 
 export function SponsorsSection() {
@@ -30,39 +31,70 @@ export function SponsorsSection() {
       />
 
       <div className="flex flex-col gap-10 w-full max-w-[1100px]">
-        <div className="flex flex-wrap justify-center gap-8 lg:gap-14">
-          {partners.slice(0, 5).map((partner, index) => (
+        {/* First row - 4 partners */}
+        <div className="flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-10">
+          {partners.slice(0, 4).map((partner, index) => (
             <motion.div
-              key={partner}
+              key={partner.name}
               variants={fadeInUp}
               initial="hidden"
               whileInView="visible"
               viewport={defaultViewport}
               transition={{ duration: 0.5, delay: index * 0.05 }}
-              className="flex items-center justify-center w-[160px] lg:w-[180px] h-20 rounded-lg bg-[#152D45]"
+              className="flex items-center justify-center w-[140px] md:w-[180px] lg:w-[220px] h-20 md:h-24 p-4 rounded-lg bg-white/60"
             >
-              <span className="text-base font-medium text-[#6B7A8A]">
-                {partner}
-              </span>
+              <Image
+                src={partner.image}
+                alt={partner.name}
+                width={180}
+                height={80}
+                className="object-contain max-h-full"
+              />
             </motion.div>
           ))}
         </div>
-        <div className="flex flex-wrap justify-center gap-8 lg:gap-14">
-          {partners.slice(5).map((partner, index) => (
+
+        {/* Second row - 4 partners */}
+        <div className="flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-10">
+          {partners.slice(4, 8).map((partner, index) => (
             <motion.div
-              key={partner}
+              key={partner.name}
               variants={fadeInUp}
               initial="hidden"
               whileInView="visible"
               viewport={defaultViewport}
-              transition={{ duration: 0.5, delay: (index + 5) * 0.05 }}
-              className="flex items-center justify-center w-[160px] lg:w-[180px] h-20 rounded-lg bg-[#152D45]"
+              transition={{ duration: 0.5, delay: (index + 4) * 0.05 }}
+              className="flex items-center justify-center w-[140px] md:w-[180px] lg:w-[220px] h-20 md:h-24 p-4 rounded-lg bg-white/60"
             >
-              <span className="text-base font-medium text-[#6B7A8A]">
-                {partner}
-              </span>
+              <Image
+                src={partner.image}
+                alt={partner.name}
+                width={180}
+                height={80}
+                className="object-contain max-h-full"
+              />
             </motion.div>
           ))}
+        </div>
+
+        {/* Third row - 1 featured partner (larger) */}
+        <div className="flex justify-center">
+          <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={defaultViewport}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="flex items-center justify-center w-full max-w-[400px] h-28 md:h-32 p-6 rounded-lg bg-white/60"
+          >
+            <Image
+              src={partners[8].image}
+              alt={partners[8].name}
+              width={350}
+              height={100}
+              className="object-contain max-h-full"
+            />
+          </motion.div>
         </div>
       </div>
     </section>

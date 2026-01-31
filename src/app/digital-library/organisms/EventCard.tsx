@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "motion/react";
 import { Calendar, Clock, Play } from "lucide-react";
-import { fadeIn, fastTransition, smallViewport } from "@/components/utils/animations";
+import { fadeInUp, staggerDelay, smallViewport } from "@/components/utils/animations";
 import { formatDate, getVideoUrl } from "../utils";
 import { getImage, type LibraryEvent } from "../events";
 
@@ -19,11 +19,11 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
 
   return (
     <motion.article
-      variants={animate ? fadeIn : undefined}
+      variants={animate ? fadeInUp : undefined}
       initial={animate ? "hidden" : undefined}
       whileInView={animate ? "visible" : undefined}
       viewport={animate ? smallViewport : undefined}
-      transition={animate ? fastTransition : undefined}
+      transition={animate ? staggerDelay(index) : undefined}
       className="flex flex-col sm:flex-row bg-[var(--color-bg-dark)] rounded-xl overflow-hidden"
     >
       {/* Image */}
