@@ -1,11 +1,16 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { allEvents } from "./events";
 import { getYear } from "./utils";
 import { FilterSection, EventsList, type PageSize } from "./organisms";
+import type { Event } from "@/lib/database.types";
 
-export function LibraryContent() {
+interface LibraryContentProps {
+  events: Event[];
+  filterYears: string[];
+}
+
+export function LibraryContent({ events, filterYears }: LibraryContentProps) {
   const [activeFilter, setActiveFilter] = useState("All");
   const [pageSize, setPageSize] = useState<PageSize>(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -16,8 +21,8 @@ export function LibraryContent() {
   // Filter events by year
   const filteredByYear =
     activeFilter === "All"
-      ? allEvents
-      : allEvents.filter((event) => getYear(event.date) === activeFilter);
+      ? events
+      : events.filter((event) => getYear(event.date) === activeFilter);
 
   // Calculate pagination
   const totalPages = pageSize === "All" ? 1 : Math.ceil(filteredByYear.length / pageSize);
@@ -64,6 +69,7 @@ export function LibraryContent() {
           ref={filterRef}
           activeFilter={activeFilter}
           pageSize={pageSize}
+          filterYears={filterYears}
           onFilterChange={handleFilterChange}
           onPageSizeChange={handlePageSizeChange}
         />

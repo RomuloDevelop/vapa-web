@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { fadeInUp, defaultTransition, defaultViewport } from "@/components/utils/animations";
-import { filterYears } from "../events";
 
 export type PageSize = 10 | 20 | "All";
 const pageSizes: PageSize[] = [10, 20, "All"];
@@ -19,12 +18,16 @@ const pageSizes: PageSize[] = [10, 20, "All"];
 interface FilterSectionProps {
   activeFilter: string;
   pageSize: PageSize;
+  filterYears: string[];
   onFilterChange: (year: string) => void;
   onPageSizeChange: (value: string) => void;
 }
 
 export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
-  function FilterSection({ activeFilter, pageSize, onFilterChange, onPageSizeChange }, ref) {
+  function FilterSection(
+    { activeFilter, pageSize, filterYears, onFilterChange, onPageSizeChange },
+    ref
+  ) {
     return (
       <motion.div
         ref={ref}
@@ -57,13 +60,8 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
 
         {/* Page Size Selector */}
         <div className="flex items-center gap-3">
-          <span className="text-sm md:text-base font-medium text-white">
-            Show
-          </span>
-          <Select
-            value={String(pageSize)}
-            onValueChange={onPageSizeChange}
-          >
+          <span className="text-sm md:text-base font-medium text-white">Show</span>
+          <Select value={String(pageSize)} onValueChange={onPageSizeChange}>
             <SelectTrigger className="w-[80px] border-[var(--color-primary)] text-[var(--color-primary)] bg-transparent">
               <SelectValue />
             </SelectTrigger>

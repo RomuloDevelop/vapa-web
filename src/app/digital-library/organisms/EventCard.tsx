@@ -5,17 +5,16 @@ import { motion } from "motion/react";
 import { Calendar, Clock, Play } from "lucide-react";
 import { fadeInUp, staggerDelay, smallViewport } from "@/components/utils/animations";
 import { formatDate, getVideoUrl } from "../utils";
-import { getImage, type LibraryEvent } from "../events";
+import type { Event } from "@/lib/database.types";
 
 interface EventCardProps {
-  event: LibraryEvent;
+  event: Event;
   index: number;
   animate?: boolean;
 }
 
 export function EventCard({ event, index, animate = true }: EventCardProps) {
   const videoUrl = getVideoUrl(event.links);
-  const imageUrl = getImage(index);
 
   return (
     <motion.article
@@ -28,12 +27,7 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
     >
       {/* Image */}
       <div className="relative w-full sm:w-[200px] md:w-[240px] lg:w-[280px] h-[180px] sm:h-auto sm:min-h-[200px] flex-shrink-0">
-        <Image
-          src={imageUrl}
-          alt={event.name}
-          fill
-          className="object-cover"
-        />
+        <Image src={event.img} alt={event.name} fill className="object-cover" />
       </div>
 
       {/* Content */}

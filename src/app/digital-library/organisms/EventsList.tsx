@@ -4,11 +4,11 @@ import { motion } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { fadeInUp, defaultTransition, minimalViewport } from "@/components/utils/animations";
 import { EventCard } from "./EventCard";
-import type { LibraryEvent } from "../events";
+import type { Event } from "@/lib/database.types";
 import type { PageSize } from "./FilterSection";
 
 interface EventsListProps {
-  events: LibraryEvent[];
+  events: Event[];
   totalCount: number;
   activeFilter: string;
   pageSize: PageSize;
@@ -42,7 +42,7 @@ export function EventsList({
         {events.length > 0 ? (
           events.map((event, index) => (
             <EventCard
-              key={`${event.date}-${index}`}
+              key={event.id}
               event={event}
               index={index}
               animate={shouldAnimate}
