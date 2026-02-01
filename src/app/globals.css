@@ -156,3 +156,20 @@
   }
 }
 
+/* Mega Menu Item Styles */
+.mega-menu-item {
+  cursor: pointer;
+  color: white;
+}
+
+.mega-menu-item-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  transition: color 0.2s ease;
+}
+
+.mega-menu-item:hover .mega-menu-item-title {
+  color: #D4A853;
+}
+
