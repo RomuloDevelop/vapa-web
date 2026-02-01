@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ScrollToTop } from "@/components";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function RootLayout({
       </head>
       <body className="h-full font-primary antialiased">
         {children}
+        <ScrollToTop threshold={50} />
       </body>
     </html>
   );

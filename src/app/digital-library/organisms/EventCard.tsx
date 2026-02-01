@@ -1,11 +1,18 @@
 "use client";
 
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { Calendar, Clock, Play } from "lucide-react";
 import { fadeInUp, staggerDelay, smallViewport } from "@/components/utils/animations";
 import { formatDate, getVideoUrl } from "../utils";
 import type { Event } from "@/lib/database.types";
+
+interface Ripple {
+  x: number;
+  y: number;
+  id: number;
+}
 
 interface EventCardProps {
   event: Event;
@@ -15,16 +22,46 @@ interface EventCardProps {
 
 export function EventCard({ event, index, animate = true }: EventCardProps) {
   const videoUrl = getVideoUrl(event.links);
+  const [ripples, setRipples] = useState<Ripple[]>([]);
+  const cardRef = useRef<HTMLElement>(null);
+
+  const handleTouch = (e: React.TouchEvent<HTMLElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.touches[0].clientX - rect.left;
+    const y = e.touches[0].clientY - rect.top;
+    const id = Date.now();
+    setRipples((prev) => [...prev, { x, y, id }]);
+    setTimeout(() => {
+      setRipples((prev) => prev.filter((r) => r.id !== id));
+    }, 600);
+  };
 
   return (
     <motion.article
+      ref={cardRef}
       variants={animate ? fadeInUp : undefined}
       initial={animate ? "hidden" : undefined}
       whileInView={animate ? "visible" : undefined}
       viewport={animate ? smallViewport : undefined}
-      transition={animate ? staggerDelay(index) : undefined}
-      className="flex flex-col sm:flex-row bg-[var(--color-bg-dark)] rounded-xl overflow-hidden"
+      transition={animate ? staggerDelay(index) : { duration: 0.15 }}
+      whileHover={{ y: -4, boxShadow: "0 8px 16px rgba(0, 0, 0, 0.25)" }}
+      onTouchStart={handleTouch}
+      className="flex flex-col sm:flex-row bg-[var(--color-bg-dark)] rounded-xl overflow-hidden relative"
     >
+      {/* Mobile ripple effect */}
+      {ripples.map((ripple) => (
+        <motion.span
+          key={ripple.id}
+          className="absolute rounded-full bg-white/20 pointer-events-none md:hidden z-10"
+          style={{ left: ripple.x, top: ripple.y }}
+          initial={{ width: 0, height: 0, x: 0, y: 0, opacity: 0.5 }}
+          animate={{ width: 400, height: 400, x: -200, y: -200, opacity: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        />
+      ))}
+
       {/* Image */}
       <div className="relative w-full sm:w-[200px] md:w-[240px] lg:w-[280px] h-[180px] sm:h-auto sm:min-h-[200px] flex-shrink-0">
         <Image src={event.img} alt={event.name} fill className="object-cover" />

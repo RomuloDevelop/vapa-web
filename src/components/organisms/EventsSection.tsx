@@ -1,7 +1,9 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { Calendar, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { Calendar, ArrowRight, Play, Clock } from "lucide-react";
 import { motion } from "motion/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
@@ -16,65 +18,160 @@ import {
   slowTransition,
   staggerDelay,
 } from "../utils/animations";
+import type { Event } from "@/lib/database.types";
 
-const events = [
-  {
-    image:
-      "https://images.unsplash.com/photo-1676277759236-fdc9fe039d9c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk3MzYwODN8&ixlib=rb-4.1.0&q=80&w=1080",
-    date: "January 16, 2026",
-    title: "Venezuela Digital Strategy Webinar",
-    description:
-      "Exploring digital transformation strategies for the Venezuelan energy sector.",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1647510283848-1884fb01e887?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk3MzYwODZ8&ixlib=rb-4.1.0&q=80&w=1080",
-    date: "January 21, 2025",
-    title: "Financial Freedom Course",
-    description:
-      "A comprehensive course on financial planning and investment strategies for energy professionals.",
-  },
-  {
-    image:
-      "https://images.unsplash.com/photo-1565351167686-7a19c5114965?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk3MzYwODh8&ixlib=rb-4.1.0&q=80&w=1080",
-    date: "February 2025",
-    title: "Mentoring Program 2025",
-    description:
-      "Connect with industry leaders through our annual mentoring program for career development.",
-  },
-];
+interface EventsSectionProps {
+  events: Event[];
+}
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+// Get the first valid link from event
+function getEventLink(links: string[]): string | null {
+  const validLink = links.find(
+    (link) => link && link !== "#" && link !== "#." && link.trim() !== ""
+  );
+  return validLink || null;
+}
+
+interface Ripple {
+  x: number;
+  y: number;
+  id: number;
+}
 
 function EventCardInternal({
   event,
   className = "",
 }: {
-  event: (typeof events)[0];
+  event: Event;
   className?: string;
 }) {
+  const [expanded, setExpanded] = useState(false);
+  const [isClamped, setIsClamped] = useState(false);
+  const [ripples, setRipples] = useState<Ripple[]>([]);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const eventLink = getEventLink(event.links);
+
+  useEffect(() => {
+    const el = titleRef.current;
+    if (el) {
+      // Temporarily remove clamp to measure full height
+      const originalStyle = el.style.cssText;
+      el.style.cssText = "";
+      const fullHeight = el.scrollHeight;
+      // Get line height to calculate 2 lines
+      const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 24;
+      const twoLineHeight = lineHeight * 2;
+      // Restore original styles
+      el.style.cssText = originalStyle;
+      setIsClamped(fullHeight > twoLineHeight);
+    }
+  }, [event.name]);
+
+  const handleTouch = (e: React.TouchEvent<HTMLDivElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.touches[0].clientX - rect.left;
+    const y = e.touches[0].clientY - rect.top;
+    const id = Date.now();
+    setRipples((prev) => [...prev, { x, y, id }]);
+    setTimeout(() => {
+      setRipples((prev) => prev.filter((r) => r.id !== id));
+    }, 600);
+  };
+
   return (
-    <div
-      className={`flex flex-col h-full rounded-lg bg-[var(--color-bg-section)] overflow-hidden ${className}`}
+    <motion.div
+      ref={cardRef}
+      className={`flex flex-col h-full rounded-lg bg-[var(--color-bg-section)] overflow-hidden relative ${className}`}
+      whileHover={{ y: -8, boxShadow: "0 12px 24px rgba(0, 0, 0, 0.3)" }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      onTouchStart={handleTouch}
     >
+      {/* Mobile ripple effect */}
+      {ripples.map((ripple) => (
+        <motion.span
+          key={ripple.id}
+          className="absolute rounded-full bg-white/20 pointer-events-none md:hidden"
+          style={{ left: ripple.x, top: ripple.y }}
+          initial={{ width: 0, height: 0, x: 0, y: 0, opacity: 0.5 }}
+          animate={{ width: 300, height: 300, x: -150, y: -150, opacity: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        />
+      ))}
       <div className="relative h-[160px] md:h-[180px] w-full">
-        <Image src={event.image} alt={event.title} fill className="object-cover" />
+        <Image src={event.img} alt={event.name} fill className="object-cover" />
       </div>
-      <div className="flex flex-col gap-3 md:gap-4 p-5 md:p-7">
+      <div className="flex flex-col gap-3 md:gap-4 p-5 md:p-7 flex-1">
         <div className="flex items-center gap-2">
           <Calendar className="w-3.5 h-3.5 text-[var(--color-primary)]" />
           <span className="text-xs md:text-[13px] font-medium text-[var(--color-primary)]">
-            {event.date}
+            {formatDate(event.date)}
           </span>
         </div>
-        <h3 className="text-lg md:text-xl font-semibold text-white">{event.title}</h3>
-        <p className="text-sm text-[var(--color-text-secondary)] leading-[1.5]">
-          {event.description}
-        </p>
+        <div>
+          <h3
+            ref={titleRef}
+            className="text-lg md:text-base font-semibold text-white"
+            style={
+              !expanded
+                ? {
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                  }
+                : undefined
+            }
+          >
+            {event.name}
+          </h3>
+          {isClamped && (
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="text-xs text-[var(--color-primary)] hover:underline mt-1"
+            >
+              {expanded ? "less" : "more"}
+            </button>
+          )}
+        </div>
+        {event.time && (
+          <div className="flex items-center gap-2">
+            <Clock className="w-3.5 h-3.5 text-[var(--color-text-muted)]" />
+            <span className="text-xs md:text-[13px] text-[var(--color-text-muted)]">
+              {event.time}
+            </span>
+          </div>
+        )}
+        {eventLink && (
+          <div className="flex justify-end mt-auto pt-2">
+            <a
+              href={eventLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs font-medium text-[var(--color-primary)] hover:underline"
+            >
+              <Play className="w-3 h-3" />
+              Join us
+            </a>
+          </div>
+        )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
-export function EventsSection() {
+export function EventsSection({ events }: EventsSectionProps) {
   return (
     <section className="flex flex-col gap-8 md:gap-12 lg:gap-[60px] px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-[var(--color-bg-dark)]">
       {/* Header */}
@@ -101,19 +198,23 @@ export function EventsSection() {
             Programs & Webinars
           </motion.h2>
         </div>
-        <motion.button
+        <motion.div
           variants={fadeInRight}
           initial="hidden"
           whileInView="visible"
           viewport={defaultViewport}
           transition={slowTransition}
-          className="flex items-center justify-center sm:justify-start gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded border border-[var(--color-border-gold)] hover:bg-white/5 transition-colors w-full sm:w-auto"
         >
-          <span className="text-sm font-medium text-[var(--color-primary)]">
-            View All Events
-          </span>
-          <ArrowRight className="w-4 h-4 text-[var(--color-primary)]" />
-        </motion.button>
+          <Link
+            href="/digital-library"
+            className="flex items-center justify-center sm:justify-start gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded border border-[var(--color-border-gold)] hover:bg-white/5 transition-colors w-full sm:w-auto"
+          >
+            <span className="text-sm font-medium text-[var(--color-primary)]">
+              View All Events
+            </span>
+            <ArrowRight className="w-4 h-4 text-[var(--color-primary)]" />
+          </Link>
+        </motion.div>
       </div>
 
       {/* Mobile Swiper Carousel */}
@@ -142,7 +243,7 @@ export function EventsSection() {
           className="!pb-10"
         >
           {events.map((event) => (
-            <SwiperSlide key={event.title}>
+            <SwiperSlide key={event.id}>
               <EventCardInternal event={event} />
             </SwiperSlide>
           ))}
@@ -153,7 +254,7 @@ export function EventsSection() {
       <div className="hidden md:flex gap-4 lg:gap-6 w-full">
         {events.map((event, index) => (
           <motion.div
-            key={event.title}
+            key={event.id}
             variants={fadeInUp}
             initial="hidden"
             whileInView="visible"
