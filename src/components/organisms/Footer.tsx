@@ -56,24 +56,19 @@ export function Footer() {
   };
 
   return (
-    <footer className="flex flex-col bg-[var(--color-bg-darker)]">
+    <footer className="flex flex-col bg-darker">
       {/* Main Footer */}
       <div className="flex flex-col lg:flex-row lg:justify-between gap-6 lg:gap-8 p-5 md:p-10 lg:p-20">
         {/* Brand Section */}
         <div className="flex flex-col gap-5 md:gap-6 w-full lg:w-[340px]">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <div
-              className="w-9 h-9 md:w-10 md:h-10 rounded-md"
-              style={{
-                background: "linear-gradient(135deg, #D4A853 0%, #B8923D 100%)",
-              }}
-            />
+            <div className="w-9 h-9 md:w-10 md:h-10 rounded-md bg-gradient-gold" />
             <span className="text-xl md:text-2xl font-bold text-white">VAPA</span>
           </div>
 
           {/* Tagline */}
-          <p className="text-sm text-[var(--color-text-secondary)] leading-[1.6]">
+          <p className="text-sm text-secondary leading-[1.6]">
             Venezuelan-American Petroleum Association. Uniting energy
             professionals for technical advancement and sustainable development.
           </p>
@@ -84,9 +79,9 @@ export function Footer() {
               <a
                 key={index}
                 href={social.href}
-                className="flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-md border border-[#D4A85330] hover:border-[var(--color-primary)] transition-colors"
+                className="flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-md border border-gold-tint-30 hover:border-gold transition-colors"
               >
-                <social.icon className="w-4 h-4 md:w-5 md:h-5 text-[var(--color-primary)]" />
+                <social.icon className="w-4 h-4 md:w-5 md:h-5 text-gold" />
               </a>
             ))}
           </div>
@@ -116,20 +111,20 @@ export function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 px-5 md:px-10 lg:px-20 py-5 md:py-6 border-t border-[var(--color-border-gold-light)]">
-        <span className="text-xs md:text-[13px] text-[var(--color-text-tertiary)]">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 px-5 md:px-10 lg:px-20 py-5 md:py-6 border-t border-border-gold-light">
+        <span className="text-xs md:text-[13px] text-tertiary">
           © 2025 VAPA. All rights reserved.
         </span>
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 md:gap-8">
           <div className="flex items-center gap-2">
-            <MapPin className="w-3.5 h-3.5 text-[var(--color-text-tertiary)] flex-shrink-0" />
-            <span className="text-xs md:text-[13px] text-[var(--color-text-tertiary)]">
+            <MapPin className="w-3.5 h-3.5 text-tertiary flex-shrink-0" />
+            <span className="text-xs md:text-[13px] text-tertiary">
               26009 Budde Rd. Suite A-200, The Woodlands, TX 77380
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <Mail className="w-3.5 h-3.5 text-[var(--color-text-tertiary)] flex-shrink-0" />
-            <span className="text-xs md:text-[13px] text-[var(--color-text-tertiary)]">
+            <Mail className="w-3.5 h-3.5 text-tertiary flex-shrink-0" />
+            <span className="text-xs md:text-[13px] text-tertiary">
               info@vapa-us.org
             </span>
           </div>

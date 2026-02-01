@@ -21,13 +21,7 @@ export function HeroSection() {
       />
 
       {/* Gradient Overlay */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, #0A1628 0%, rgba(10, 22, 40, 0.5) 40%, rgba(10, 22, 40, 0) 70%)",
-        }}
-      />
+      <div className="absolute inset-0 bg-gradient-hero-overlay" />
 
       {/* Content */}
       <div className="absolute top-16 md:top-24 lg:top-[120px] left-5 md:left-10 lg:left-20 xl:left-[5%] 2xl:left-[8%] right-5 md:right-10 lg:right-auto flex flex-col gap-5 md:gap-6 lg:gap-8 max-w-full sm:max-w-[600px] lg:max-w-[700px] xl:max-w-[750px] 2xl:max-w-[800px]">
@@ -38,10 +32,10 @@ export function HeroSection() {
           whileInView="visible"
           viewport={defaultViewport}
           transition={slowTransition}
-          className="flex items-center gap-2 px-4 md:px-5 py-2 rounded-[20px] border border-[var(--color-border-gold)] w-fit"
+          className="flex items-center gap-2 px-4 md:px-5 py-2 rounded-[20px] border border-border-gold w-fit"
         >
-          <div className="w-2 h-2 rounded-full bg-[var(--color-primary)]" />
-          <span className="text-xs md:text-[13px] font-medium text-[var(--color-primary)]">
+          <div className="w-2 h-2 rounded-full bg-gold" />
+          <span className="text-xs md:text-[13px] font-medium text-gold">
             Established 2019 • Texas, USA
           </span>
         </motion.div>

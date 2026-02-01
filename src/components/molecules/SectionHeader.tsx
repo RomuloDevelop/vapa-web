@@ -34,7 +34,7 @@ export function SectionHeader({
           whileInView={animate ? "visible" : undefined}
           viewport={animate ? defaultViewport : undefined}
           transition={animate ? defaultTransition : undefined}
-          className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px] uppercase"
+          className="text-[10px] md:text-xs font-semibold text-gold tracking-[2px] uppercase"
         >
           {label}
         </motion.span>
@@ -56,7 +56,7 @@ export function SectionHeader({
           whileInView={animate ? "visible" : undefined}
           viewport={animate ? defaultViewport : undefined}
           transition={animate ? { ...defaultTransition, delay: 0.2 } : undefined}
-          className="text-base md:text-lg text-[var(--color-text-muted)] leading-relaxed max-w-[600px]"
+          className="text-base md:text-lg text-muted leading-relaxed max-w-[600px]"
         >
           {subtitle}
         </motion.p>

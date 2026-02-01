@@ -66,7 +66,7 @@ export function PricingCard({
 
       <div
         className={`flex items-center justify-center w-16 h-16 rounded-full ${
-          popular ? "bg-[var(--color-primary)]" : "bg-[#D4A85320]"
+          popular ? "bg-[var(--color-primary)]" : "bg-[var(--color-gold-tint-20)]"
         }`}
       >
         <Icon
@@ -114,7 +114,7 @@ export function PricingCard({
         className={`w-full py-4 text-[15px] font-semibold text-center rounded-lg transition-colors ${
           popular
             ? "bg-[var(--color-primary)] text-[var(--color-bg-dark)] hover:opacity-90"
-            : "border border-[#D4A85340] text-[var(--color-primary)] hover:bg-[#D4A85310]"
+            : "border border-[var(--color-border-gold)] text-[var(--color-primary)] hover:bg-[var(--color-gold-tint)]"
         }`}
       >
         {buttonText}

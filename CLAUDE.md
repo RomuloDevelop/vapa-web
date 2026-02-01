@@ -19,6 +19,103 @@ This document outlines the design system, patterns, and conventions established 
 - **Icons**: Lucide React
 - **Architecture**: Atomic Design (atoms, molecules, organisms)
 
+## Tailwind CSS v4 Configuration (REQUIRED)
+
+**This project uses Tailwind CSS v4 with `@theme inline` for Safari compatibility.** Design tokens are exposed as native Tailwind utilities to ensure cross-browser support.
+
+### Why Native Utilities Instead of Arbitrary Values
+
+Safari has issues resolving CSS variables within Tailwind's arbitrary value syntax. For example:
+
+```tsx
+// ❌ DON'T - Fails in Safari
+className="bg-[var(--color-primary)] text-[var(--color-bg-dark)]"
+
+// ✅ DO - Works in all browsers
+className="bg-gold text-dark"
+```
+
+### Available Design Token Utilities
+
+All tokens are defined in `globals.css` under `@theme inline`:
+
+#### Colors
+| Token | Utility | Value |
+|-------|---------|-------|
+| Gold (primary) | `bg-gold`, `text-gold`, `border-gold` | `#D4A853` |
+| Gold Dark | `bg-gold-dark`, `text-gold-dark` | `#B8923D` |
+| Dark (bg) | `bg-dark`, `text-dark` | `#0A1628` |
+| Darker | `bg-darker` | `#06101C` |
+| Section | `bg-section` | `#0D1E33` |
+| Content | `bg-content` | `#1A3352` |
+| Card Dark | `bg-card-dark` | `#152D45` |
+
+#### Text Colors
+| Token | Utility | Value |
+|-------|---------|-------|
+| White | `text-white` | `#FFFFFF` |
+| Muted | `text-muted` | `#B8C5D3` |
+| Secondary | `text-secondary` | `#8899AA` |
+| Tertiary | `text-tertiary` | `#6B7A8A` |
+
+#### Border Colors
+| Token | Utility | Value |
+|-------|---------|-------|
+| Border Gold | `border-border-gold` | `#D4A85340` |
+| Border Gold Light | `border-border-gold-light` | `#D4A85320` |
+| Border Gold Strong | `border-border-gold-strong` | `#D4A85380` |
+
+#### Gold Tints (for hover states)
+| Token | Utility | Value |
+|-------|---------|-------|
+| Tint 10% | `bg-gold-tint-10` | `#D4A85310` |
+| Tint 15% | `bg-gold-tint-15` | `#D4A85315` |
+| Tint 20% | `bg-gold-tint-20` | `#D4A85320` |
+| Tint 30% | `bg-gold-tint-30` | `#D4A85330` |
+
+### Gradient Classes (CSS Classes, not Tailwind)
+
+Gradients cannot be defined in `@theme inline`, so they are CSS classes in `globals.css`:
+
+```tsx
+// ✅ Use CSS classes for gradients
+className="bg-gradient-gold"       // Gold accent gradient
+className="bg-gradient-header"     // Header fade to transparent
+className="bg-gradient-hero-overlay"  // Hero section overlay
+className="bg-gradient-page-hero"  // Page hero overlay
+```
+
+### Safari-Specific Hover Workaround
+
+For hover states that need to change colors in Safari, use React state instead of CSS `:hover`:
+
+```tsx
+// ✅ Safari-compatible hover
+const [isHovered, setIsHovered] = useState(false);
+
+<Link
+  onMouseEnter={() => setIsHovered(true)}
+  onMouseLeave={() => setIsHovered(false)}
+>
+  <span style={{ color: isHovered ? "#D4A853" : undefined }}>
+    Link Text
+  </span>
+</Link>
+```
+
+### Adding New Design Tokens
+
+To add new tokens, update `globals.css`:
+
+```css
+@theme inline {
+  /* Add new color tokens here */
+  --color-new-token: #hexvalue;
+}
+```
+
+Then use as: `bg-new-token`, `text-new-token`, `border-new-token`
+
 ## Atomic Design Principles (REQUIRED)
 
 **This project strictly follows Atomic Design methodology.** All components must be organized into atoms, molecules, and organisms.
@@ -310,13 +407,8 @@ import { ParallaxImage } from "@/components";
     speed={0.2}   // Parallax intensity (0.2-0.4 recommended)
   />
 
-  {/* Gradient overlay */}
-  <div
-    className="absolute inset-0"
-    style={{
-      background: "linear-gradient(180deg, #0A1628 0%, rgba(10, 22, 40, 0.5) 40%, rgba(10, 22, 40, 0) 70%)",
-    }}
-  />
+  {/* Gradient overlay - use CSS class for Safari compatibility */}
+  <div className="absolute inset-0 bg-gradient-hero-overlay" />
 
   {/* Content */}
   <div className="absolute ...">
@@ -393,7 +485,7 @@ import { Header, HeroSection, Footer } from "@/components";
 
 export default function Page() {
   return (
-    <main className="flex flex-col min-h-screen bg-[var(--color-bg-dark)]">
+    <main className="flex flex-col min-h-screen bg-dark">
       <Header />
       <HeroSection />
       {/* Page-specific sections */}
@@ -409,7 +501,7 @@ import { Header, PageHero, Footer } from "@/components";
 
 export default function Page() {
   return (
-    <main className="flex flex-col min-h-screen bg-[var(--color-bg-dark)]">
+    <main className="flex flex-col min-h-screen bg-dark">
       <Header variant="gradient" activeNav="About" />
       <PageHero
         image="/hero.jpg"
@@ -430,18 +522,18 @@ export default function Page() {
 
 ### Section Container
 ```tsx
-<section className="flex flex-col gap-8 md:gap-12 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-[var(--color-bg-dark)]">
+<section className="flex flex-col gap-8 md:gap-12 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-dark">
 ```
 
 ### Content Section (Interior Pages)
 ```tsx
-<section className="flex flex-col gap-12 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[80px] bg-[#1A3352]">
+<section className="flex flex-col gap-12 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[80px] bg-content">
 ```
 
 ### Section Headers
 ```tsx
 <div className="flex flex-col gap-2 md:gap-4">
-  <span className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px]">
+  <span className="text-[10px] md:text-xs font-semibold text-gold tracking-[2px]">
     SECTION LABEL
   </span>
   <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white">
@@ -452,14 +544,14 @@ export default function Page() {
 
 ### Primary Button
 ```tsx
-<button className="px-6 md:px-9 py-4 md:py-[18px] bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity">
+<button className="px-6 md:px-9 py-4 md:py-[18px] bg-gold text-dark text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity">
   Button Text
 </button>
 ```
 
 ### Secondary/Outline Button
 ```tsx
-<button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-[var(--color-border-gold-strong)] hover:bg-white/5 transition-colors">
+<button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-border-gold-strong hover:bg-white/5 transition-colors">
   Button Text
 </button>
 ```
@@ -467,7 +559,7 @@ export default function Page() {
 ### Secondary/Outline Button Over Images
 When outline buttons appear over background images (hero sections, CTA sections), add backdrop blur for readability:
 ```tsx
-<button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-[var(--color-border-gold-strong)] bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors">
+<button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-border-gold-strong bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors">
   Button Text
 </button>
 ```
@@ -476,7 +568,7 @@ Key additions: `bg-black/20 backdrop-blur-sm` creates a subtle frosted glass eff
 ### Text Over Images
 When muted/secondary text appears over background images, add a drop shadow for readability:
 ```tsx
-<p className="text-[var(--color-text-muted)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+<p className="text-muted drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
   Subtitle text here
 </p>
 ```
@@ -484,7 +576,7 @@ This creates subtle text separation without changing the color.
 
 ### Cards
 ```tsx
-<div className="flex flex-col gap-4 md:gap-5 p-6 md:p-8 lg:p-10 rounded-lg bg-[var(--color-bg-dark)]">
+<div className="flex flex-col gap-4 md:gap-5 p-6 md:p-8 lg:p-10 rounded-lg bg-dark">
   {/* Card content */}
 </div>
 ```
@@ -507,7 +599,7 @@ import "swiper/css/pagination";
     slidesPerView={1.15}
     pagination={{
       clickable: true,
-      bulletClass: "swiper-pagination-bullet !bg-[var(--color-primary)] !opacity-30",
+      bulletClass: "swiper-pagination-bullet !bg-gold !opacity-30",
       bulletActiveClass: "!opacity-100",
     }}
     autoplay={{ delay: 4000, disableOnInteraction: false }}

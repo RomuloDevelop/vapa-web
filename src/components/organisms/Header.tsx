@@ -74,32 +74,10 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
 
     if (isChildDisabled) {
       return (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "6px",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "15px",
-              fontWeight: 600,
-              color: "white",
-            }}
-          >
-            {child.label}
-          </span>
+        <div className="mega-menu-item">
+          <span className="mega-menu-item-title">{child.label}</span>
           {child.description && (
-            <span
-              style={{
-                fontSize: "13px",
-                color: "#B8C5D3",
-                lineHeight: 1.3,
-              }}
-            >
-              {child.description}
-            </span>
+            <span className="mega-menu-item-description">{child.description}</span>
           )}
         </div>
       );
@@ -111,35 +89,16 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
         onClick={onClose}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "6px",
-          cursor: "pointer",
-          textDecoration: "none",
-          color: "white",
-        }}
+        className="mega-menu-item"
       >
         <span
-          style={{
-            fontSize: "15px",
-            fontWeight: 600,
-            color: isHovered ? "#D4A853" : "white",
-            transition: "color 0.2s ease",
-          }}
+          className="mega-menu-item-title"
+          style={{ color: isHovered ? "#D4A853" : undefined }}
         >
           {child.label}
         </span>
         {child.description && (
-          <span
-            style={{
-              fontSize: "13px",
-              color: "#B8C5D3",
-              lineHeight: 1.3,
-            }}
-          >
-            {child.description}
-          </span>
+          <span className="mega-menu-item-description">{child.description}</span>
         )}
       </Link>
     );
@@ -163,8 +122,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           onMouseLeave={() => setOpenDropdown(null)}
         >
           <button
-            className={`flex items-center gap-1.5 text-sm xl:text-[15px] font-medium transition-colors hover:text-[var(--color-primary)] ${
-              isActive || openDropdown === item.label ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)]"
+            className={`flex items-center gap-1.5 text-sm xl:text-[15px] font-medium transition-colors hover:text-gold ${
+              isActive || openDropdown === item.label ? "text-gold" : "text-muted"
             }`}
           >
             {item.label}
@@ -203,20 +162,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                 />
 
                 {/* Pointer arrow */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "8px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    zIndex: 10,
-                    width: 0,
-                    height: 0,
-                    borderLeft: "12px solid transparent",
-                    borderRight: "12px solid transparent",
-                    borderBottom: "12px solid #1A3352",
-                  }}
-                />
+                <div className="mega-menu-pointer" />
 
                 {/* Dropdown wrapper with height animation */}
                 <motion.div
@@ -224,40 +170,21 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
-                  style={{
-                    marginTop: "12px",
-                    overflow: "hidden",
-                    borderRadius: "12px",
-                    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
-                  }}
+                  className="mega-menu-wrapper"
+                  style={{ marginTop: "12px" }}
                 >
                   {/* Dropdown content */}
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "24px",
-                      padding: "32px",
-                      width: "720px",
-                      backgroundColor: "#1A3352",
-                      backdropFilter: "blur(8px)",
-                      WebkitBackdropFilter: "blur(8px)",
-                    }}
-                  >
+                  <div className="mega-menu-dropdown">
                     {columns.map((column, colIndex) => (
                       <motion.div
                         key={colIndex}
+                        className="mega-menu-column"
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{
                           duration: 0.3,
                           delay: colIndex * 0.08,
                           ease: "easeOut",
-                        }}
-                        style={{
-                          flex: 1,
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "28px",
                         }}
                       >
                         {column.map((child, childIndex) => (
@@ -290,7 +217,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
       return (
         <span
           key={item.label}
-          className="text-sm xl:text-[15px] font-medium text-[var(--color-text-tertiary)] cursor-not-allowed"
+          className="text-sm xl:text-[15px] font-medium text-tertiary cursor-not-allowed"
         >
           {item.label}
         </span>
@@ -305,8 +232,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           href={item.href}
           target="_blank"
           rel="noopener noreferrer"
-          className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-[var(--color-primary)] ${
-            isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)]"
+          className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-gold ${
+            isActive ? "text-gold" : "text-muted"
           }`}
         >
           {item.label}
@@ -320,8 +247,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
         <button
           key={item.label}
           onClick={(e) => scrollToElement(e, item.href)}
-          className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-[var(--color-primary)] ${
-            isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)]"
+          className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-gold ${
+            isActive ? "text-gold" : "text-muted"
           }`}
         >
           {item.label}
@@ -334,8 +261,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
       <Link
         key={item.label}
         href={item.href}
-        className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-[var(--color-primary)] ${
-          isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)]"
+        className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-gold ${
+          isActive ? "text-gold" : "text-muted"
         }`}
       >
         {item.label}
@@ -360,8 +287,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
         >
           <button
             onClick={() => setMobileExpandedItem(isExpanded ? null : item.label)}
-            className={`flex items-center justify-between w-full py-4 text-lg font-medium transition-colors border-b border-[var(--color-border-gold-light)]/30 ${
-              isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)]"
+            className={`flex items-center justify-between w-full py-4 text-lg font-medium transition-colors border-b border-border-gold-light/30 ${
+              isActive ? "text-gold" : "text-muted"
             }`}
           >
             {item.label}
@@ -386,7 +313,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                       return (
                         <span
                           key={child.label}
-                          className="block py-3 text-base text-[var(--color-text-secondary)]"
+                          className="block py-3 text-base text-secondary"
                         >
                           {child.label}
                         </span>
@@ -396,10 +323,10 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                       <Link
                         key={child.label}
                         href={child.href}
-                        className={`block py-3 text-base transition-colors hover:text-[var(--color-primary)] ${
+                        className={`block py-3 text-base transition-colors hover:text-gold ${
                           child.label === activeNav
-                            ? "text-[var(--color-primary)]"
-                            : "text-[var(--color-text-secondary)]"
+                            ? "text-gold"
+                            : "text-secondary"
                         }`}
                         onClick={() => setIsMenuOpen(false)}
                       >
@@ -424,7 +351,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: index * 0.05 + 0.1 }}
         >
-          <span className="block py-4 text-lg font-medium text-[var(--color-text-tertiary)] border-b border-[var(--color-border-gold-light)]/30 cursor-not-allowed">
+          <span className="block py-4 text-lg font-medium text-tertiary border-b border-border-gold-light/30 cursor-not-allowed">
             {item.label}
           </span>
         </motion.div>
@@ -444,8 +371,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`block py-4 text-lg font-medium transition-colors hover:text-[var(--color-primary)] border-b border-[var(--color-border-gold-light)]/30 ${
-              isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)]"
+            className={`block py-4 text-lg font-medium transition-colors hover:text-gold border-b border-border-gold-light/30 ${
+              isActive ? "text-gold" : "text-muted"
             }`}
             onClick={() => setIsMenuOpen(false)}
           >
@@ -465,8 +392,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           transition={{ delay: index * 0.05 + 0.1 }}
         >
           <button
-            className={`block w-full text-left py-4 text-lg font-medium transition-colors hover:text-[var(--color-primary)] border-b border-[var(--color-border-gold-light)]/30 ${
-              isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)]"
+            className={`block w-full text-left py-4 text-lg font-medium transition-colors hover:text-gold border-b border-border-gold-light/30 ${
+              isActive ? "text-gold" : "text-muted"
             }`}
             onClick={(e) => {
               setIsMenuOpen(false);
@@ -489,8 +416,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
       >
         <Link
           href={item.href}
-          className={`block py-4 text-lg font-medium transition-colors hover:text-[var(--color-primary)] border-b border-[var(--color-border-gold-light)]/30 ${
-            isActive ? "text-[var(--color-primary)]" : "text-[var(--color-text-muted)]"
+          className={`block py-4 text-lg font-medium transition-colors hover:text-gold border-b border-border-gold-light/30 ${
+            isActive ? "text-gold" : "text-muted"
           }`}
           onClick={() => setIsMenuOpen(false)}
         >
@@ -504,25 +431,12 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
     <>
       {/* Header */}
       <header
-        className={`${isGradient ? "absolute top-0 left-0 right-0" : "relative"} z-50`}
-        style={
-          isGradient
-            ? {
-                background:
-                  "linear-gradient(180deg, #0A1628 0%, #0A1628 40%, transparent 100%)",
-              }
-            : { backgroundColor: "var(--color-bg-dark)" }
-        }
+        className={`${isGradient ? "absolute top-0 left-0 right-0 bg-gradient-header" : "relative bg-dark"} z-50`}
       >
         <div className="flex items-center justify-between px-5 py-4 md:px-10 lg:px-20 md:py-6">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 md:gap-3">
-            <div
-              className="w-10 h-10 md:w-12 md:h-12 rounded-lg"
-              style={{
-                background: "linear-gradient(135deg, #D4A853 0%, #B8923D 100%)",
-              }}
-            />
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-gold" />
             <span className="text-2xl md:text-[28px] font-bold text-white">VAPA</span>
           </Link>
 
@@ -536,7 +450,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             href={MEMBERSHIP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className={`hidden md:block px-5 lg:px-7 py-3 lg:py-3.5 bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-sm font-semibold rounded hover:opacity-90 transition-opacity ${
+            className={`hidden md:block px-5 lg:px-7 py-3 lg:py-3.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity bg-gold text-dark ${
               showJoinButton ? "" : "invisible"
             }`}
           >
@@ -574,17 +488,12 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
-              className="fixed top-0 left-0 h-full w-[70vw] max-w-[320px] bg-[var(--color-bg-dark)] z-50 lg:hidden overflow-y-auto"
+              className="fixed top-0 left-0 h-full w-[70vw] max-w-[320px] bg-dark z-50 lg:hidden overflow-y-auto"
             >
               <div className="flex flex-col min-h-full">
                 {/* Menu Header */}
-                <div className="flex items-center gap-3 px-6 py-5 border-b border-[var(--color-border-gold-light)]">
-                  <div
-                    className="w-10 h-10 rounded-lg"
-                    style={{
-                      background: "linear-gradient(135deg, #D4A853 0%, #B8923D 100%)",
-                    }}
-                  />
+                <div className="flex items-center gap-3 px-6 py-5 border-b border-border-gold-light">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-gold" />
                   <span className="text-2xl font-bold text-white">VAPA</span>
                 </div>
 
@@ -599,7 +508,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                     href={MEMBERSHIP_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full py-4 bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-base font-semibold rounded hover:opacity-90 transition-opacity text-center"
+                    className="block w-full py-4 bg-gold text-dark text-base font-semibold rounded hover:opacity-90 transition-opacity text-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Join VAPA

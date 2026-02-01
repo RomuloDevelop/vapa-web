@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import useSWRMutation from "swr/mutation";
 import { ExternalToast, toast } from "sonner";
-import { Loader2, CheckCircle } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { submitContactForm } from "@/lib/actions/contact";
 import type { EmailResult } from "@/lib/services/email";
 
@@ -112,7 +112,7 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
 
   return (
     <div id={id} className={`flex flex-col gap-4 scroll-mt-8 ${className}`}>
-      <span className="text-[10px] md:text-[11px] font-semibold text-[var(--color-primary)] tracking-[1.5px]">
+      <span className="text-[10px] md:text-[11px] font-semibold text-gold tracking-[1.5px]">
         QUICK CONTACT
       </span>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -126,10 +126,10 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
               onChange={(e) => setEmail(e.target.value)}
               onBlur={handleEmailBlur}
               disabled={isMutating}
-              className={`w-full px-3.5 py-3 text-[13px] text-white placeholder:text-[var(--color-text-tertiary)] bg-[var(--color-bg-dark)] border rounded-md focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+              className={`w-full px-3.5 py-3 text-[13px] text-white placeholder:text-tertiary bg-dark border rounded-md focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.email
                   ? "border-red-500 focus:border-red-500"
-                  : "border-[var(--color-border-gold-light)] focus:border-[var(--color-primary)]"
+                  : "border-border-gold-light focus:border-gold"
               }`}
             />
             {errors.email && (
@@ -145,7 +145,7 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={isMutating}
-            className="w-full px-3.5 py-3 text-[13px] text-white placeholder:text-[var(--color-text-tertiary)] bg-[var(--color-bg-dark)] border border-[var(--color-border-gold-light)] rounded-md focus:outline-none focus:border-[var(--color-primary)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-3.5 py-3 text-[13px] text-white placeholder:text-tertiary bg-dark border border-border-gold-light rounded-md focus:outline-none focus:border-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           />
 
           {/* Message Input */}
@@ -158,10 +158,10 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
               onBlur={handleMessageBlur}
               disabled={isMutating}
               rows={3}
-              className={`w-full px-3.5 py-3 text-[13px] text-white placeholder:text-[var(--color-text-tertiary)] bg-[var(--color-bg-dark)] border rounded-md resize-none focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+              className={`w-full px-3.5 py-3 text-[13px] text-white placeholder:text-tertiary bg-dark border rounded-md resize-none focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.message
                   ? "border-red-500 focus:border-red-500"
-                  : "border-[var(--color-border-gold-light)] focus:border-[var(--color-primary)]"
+                  : "border-border-gold-light focus:border-gold"
               }`}
             />
             {errors.message && (
@@ -172,7 +172,7 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
           <button
             type="submit"
             disabled={isMutating || hasValidationErrors}
-            className="px-5 py-2.5 bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-xs font-semibold rounded hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="px-5 py-2.5 bg-gold text-dark text-xs font-semibold rounded hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isMutating ? (
               <>

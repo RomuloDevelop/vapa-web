@@ -58,10 +58,10 @@ export function MobileSelect({
                 justifyContent: "space-between",
                 gap: "8px",
                 borderRadius: "6px",
-                border: "1px solid #D4A853",
+                border: "1px solid var(--color-primary)",
                 padding: "8px 12px",
                 fontSize: "14px",
-                color: "#D4A853",
+                color: "var(--color-primary)",
                 backgroundColor: "transparent",
                 cursor: "pointer",
               }}
@@ -93,8 +93,8 @@ export function MobileSelect({
                 flexDirection: "column",
                 borderTopLeftRadius: "1rem",
                 borderTopRightRadius: "1rem",
-                borderTop: "1px solid rgba(212, 168, 83, 0.25)",
-                backgroundColor: "#0A1628",
+                borderTop: "1px solid var(--color-border-gold)",
+                backgroundColor: "var(--color-bg-dark)",
               }}
             >
               {/* Drag handle */}
@@ -148,8 +148,8 @@ export function MobileSelect({
                       border: "none",
                       cursor: "pointer",
                       backgroundColor:
-                        value === option.value ? "#D4A853" : "transparent",
-                      color: value === option.value ? "#0A1628" : "white",
+                        value === option.value ? "var(--color-primary)" : "transparent",
+                      color: value === option.value ? "var(--color-bg-dark)" : "white",
                       fontWeight: value === option.value ? 600 : 400,
                     }}
                   >
@@ -169,8 +169,8 @@ export function MobileSelect({
           <SelectTrigger
             style={{
               width: "80px",
-              border: "1px solid #D4A853",
-              color: "#D4A853",
+              border: "1px solid var(--color-primary)",
+              color: "var(--color-primary)",
               backgroundColor: "transparent",
             }}
             className={triggerClassName}
@@ -179,8 +179,8 @@ export function MobileSelect({
           </SelectTrigger>
           <SelectContent
             style={{
-              backgroundColor: "#0A1628",
-              border: "1px solid #D4A853",
+              backgroundColor: "var(--color-bg-dark)",
+              border: "1px solid var(--color-primary)",
             }}
           >
             {options.map((option) => (
@@ -188,7 +188,7 @@ export function MobileSelect({
                 key={option.value}
                 value={option.value}
                 style={{ color: "white" }}
-                className="focus:bg-[#D4A853] focus:text-[#0A1628]"
+                className="focus:bg-[var(--color-primary)] focus:text-[var(--color-bg-dark)]"
               >
                 {option.label}
               </SelectItem>

@@ -30,13 +30,7 @@ export function PageHero({
       <ParallaxImage src={image} alt={imageAlt} priority speed={0.2} />
 
       {/* Gradient Overlay */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, #0A1628 0%, #0A1628CC 50%, #0A162880 100%)",
-        }}
-      />
+      <div className="absolute inset-0 bg-gradient-page-hero" />
 
       {/* Content */}
       <div
@@ -48,7 +42,7 @@ export function PageHero({
           initial="hidden"
           animate="visible"
           transition={slowTransition}
-          className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px]"
+          className="text-[10px] md:text-xs font-semibold text-gold tracking-[2px]"
         >
           {label}
         </motion.span>
@@ -66,7 +60,7 @@ export function PageHero({
           initial="hidden"
           animate="visible"
           transition={{ ...slowTransition, delay: 0.2 }}
-          className="text-base md:text-lg lg:text-xl text-[var(--color-text-muted)] text-center"
+          className="text-base md:text-lg lg:text-xl text-muted text-center"
         >
           {subtitle}
         </motion.p>

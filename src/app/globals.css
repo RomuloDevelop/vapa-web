@@ -12,6 +12,9 @@
   --color-bg-dark: #0A1628;
   --color-bg-darker: #06101C;
   --color-bg-section: #0D1E33;
+  --color-bg-content: #1A3352;
+  --color-bg-content-alpha: rgba(26, 51, 82, 0.92);
+  --color-bg-card-dark: #152D45;
 
   /* Text Colors */
   --color-text-white: #FFFFFF;
@@ -24,6 +27,36 @@
   --color-border-gold-light: #D4A85320;
   --color-border-gold-strong: #D4A85380;
   --color-border-white: #FFFFFF40;
+
+  /* Hover/Background Tints */
+  --color-gold-tint: #D4A85310;
+  --color-gold-tint-15: #D4A85315;
+  --color-gold-tint-20: #D4A85320;
+  --color-gold-tint-30: #D4A85330;
+
+  /* Gradients */
+  --gradient-gold: linear-gradient(135deg, #D4A853 0%, #B8923D 100%);
+  --gradient-header: linear-gradient(180deg, #0A1628 0%, #0A1628 40%, transparent 100%);
+  --gradient-hero-overlay: linear-gradient(180deg, #0A1628 0%, rgba(10, 22, 40, 0.5) 40%, rgba(10, 22, 40, 0) 70%);
+  --gradient-page-hero: linear-gradient(180deg, #0A1628 0%, #0A1628CC 50%, #0A162880 100%);
+
+  /* Typography Scale */
+  --font-size-xs: 10px;
+  --font-size-sm: 13px;
+  --font-size-base: 15px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 32px;
+  --font-size-3xl: 42px;
+
+  /* Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -73,6 +106,46 @@
 }
 
 @theme inline {
+  /* ============================================
+     VAPA DESIGN TOKENS (Safari-compatible)
+     Use these as native Tailwind utilities:
+     - bg-gold, text-gold, border-gold
+     - bg-dark, bg-darker, bg-section, bg-content
+     - text-muted, text-secondary, text-tertiary
+     ============================================ */
+
+  /* Primary Colors (Gold Accent) */
+  --color-gold: #D4A853;
+  --color-gold-dark: #B8923D;
+
+  /* Background Colors (Blue Primary) */
+  --color-dark: #0A1628;
+  --color-darker: #06101C;
+  --color-section: #0D1E33;
+  --color-content: #1A3352;
+  --color-card-dark: #152D45;
+
+  /* Text Colors */
+  --color-white: #FFFFFF;
+  --color-muted: #B8C5D3;
+  --color-secondary: #8899AA;
+  --color-tertiary: #6B7A8A;
+
+  /* Border Colors (with opacity) */
+  --color-border-gold: #D4A85340;
+  --color-border-gold-light: #D4A85320;
+  --color-border-gold-strong: #D4A85380;
+  --color-border-white: #FFFFFF40;
+
+  /* Gold Tints (for hover states) */
+  --color-gold-tint-10: #D4A85310;
+  --color-gold-tint-15: #D4A85315;
+  --color-gold-tint-20: #D4A85320;
+  --color-gold-tint-30: #D4A85330;
+
+  /* ============================================
+     SHADCN UI TOKENS (for shadcn components)
+     ============================================ */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -88,9 +161,9 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
+  --color-secondary-ui: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
+  --color-muted-ui: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
@@ -156,20 +229,100 @@
   }
 }
 
-/* Mega Menu Item Styles */
-.mega-menu-item {
-  cursor: pointer;
-  color: white;
+/* ============================================
+   UTILITY CLASSES (Safari-compatible gradients)
+   ============================================ */
+
+/* Gold gradient background - use instead of inline gradient styles */
+.bg-gradient-gold {
+  background: linear-gradient(135deg, #D4A853 0%, #B8923D 100%);
 }
 
+/* Header gradient (fades to transparent) */
+.bg-gradient-header {
+  background: linear-gradient(180deg, #0A1628 0%, #0A1628 40%, transparent 100%);
+}
+
+/* Hero overlay gradient */
+.bg-gradient-hero-overlay {
+  background: linear-gradient(180deg, #0A1628 0%, rgba(10, 22, 40, 0.5) 40%, rgba(10, 22, 40, 0) 70%);
+}
+
+/* Page hero gradient */
+.bg-gradient-page-hero {
+  background: linear-gradient(180deg, #0A1628 0%, #0A1628CC 50%, #0A162880 100%);
+}
+
+/* ============================================
+   MEGA MENU COMPONENT STYLES
+   ============================================ */
+
+/* Dropdown Container */
+.mega-menu-dropdown {
+  display: flex;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  width: 720px;
+  background-color: var(--color-bg-content-alpha);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Dropdown Wrapper (for animation) */
+.mega-menu-wrapper {
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Pointer Arrow */
+.mega-menu-pointer {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 12px solid var(--color-bg-content);
+}
+
+/* Menu Item */
+.mega-menu-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--color-text-white);
+}
+
+/* Menu Item Title */
 .mega-menu-item-title {
-  font-size: 15px;
+  font-size: var(--font-size-base);
   font-weight: 600;
-  color: white;
+  color: var(--color-text-white);
   transition: color 0.2s ease;
 }
 
 .mega-menu-item:hover .mega-menu-item-title {
-  color: #D4A853;
+  color: var(--color-primary);
+}
+
+/* Menu Item Description */
+.mega-menu-item-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: 1.3;
+}
+
+/* Menu Column */
+.mega-menu-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
 }
 

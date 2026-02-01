@@ -17,7 +17,7 @@ export function Badge({
   className = "",
 }: BadgeProps) {
   const baseClasses =
-    "text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px] uppercase";
+    "text-[10px] md:text-xs font-semibold text-gold tracking-[2px] uppercase";
 
   if (!animate) {
     return (
