@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 import { ScrollToTop } from "@/components";
 import "./globals.css";
 
@@ -23,6 +24,16 @@ export default function RootLayout({
       <body className="h-full font-primary antialiased">
         {children}
         <ScrollToTop threshold={50} />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: "var(--color-bg-section)",
+              border: "1px solid var(--color-border-gold-light)",
+              color: "white",
+            },
+          }}
+        />
       </body>
     </html>
   );

@@ -6,3 +6,4 @@ export { PersonCard } from "./PersonCard";
 export { AccordionSection } from "./AccordionSection";
 export { ContactForm } from "./ContactForm";
 export { DonationModal } from "./DonationModal";
+export { MobileSelect, type SelectOption } from "./MobileSelect";
