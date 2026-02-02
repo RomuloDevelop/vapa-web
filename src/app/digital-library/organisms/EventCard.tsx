@@ -48,7 +48,7 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
       transition={animate ? staggerDelay(index) : { duration: 0.15 }}
       whileHover={{ y: -4, boxShadow: "0 8px 16px rgba(0, 0, 0, 0.25)" }}
       onTouchStart={handleTouch}
-      className="flex flex-col sm:flex-row bg-[var(--color-bg-dark)] rounded-xl overflow-hidden relative"
+      className="flex flex-col sm:flex-row bg-surface rounded-xl overflow-hidden relative"
     >
       {/* Mobile ripple effect */}
       {ripples.map((ripple) => (
@@ -70,7 +70,7 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
       {/* Content */}
       <div className="flex flex-col gap-3 md:gap-4 p-5 md:p-6 lg:p-8 justify-center">
         {/* Badge */}
-        <span className="px-3 py-1.5 text-[10px] md:text-[11px] font-semibold tracking-[1px] text-[var(--color-primary)] bg-[#D4A85320] rounded-full w-fit">
+        <span className="px-3 py-1.5 text-[10px] md:text-[11px] font-semibold tracking-[1px] text-accent bg-accent-20 rounded-full w-fit">
           {event.type.toUpperCase()}
         </span>
 
@@ -78,8 +78,8 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
         <div className="flex flex-wrap items-center gap-4 md:gap-6">
           {/* Date */}
           <div className="flex items-center gap-2.5">
-            <Calendar className="w-4 h-4 md:w-[18px] md:h-[18px] text-[var(--color-primary)]" />
-            <span className="text-sm md:text-[15px] font-medium text-[var(--color-primary)]">
+            <Calendar className="w-4 h-4 md:w-[18px] md:h-[18px] text-accent" />
+            <span className="text-sm md:text-[15px] font-medium text-accent">
               {formatDate(event.date)}
             </span>
           </div>
@@ -87,8 +87,8 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
           {/* Time */}
           {event.time && (
             <div className="flex items-center gap-2.5">
-              <Clock className="w-4 h-4 md:w-[18px] md:h-[18px] text-[var(--color-text-muted)]" />
-              <span className="text-sm md:text-[15px] text-[var(--color-text-muted)]">
+              <Clock className="w-4 h-4 md:w-[18px] md:h-[18px] text-foreground-muted" />
+              <span className="text-sm md:text-[15px] text-foreground-muted">
                 {event.time}
               </span>
             </div>
@@ -102,7 +102,7 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
 
         {/* Presenters */}
         {event.presenters.length > 0 && event.presenters.some((p) => p.trim()) && (
-          <p className="text-sm md:text-base text-[var(--color-text-secondary)]">
+          <p className="text-sm md:text-base text-foreground-subtle">
             Presented by{" "}
             {event.presenters
               .filter((p) => p.trim() && !p.startsWith("Presentador:"))
@@ -117,7 +117,7 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
               href={videoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 md:px-5 py-2.5 md:py-3 bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-xs md:text-sm font-semibold rounded-md hover:opacity-90 transition-opacity"
+              className="flex items-center gap-2 px-4 md:px-5 py-2.5 md:py-3 bg-accent text-surface text-xs md:text-sm font-semibold rounded-md hover:opacity-90 transition-opacity"
             >
               <Play className="w-3.5 h-3.5 md:w-4 md:h-4" />
               Watch Recording

@@ -52,7 +52,7 @@ const directors = [
 
 export function DirectorsContent() {
   return (
-    <section className="flex flex-col gap-10 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[80px] bg-[#1A3352]">
+    <section className="flex flex-col gap-10 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[80px] bg-surface-elevated">
       {/* Row 1 - First 4 directors */}
       <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8">
         {directors.slice(0, 4).map((person, index) => (

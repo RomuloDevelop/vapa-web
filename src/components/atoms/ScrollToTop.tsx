@@ -43,7 +43,7 @@ export function ScrollToTop({ threshold = 50 }: ScrollToTopProps) {
           transition={{ duration: 0.2 }}
           onClick={scrollToTop}
           aria-label="Scroll to top"
-          className="fixed bottom-6 right-6 z-50 p-3 md:p-4 rounded-full bg-[var(--color-primary)] text-[var(--color-bg-dark)] shadow-lg hover:bg-[var(--color-primary-dark)] transition-colors cursor-pointer"
+          className="fixed bottom-6 right-6 z-50 p-3 md:p-4 rounded-full bg-accent text-surface shadow-lg hover:bg-[var(--color-primary-dark)] transition-colors cursor-pointer"
         >
           <ArrowUp className="w-5 h-5 md:w-6 md:h-6" />
         </motion.button>

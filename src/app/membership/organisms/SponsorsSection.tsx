@@ -22,7 +22,7 @@ const partners = [
 
 export function SponsorsSection() {
   return (
-    <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-[var(--color-bg-dark)]">
+    <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface">
       <SectionHeader
         label="OUR PARTNERS"
         title="Trusted by Industry Leaders"

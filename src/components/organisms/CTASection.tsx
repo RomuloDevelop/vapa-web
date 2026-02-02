@@ -46,7 +46,7 @@ export function CTASection() {
             whileInView="visible"
             viewport={defaultViewport}
             transition={slowTransition}
-            className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px]"
+            className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]"
           >
             JOIN OUR COMMUNITY
           </motion.span>
@@ -66,7 +66,7 @@ export function CTASection() {
             whileInView="visible"
             viewport={defaultViewport}
             transition={{ ...slowTransition, delay: 0.2 }}
-            className="text-sm md:text-base lg:text-lg text-[var(--color-text-muted)] leading-[1.6] text-center max-w-full md:max-w-[600px] lg:max-w-[700px]"
+            className="text-sm md:text-base lg:text-lg text-foreground-muted leading-[1.6] text-center max-w-full md:max-w-[600px] lg:max-w-[700px]"
           >
             Join a network of Venezuelan energy professionals dedicated to
             excellence, innovation, and the sustainable development of the
@@ -84,14 +84,14 @@ export function CTASection() {
               href={MEMBERSHIP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity"
+              className="flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-accent text-surface text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity"
             >
               Register Now
               <ArrowRight className="w-4 h-4 md:w-[18px] md:h-[18px]" />
             </a>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="px-8 md:px-12 py-4 md:py-5 text-white text-sm md:text-base font-medium rounded border border-[var(--color-border-white)] bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors text-center"
+              className="px-8 md:px-12 py-4 md:py-5 text-white text-sm md:text-base font-medium rounded border border-border-white bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors text-center"
             >
               Make a Donation
             </button>

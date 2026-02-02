@@ -107,44 +107,49 @@
 
 @theme inline {
   /* ============================================
-     VAPA DESIGN TOKENS (Safari-compatible)
-     Use these as native Tailwind utilities:
-     - bg-gold, text-gold, border-gold
-     - bg-dark, bg-darker, bg-section, bg-content
-     - text-muted, text-secondary, text-tertiary
+     VAPA DESIGN TOKENS (Semantic Naming)
+
+     COLOR THEORY:
+     - Surface (navy blue): Primary/dominant color (60-70% of UI)
+     - Accent (gold): Draws attention, CTAs (10-20% of UI)
+     - Foreground: Text hierarchy on dark backgrounds
+
+     Safari-compatible: Use native utilities, not var()
      ============================================ */
 
-  /* Primary Colors (Gold Accent) */
-  --color-gold: #D4A853;
-  --color-gold-dark: #B8923D;
+  /* ACCENT COLORS (Gold - draws attention) */
+  --color-accent: #D4A853;
+  --color-accent-hover: #B8923D;
 
-  /* Background Colors (Blue Primary) */
-  --color-dark: #0A1628;
-  --color-darker: #06101C;
-  --color-section: #0D1E33;
-  --color-content: #1A3352;
-  --color-card-dark: #152D45;
+  /* SURFACE COLORS (Navy Blue - dominant background) */
+  --color-surface: #0A1628;           /* Main background */
+  --color-surface-sunken: #06101C;    /* Footer, deeper areas */
+  --color-surface-section: #0D1E33;   /* Section backgrounds */
+  --color-surface-elevated: #1A3352;  /* Cards, content sections */
+  --color-surface-raised: #152D45;    /* Elevated cards */
 
-  /* Text Colors */
-  --color-white: #FFFFFF;
-  --color-muted: #B8C5D3;
-  --color-secondary: #8899AA;
-  --color-tertiary: #6B7A8A;
+  /* FOREGROUND COLORS (Text hierarchy) */
+  --color-foreground: #FFFFFF;        /* Primary text */
+  --color-foreground-muted: #B8C5D3;  /* Secondary text */
+  --color-foreground-subtle: #8899AA; /* Tertiary text */
+  --color-foreground-faint: #6B7A8A;  /* Disabled/hint text */
 
-  /* Border Colors (with opacity) */
-  --color-border-gold: #D4A85340;
-  --color-border-gold-light: #D4A85320;
-  --color-border-gold-strong: #D4A85380;
+  /* BORDER COLORS (Accent-based with opacity) */
+  --color-border-accent: #D4A85340;        /* 25% opacity */
+  --color-border-accent-light: #D4A85320;  /* 12% opacity */
+  --color-border-accent-strong: #D4A85380; /* 50% opacity */
   --color-border-white: #FFFFFF40;
 
-  /* Gold Tints (for hover states) */
-  --color-gold-tint-10: #D4A85310;
-  --color-gold-tint-15: #D4A85315;
-  --color-gold-tint-20: #D4A85320;
-  --color-gold-tint-30: #D4A85330;
+  /* ACCENT TINTS (for hover/focus states) */
+  --color-accent-10: #D4A85310;
+  --color-accent-15: #D4A85315;
+  --color-accent-20: #D4A85320;
+  --color-accent-30: #D4A85330;
 
   /* ============================================
      SHADCN UI TOKENS (for shadcn components)
+     Note: --color-accent is NOT redefined here to
+     preserve our gold accent color (#D4A853)
      ============================================ */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -154,19 +159,15 @@
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
+  --color-primary-ui: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary-ui: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted-ui: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-border: var(--border);
   --color-input: var(--input);
@@ -233,8 +234,8 @@
    UTILITY CLASSES (Safari-compatible gradients)
    ============================================ */
 
-/* Gold gradient background - use instead of inline gradient styles */
-.bg-gradient-gold {
+/* Accent gradient background - use instead of inline gradient styles */
+.bg-gradient-accent {
   background: linear-gradient(135deg, #D4A853 0%, #B8923D 100%);
 }
 

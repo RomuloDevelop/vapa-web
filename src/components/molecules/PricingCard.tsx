@@ -54,24 +54,24 @@ export function PricingCard({
   return (
     <Component
       {...motionProps}
-      className={`flex flex-col items-center gap-6 p-8 md:p-10 rounded-2xl bg-[var(--color-bg-dark)] ${
-        popular ? "border-2 border-[var(--color-primary)]" : ""
+      className={`flex flex-col items-center gap-6 p-8 md:p-10 rounded-2xl bg-surface ${
+        popular ? "border-2 border-accent" : ""
       } ${className}`}
     >
       {popular && (
-        <span className="px-4 py-2 text-[11px] font-bold tracking-wider text-[var(--color-bg-dark)] bg-[var(--color-primary)] rounded-full">
+        <span className="px-4 py-2 text-[11px] font-bold tracking-wider text-surface bg-accent rounded-full">
           {isDonation ? "POPULAR" : "MOST POPULAR"}
         </span>
       )}
 
       <div
         className={`flex items-center justify-center w-16 h-16 rounded-full ${
-          popular ? "bg-[var(--color-primary)]" : "bg-[var(--color-gold-tint-20)]"
+          popular ? "bg-accent" : "bg-accent-20"
         }`}
       >
         <Icon
           className={`w-7 h-7 ${
-            popular ? "text-[var(--color-bg-dark)]" : "text-[var(--color-primary)]"
+            popular ? "text-surface" : "text-accent"
           }`}
         />
       </div>
@@ -80,18 +80,18 @@ export function PricingCard({
 
       {price !== undefined && (
         <div className="flex items-end gap-1">
-          <span className="text-2xl font-semibold text-[var(--color-primary)]">$</span>
+          <span className="text-2xl font-semibold text-accent">$</span>
           <span className="text-[56px] font-bold text-white leading-none">{price}</span>
-          <span className="text-lg text-[#8899AA] mb-1">{priceLabel}</span>
+          <span className="text-lg text-foreground-subtle mb-1">{priceLabel}</span>
         </div>
       )}
 
       {amount && (
-        <span className="text-[32px] font-bold text-[var(--color-primary)]">{amount}</span>
+        <span className="text-[32px] font-bold text-accent">{amount}</span>
       )}
 
       {description && (
-        <p className="text-[15px] text-[var(--color-text-muted)] text-center leading-relaxed max-w-[280px]">
+        <p className="text-[15px] text-foreground-muted text-center leading-relaxed max-w-[280px]">
           {description}
         </p>
       )}
@@ -100,8 +100,8 @@ export function PricingCard({
         <div className="flex flex-col gap-4 w-full">
           {features.map((feature, i) => (
             <div key={i} className="flex items-center gap-3">
-              <Check className="w-[18px] h-[18px] text-[var(--color-primary)] flex-shrink-0" />
-              <span className="text-[15px] text-[var(--color-text-muted)]">{feature}</span>
+              <Check className="w-[18px] h-[18px] text-accent flex-shrink-0" />
+              <span className="text-[15px] text-foreground-muted">{feature}</span>
             </div>
           ))}
         </div>
@@ -113,8 +113,8 @@ export function PricingCard({
         rel={buttonHref.startsWith("http") ? "noopener noreferrer" : undefined}
         className={`w-full py-4 text-[15px] font-semibold text-center rounded-lg transition-colors ${
           popular
-            ? "bg-[var(--color-primary)] text-[var(--color-bg-dark)] hover:opacity-90"
-            : "border border-[var(--color-border-gold)] text-[var(--color-primary)] hover:bg-[var(--color-gold-tint)]"
+            ? "bg-accent text-surface hover:opacity-90"
+            : "border border-border-accent text-accent hover:bg-accent-10"
         }`}
       >
         {buttonText}

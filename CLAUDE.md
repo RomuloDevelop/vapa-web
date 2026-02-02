@@ -21,7 +21,7 @@ This document outlines the design system, patterns, and conventions established 
 
 ## Tailwind CSS v4 Configuration (REQUIRED)
 
-**This project uses Tailwind CSS v4 with `@theme inline` for Safari compatibility.** Design tokens are exposed as native Tailwind utilities to ensure cross-browser support.
+**This project uses Tailwind CSS v4 with `@theme inline` for Safari compatibility.** Design tokens are exposed as native Tailwind utilities using **semantic naming** to ensure cross-browser support and maintainability.
 
 ### Why Native Utilities Instead of Arbitrary Values
 
@@ -29,49 +29,64 @@ Safari has issues resolving CSS variables within Tailwind's arbitrary value synt
 
 ```tsx
 // ❌ DON'T - Fails in Safari
-className="bg-[var(--color-primary)] text-[var(--color-bg-dark)]"
+className="bg-[var(--color-primary)] text-[var(--color-bg-surface)]"
 
 // ✅ DO - Works in all browsers
-className="bg-gold text-dark"
+className="bg-accent text-surface"
 ```
+
+### Semantic Naming Convention
+
+This project uses **semantic naming** (describing function/role) rather than visual naming (describing color):
+
+| ❌ Visual (Old) | ✅ Semantic (Current) | Why |
+|----------------|----------------------|-----|
+| `bg-gold` | `bg-accent` | Describes role, not color |
+| `bg-surface` | `bg-surface` | Main surface, could change |
+| `text-muted` | `text-foreground-muted` | Clear hierarchy |
+| `text-tertiary` | `text-foreground-faint` | Part of foreground family |
 
 ### Available Design Token Utilities
 
 All tokens are defined in `globals.css` under `@theme inline`:
 
-#### Colors
+#### Accent Colors (Gold - draws attention, 10-20% of UI)
 | Token | Utility | Value |
 |-------|---------|-------|
-| Gold (primary) | `bg-gold`, `text-gold`, `border-gold` | `#D4A853` |
-| Gold Dark | `bg-gold-dark`, `text-gold-dark` | `#B8923D` |
-| Dark (bg) | `bg-dark`, `text-dark` | `#0A1628` |
-| Darker | `bg-darker` | `#06101C` |
-| Section | `bg-section` | `#0D1E33` |
-| Content | `bg-content` | `#1A3352` |
-| Card Dark | `bg-card-dark` | `#152D45` |
+| Accent | `bg-accent`, `text-accent`, `border-accent` | `#D4A853` |
+| Accent Hover | `bg-accent-hover`, `text-accent-hover` | `#B8923D` |
 
-#### Text Colors
+#### Surface Colors (Navy Blue - dominant, 60-70% of UI)
 | Token | Utility | Value |
 |-------|---------|-------|
-| White | `text-white` | `#FFFFFF` |
-| Muted | `text-muted` | `#B8C5D3` |
-| Secondary | `text-secondary` | `#8899AA` |
-| Tertiary | `text-tertiary` | `#6B7A8A` |
+| Surface (main) | `bg-surface`, `text-surface` | `#0A1628` |
+| Surface Sunken | `bg-surface-sunken` | `#06101C` |
+| Surface Section | `bg-surface-section` | `#0D1E33` |
+| Surface Elevated | `bg-surface-elevated` | `#1A3352` |
+| Surface Raised | `bg-surface-raised` | `#152D45` |
 
-#### Border Colors
+#### Foreground Colors (Text hierarchy)
 | Token | Utility | Value |
 |-------|---------|-------|
-| Border Gold | `border-border-gold` | `#D4A85340` |
-| Border Gold Light | `border-border-gold-light` | `#D4A85320` |
-| Border Gold Strong | `border-border-gold-strong` | `#D4A85380` |
+| Foreground | `text-foreground` | `#FFFFFF` |
+| Foreground Muted | `text-foreground-muted` | `#B8C5D3` |
+| Foreground Subtle | `text-foreground-subtle` | `#8899AA` |
+| Foreground Faint | `text-foreground-faint` | `#6B7A8A` |
 
-#### Gold Tints (for hover states)
+#### Border Colors (Accent-based with opacity)
 | Token | Utility | Value |
 |-------|---------|-------|
-| Tint 10% | `bg-gold-tint-10` | `#D4A85310` |
-| Tint 15% | `bg-gold-tint-15` | `#D4A85315` |
-| Tint 20% | `bg-gold-tint-20` | `#D4A85320` |
-| Tint 30% | `bg-gold-tint-30` | `#D4A85330` |
+| Border Accent | `border-border-accent` | `#D4A85340` |
+| Border Accent Light | `border-border-accent-light` | `#D4A85320` |
+| Border Accent Strong | `border-border-accent-strong` | `#D4A85380` |
+
+#### Accent Tints (for hover/focus states)
+| Token | Utility | Value |
+|-------|---------|-------|
+| Accent 10% | `bg-accent-10` | `#D4A85310` |
+| Accent 15% | `bg-accent-15` | `#D4A85315` |
+| Accent 20% | `bg-accent-20` | `#D4A85320` |
+| Accent 30% | `bg-accent-30`, `border-accent-30` | `#D4A85330` |
 
 ### Gradient Classes (CSS Classes, not Tailwind)
 
@@ -79,10 +94,10 @@ Gradients cannot be defined in `@theme inline`, so they are CSS classes in `glob
 
 ```tsx
 // ✅ Use CSS classes for gradients
-className="bg-gradient-gold"       // Gold accent gradient
-className="bg-gradient-header"     // Header fade to transparent
-className="bg-gradient-hero-overlay"  // Hero section overlay
-className="bg-gradient-page-hero"  // Page hero overlay
+className="bg-gradient-accent"       // Accent gradient (gold)
+className="bg-gradient-header"       // Header fade to transparent
+className="bg-gradient-hero-overlay" // Hero section overlay
+className="bg-gradient-page-hero"    // Page hero overlay
 ```
 
 ### Safari-Specific Hover Workaround
@@ -109,7 +124,7 @@ To add new tokens, update `globals.css`:
 
 ```css
 @theme inline {
-  /* Add new color tokens here */
+  /* Add new color tokens here - use semantic names */
   --color-new-token: #hexvalue;
 }
 ```
@@ -284,8 +299,8 @@ All colors are defined as CSS custom properties in `src/app/globals.css`:
 
 ### Background Colors (Blue Primary)
 ```css
---color-bg-dark: #0A1628        /* Main dark blue background */
---color-bg-darker: #06101C      /* Footer/darker sections */
+--color-bg-surface: #0A1628        /* Main dark blue background */
+--color-bg-surfaceer: #06101C      /* Footer/darker sections */
 --color-bg-section: #0D1E33     /* Section backgrounds */
 ```
 
@@ -485,7 +500,7 @@ import { Header, HeroSection, Footer } from "@/components";
 
 export default function Page() {
   return (
-    <main className="flex flex-col min-h-screen bg-dark">
+    <main className="flex flex-col min-h-screen bg-surface">
       <Header />
       <HeroSection />
       {/* Page-specific sections */}
@@ -501,7 +516,7 @@ import { Header, PageHero, Footer } from "@/components";
 
 export default function Page() {
   return (
-    <main className="flex flex-col min-h-screen bg-dark">
+    <main className="flex flex-col min-h-screen bg-surface">
       <Header variant="gradient" activeNav="About" />
       <PageHero
         image="/hero.jpg"
@@ -522,18 +537,18 @@ export default function Page() {
 
 ### Section Container
 ```tsx
-<section className="flex flex-col gap-8 md:gap-12 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-dark">
+<section className="flex flex-col gap-8 md:gap-12 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface">
 ```
 
 ### Content Section (Interior Pages)
 ```tsx
-<section className="flex flex-col gap-12 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[80px] bg-content">
+<section className="flex flex-col gap-12 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[80px] bg-surface-elevated">
 ```
 
 ### Section Headers
 ```tsx
 <div className="flex flex-col gap-2 md:gap-4">
-  <span className="text-[10px] md:text-xs font-semibold text-gold tracking-[2px]">
+  <span className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]">
     SECTION LABEL
   </span>
   <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white">
@@ -544,14 +559,14 @@ export default function Page() {
 
 ### Primary Button
 ```tsx
-<button className="px-6 md:px-9 py-4 md:py-[18px] bg-gold text-dark text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity">
+<button className="px-6 md:px-9 py-4 md:py-[18px] bg-accent text-surface text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity">
   Button Text
 </button>
 ```
 
 ### Secondary/Outline Button
 ```tsx
-<button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-border-gold-strong hover:bg-white/5 transition-colors">
+<button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-border-accent-strong hover:bg-white/5 transition-colors">
   Button Text
 </button>
 ```
@@ -559,7 +574,7 @@ export default function Page() {
 ### Secondary/Outline Button Over Images
 When outline buttons appear over background images (hero sections, CTA sections), add backdrop blur for readability:
 ```tsx
-<button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-border-gold-strong bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors">
+<button className="px-6 md:px-9 py-4 md:py-[18px] text-white text-sm md:text-base font-medium rounded border border-border-accent-strong bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors">
   Button Text
 </button>
 ```
@@ -568,7 +583,7 @@ Key additions: `bg-black/20 backdrop-blur-sm` creates a subtle frosted glass eff
 ### Text Over Images
 When muted/secondary text appears over background images, add a drop shadow for readability:
 ```tsx
-<p className="text-muted drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+<p className="text-foreground-muted drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
   Subtitle text here
 </p>
 ```
@@ -576,7 +591,7 @@ This creates subtle text separation without changing the color.
 
 ### Cards
 ```tsx
-<div className="flex flex-col gap-4 md:gap-5 p-6 md:p-8 lg:p-10 rounded-lg bg-dark">
+<div className="flex flex-col gap-4 md:gap-5 p-6 md:p-8 lg:p-10 rounded-lg bg-surface">
   {/* Card content */}
 </div>
 ```
@@ -599,7 +614,7 @@ import "swiper/css/pagination";
     slidesPerView={1.15}
     pagination={{
       clickable: true,
-      bulletClass: "swiper-pagination-bullet !bg-gold !opacity-30",
+      bulletClass: "swiper-pagination-bullet !bg-accent !opacity-30",
       bulletActiveClass: "!opacity-100",
     }}
     autoplay={{ delay: 4000, disableOnInteraction: false }}

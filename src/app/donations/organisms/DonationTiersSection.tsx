@@ -79,14 +79,14 @@ function TierCard({
       transition={staggerDelay(index)}
       className={`flex flex-col items-center justify-end gap-4 p-7 rounded-t-xl ${tier.height} ${
         tier.popular
-          ? "bg-[var(--color-bg-dark)] border-2 border-[var(--color-primary)]"
+          ? "bg-surface border-2 border-accent"
           : index % 2 === 1
-            ? "bg-[#0D1E33]"
-            : "bg-[var(--color-bg-dark)]"
+            ? "bg-surface-section"
+            : "bg-surface"
       }`}
     >
       {tier.popular && (
-        <span className="px-3 py-1.5 text-[10px] font-bold tracking-wider text-[var(--color-bg-dark)] bg-[var(--color-primary)] rounded-full">
+        <span className="px-3 py-1.5 text-[10px] font-bold tracking-wider text-surface bg-accent rounded-full">
           POPULAR
         </span>
       )}
@@ -94,15 +94,15 @@ function TierCard({
       <div
         className={`flex items-center justify-center rounded-full ${
           tier.popular
-            ? "w-14 h-14 bg-[var(--color-primary)]"
-            : "w-12 h-12 bg-[#D4A85320]"
+            ? "w-14 h-14 bg-accent"
+            : "w-12 h-12 bg-accent-20"
         }`}
       >
         <Icon
           className={`${tier.popular ? "w-[26px] h-[26px]" : "w-[22px] h-[22px]"} ${
             tier.popular
-              ? "text-[var(--color-bg-dark)]"
-              : "text-[var(--color-primary)]"
+              ? "text-surface"
+              : "text-accent"
           }`}
         />
       </div>
@@ -114,7 +114,7 @@ function TierCard({
       </h3>
 
       <span
-        className={`font-bold text-[var(--color-primary)] ${tier.popular ? "text-[32px]" : "text-[28px]"}`}
+        className={`font-bold text-accent ${tier.popular ? "text-[32px]" : "text-[28px]"}`}
       >
         {tier.amount}
       </span>
@@ -123,8 +123,8 @@ function TierCard({
         onClick={onDonateClick}
         className={`w-full py-2.5 text-sm font-semibold text-center rounded-md transition-colors ${
           tier.popular
-            ? "bg-[var(--color-primary)] text-[var(--color-bg-dark)] hover:opacity-90"
-            : "border border-[#D4A85340] text-[var(--color-primary)] hover:bg-[#D4A85310]"
+            ? "bg-accent text-surface hover:opacity-90"
+            : "border border-border-accent text-accent hover:bg-accent-10"
         }`}
       >
         {tier.popular ? "Donate Now" : "Donate"}
@@ -138,7 +138,7 @@ export function DonationTiersSection() {
 
   return (
     <>
-      <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-[#1A3352]">
+      <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface-elevated">
         <SectionHeader
           label="GIVING LEVELS"
           title="Choose Your Impact Level"

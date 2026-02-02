@@ -50,7 +50,7 @@ export function EventsList({
           ))
         ) : (
           <div className="flex items-center justify-center py-16">
-            <p className="text-base text-[var(--color-text-muted)]">
+            <p className="text-base text-foreground-muted">
               No events found for {activeFilter}
             </p>
           </div>
@@ -69,7 +69,7 @@ export function EventsList({
       {/* Event Count */}
       {events.length > 0 && (
         <div className="flex justify-center mt-6">
-          <span className="text-xs md:text-sm text-[var(--color-text-muted)]">
+          <span className="text-xs md:text-sm text-foreground-muted">
             Showing {events.length} of {totalCount} events
             {activeFilter !== "All" && ` (${activeFilter})`}
           </span>
@@ -148,7 +148,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
       return (
         <span
           key={`ellipsis-${index}`}
-          className="w-10 h-10 flex items-center justify-center text-[var(--color-text-muted)]"
+          className="w-10 h-10 flex items-center justify-center text-foreground-muted"
         >
           •••
         </span>
@@ -161,8 +161,8 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
         onClick={() => onPageChange(page)}
         className={`w-10 h-10 rounded text-sm font-medium transition-colors ${
           currentPage === page
-            ? "bg-[var(--color-primary)] text-[var(--color-bg-dark)]"
-            : "border border-[#D4A85340] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+            ? "bg-accent text-surface"
+            : "border border-border-accent text-foreground-muted hover:border-accent hover:text-accent"
         }`}
         aria-label={`Page ${page}`}
         aria-current={currentPage === page ? "page" : undefined}
@@ -178,7 +178,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
       <button
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         disabled={currentPage === 1}
-        className="p-2 rounded border border-[#D4A85340] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-[#D4A85340] disabled:hover:text-[var(--color-text-muted)] transition-colors"
+        className="p-2 rounded border border-border-accent text-foreground-muted hover:border-accent hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-border-accent disabled:hover:text-foreground-muted transition-colors"
         aria-label="Previous page"
       >
         <ChevronLeft className="w-5 h-5" />
@@ -198,7 +198,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
       <button
         onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage === totalPages}
-        className="p-2 rounded border border-[#D4A85340] text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-[#D4A85340] disabled:hover:text-[var(--color-text-muted)] transition-colors"
+        className="p-2 rounded border border-border-accent text-foreground-muted hover:border-accent hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-border-accent disabled:hover:text-foreground-muted transition-colors"
         aria-label="Next page"
       >
         <ChevronRight className="w-5 h-5" />

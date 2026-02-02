@@ -62,7 +62,7 @@ export function LibraryContent({ events, filterYears }: LibraryContentProps) {
   };
 
   return (
-    <section className="flex flex-col items-center gap-10 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-12 md:py-16 lg:py-20 bg-[#152D45]">
+    <section className="flex flex-col items-center gap-10 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-12 md:py-16 lg:py-20 bg-surface-raised">
       {/* Container with max-width for desktop */}
       <div className="w-full lg:w-[60vw] lg:min-w-[600px] lg:max-w-[1000px]">
         <FilterSection

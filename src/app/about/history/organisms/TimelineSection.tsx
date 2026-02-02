@@ -49,15 +49,15 @@ export function TimelineSection() {
             whileInView="visible"
             viewport={defaultViewport}
             transition={staggerDelay(index)}
-            className="flex flex-col items-center gap-3 md:gap-4 p-8 md:p-10 lg:p-12 border border-[#D4A85330] rounded-lg flex-1 max-w-[320px] mx-auto md:mx-0"
+            className="flex flex-col items-center gap-3 md:gap-4 p-8 md:p-10 lg:p-12 border border-accent-30 rounded-lg flex-1 max-w-[320px] mx-auto md:mx-0"
           >
-            <span className="text-4xl md:text-5xl lg:text-[48px] font-bold text-[var(--color-primary)]">
+            <span className="text-4xl md:text-5xl lg:text-[48px] font-bold text-accent">
               {item.year}
             </span>
             <span className="text-base md:text-lg font-semibold text-white">
               {item.title}
             </span>
-            <p className="text-sm text-[var(--color-text-secondary)] text-center leading-[1.5] max-w-[220px]">
+            <p className="text-sm text-foreground-subtle text-center leading-[1.5] max-w-[220px]">
               {item.description}
             </p>
           </motion.div>

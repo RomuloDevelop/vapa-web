@@ -31,16 +31,16 @@ const sizeConfig: Record<IconSize, { wrapper: string; icon: string }> = {
 
 const variantConfig: Record<IconVariant, { wrapper: string; icon: string }> = {
   default: {
-    wrapper: "bg-gold-tint-20",
-    icon: "text-gold",
+    wrapper: "bg-accent-20",
+    icon: "text-accent",
   },
   primary: {
-    wrapper: "bg-gold",
-    icon: "text-dark",
+    wrapper: "bg-accent",
+    icon: "text-surface",
   },
   muted: {
-    wrapper: "bg-gold-tint-15",
-    icon: "text-gold",
+    wrapper: "bg-accent-15",
+    icon: "text-accent",
   },
 };
 

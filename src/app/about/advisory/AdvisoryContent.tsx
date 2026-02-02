@@ -77,7 +77,7 @@ const advisors = [
 
 export function AdvisoryContent() {
   return (
-    <section className="flex flex-col gap-8 md:gap-10 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[80px] bg-[#1A3352]">
+    <section className="flex flex-col gap-8 md:gap-10 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[80px] bg-surface-elevated">
       {/* Row 1 - First 5 advisors */}
       <div className="flex flex-wrap justify-center gap-4 md:gap-5 lg:gap-6">
         {advisors.slice(0, 5).map((person, index) => (

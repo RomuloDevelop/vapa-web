@@ -46,7 +46,7 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
       >
         {/* Year Filter */}
         <div className="flex items-center gap-3">
-          <SlidersHorizontal className="w-5 h-5 text-[var(--color-primary)]" />
+          <SlidersHorizontal className="w-5 h-5 text-accent" />
 
           {/* Mobile: Bottom Sheet */}
           <div className="block md:hidden">
@@ -174,8 +174,8 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
                 onClick={() => onFilterChange(year)}
                 className={`px-4 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded transition-colors ${
                   activeFilter === year
-                    ? "bg-[var(--color-primary)] text-[var(--color-bg-dark)] font-semibold"
-                    : "text-[var(--color-text-secondary)] border border-[#D4A85340] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+                    ? "bg-accent text-surface font-semibold"
+                    : "text-foreground-subtle border border-border-accent hover:border-accent hover:text-accent"
                 }`}
               >
                 {year}

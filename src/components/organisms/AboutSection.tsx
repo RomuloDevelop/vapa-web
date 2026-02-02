@@ -42,7 +42,7 @@ const pillars = [
 
 export function AboutSection() {
   return (
-    <section className="flex flex-col gap-10 md:gap-16 lg:gap-20 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-[var(--color-bg-section)]">
+    <section className="flex flex-col gap-10 md:gap-16 lg:gap-20 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface-section">
       {/* Header */}
       <div className="flex flex-col items-center gap-4 md:gap-5 w-full">
         <motion.span
@@ -51,7 +51,7 @@ export function AboutSection() {
           whileInView="visible"
           viewport={defaultViewport}
           transition={slowTransition}
-          className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px]"
+          className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]"
         >
           ABOUT VAPA
         </motion.span>
@@ -71,7 +71,7 @@ export function AboutSection() {
           whileInView="visible"
           viewport={defaultViewport}
           transition={{ ...slowTransition, delay: 0.2 }}
-          className="text-sm md:text-base lg:text-lg text-[var(--color-text-muted)] leading-[1.6] text-center max-w-full md:max-w-[600px] lg:max-w-[800px]"
+          className="text-sm md:text-base lg:text-lg text-foreground-muted leading-[1.6] text-center max-w-full md:max-w-[600px] lg:max-w-[800px]"
         >
           Venezuelan-American Petroleum Association aims to establish
           relationships with organizations and institutions that can provide
@@ -90,12 +90,12 @@ export function AboutSection() {
             whileInView="visible"
             viewport={defaultViewport}
             transition={staggerDelay(index)}
-            className="flex flex-col items-center gap-2 px-8 sm:px-10 md:px-[60px] py-6 md:py-10 rounded border border-[var(--color-border-gold-light)]"
+            className="flex flex-col items-center gap-2 px-8 sm:px-10 md:px-[60px] py-6 md:py-10 rounded border border-border-accent-light"
           >
-            <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-primary)]">
+            <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-accent">
               {stat.value}
             </span>
-            <span className="text-xs md:text-sm font-medium text-[var(--color-text-muted)]">
+            <span className="text-xs md:text-sm font-medium text-foreground-muted">
               {stat.label}
             </span>
           </motion.div>
@@ -112,13 +112,13 @@ export function AboutSection() {
             whileInView="visible"
             viewport={smallViewport}
             transition={staggerDelay(index)}
-            className="flex flex-col gap-4 md:gap-5 flex-1 p-6 md:p-8 lg:p-10 rounded-lg bg-[var(--color-bg-dark)]"
+            className="flex flex-col gap-4 md:gap-5 flex-1 p-6 md:p-8 lg:p-10 rounded-lg bg-surface"
           >
             <IconWrapper icon={pillar.icon} size="md" variant="muted" />
             <h3 className="text-lg md:text-xl lg:text-[22px] font-semibold text-white">
               {pillar.title}
             </h3>
-            <p className="text-sm md:text-[15px] text-[var(--color-text-secondary)] leading-[1.6]">
+            <p className="text-sm md:text-[15px] text-foreground-subtle leading-[1.6]">
               {pillar.description}
             </p>
           </motion.div>

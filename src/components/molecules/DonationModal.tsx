@@ -36,11 +36,11 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[101] w-[90vw] max-w-[480px]"
           >
-            <div className="relative flex flex-col gap-6 p-6 md:p-8 rounded-xl bg-[var(--color-bg-dark)] border border-[var(--color-border-gold-light)]">
+            <div className="relative flex flex-col gap-6 p-6 md:p-8 rounded-xl bg-surface border border-border-accent-light">
               {/* Close button */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 p-1.5 text-[var(--color-text-tertiary)] hover:text-white transition-colors"
+                className="absolute top-4 right-4 p-1.5 text-foreground-faint hover:text-white transition-colors"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -48,7 +48,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
 
               {/* Header */}
               <div className="flex flex-col gap-2 pr-8">
-                <span className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px]">
+                <span className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]">
                   SUPPORT VAPA
                 </span>
                 <h3 className="text-xl md:text-2xl font-bold text-white">
@@ -57,7 +57,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
               </div>
 
               {/* Content */}
-              <p className="text-sm md:text-[15px] text-[var(--color-text-muted)] leading-relaxed">
+              <p className="text-sm md:text-[15px] text-foreground-muted leading-relaxed">
                 Thank you for your interest in supporting VAPA! To complete your contribution via{" "}
                 <span className="text-white font-medium">Zelle</span>,{" "}
                 <span className="text-white font-medium">QuickPay</span>,{" "}
@@ -71,13 +71,13 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 <a
                   href={DONATION_EMAIL}
                   onClick={onClose}
-                  className="flex-1 py-3.5 px-6 bg-[var(--color-primary)] text-[var(--color-bg-dark)] text-sm font-semibold rounded text-center hover:opacity-90 transition-opacity"
+                  className="flex-1 py-3.5 px-6 bg-accent text-surface text-sm font-semibold rounded text-center hover:opacity-90 transition-opacity"
                 >
                   Send Email to Donate
                 </a>
                 <button
                   onClick={onClose}
-                  className="flex-1 py-3.5 px-6 border border-[var(--color-border-gold)] text-[var(--color-text-muted)] text-sm font-medium rounded text-center hover:bg-white/5 transition-colors"
+                  className="flex-1 py-3.5 px-6 border border-border-accent text-foreground-muted text-sm font-medium rounded text-center hover:bg-white/5 transition-colors"
                 >
                   Maybe Later
                 </button>

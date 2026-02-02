@@ -16,7 +16,7 @@ export default async function Home() {
   const recentEvents = await getRecentEvents(3);
 
   return (
-    <main className="flex flex-col min-h-screen bg-[var(--color-bg-dark)]">
+    <main className="flex flex-col min-h-screen bg-surface">
       <Header showJoinButton={false} />
       <HeroSection />
       <AboutSection />

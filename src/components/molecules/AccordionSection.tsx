@@ -24,25 +24,25 @@ export function AccordionSection({
   onContactClick,
 }: AccordionSectionProps) {
   return (
-    <div className="border-b border-border-gold-light lg:border-none">
+    <div className="border-b border-border-accent-light lg:border-none">
       {/* Mobile: Clickable header */}
       <button
         onClick={onToggle}
         className="flex items-center justify-between w-full py-4 lg:hidden"
       >
-        <span className="text-[10px] md:text-[11px] font-semibold text-gold tracking-[1.5px]">
+        <span className="text-[10px] md:text-[11px] font-semibold text-accent tracking-[1.5px]">
           {title}
         </span>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
         >
-          <ChevronDown className="w-4 h-4 text-gold" />
+          <ChevronDown className="w-4 h-4 text-accent" />
         </motion.div>
       </button>
 
       {/* Desktop: Static header */}
-      <span className="hidden lg:block text-[10px] md:text-[11px] font-semibold text-gold tracking-[1.5px] mb-5">
+      <span className="hidden lg:block text-[10px] md:text-[11px] font-semibold text-accent tracking-[1.5px] mb-5">
         {title}
       </span>
 
@@ -62,7 +62,7 @@ export function AccordionSection({
                   key={link.label}
                   href={link.href}
                   onClick={link.label === "Contact Us" ? onContactClick : undefined}
-                  className="text-sm text-muted hover:text-gold transition-colors"
+                  className="text-sm text-foreground-muted hover:text-accent transition-colors"
                 >
                   {link.label}
                 </a>
@@ -79,7 +79,7 @@ export function AccordionSection({
             key={link.label}
             href={link.href}
             onClick={link.label === "Contact Us" ? onContactClick : undefined}
-            className="text-sm text-muted hover:text-gold transition-colors"
+            className="text-sm text-foreground-muted hover:text-accent transition-colors"
           >
             {link.label}
           </a>

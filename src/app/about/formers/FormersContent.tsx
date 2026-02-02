@@ -126,7 +126,7 @@ function MemberSection({ title, members }: SectionProps) {
 
 export function FormersContent() {
   return (
-    <section className="flex flex-col gap-12 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[80px] bg-[#1A3352]">
+    <section className="flex flex-col gap-12 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[80px] bg-surface-elevated">
       <MemberSection title="Former Board of Directors" members={formerBoard} />
       <MemberSection title="Former Advisory Council" members={formerAdvisory} />
       <MemberSection title="Electoral Council" members={electoralCouncil} />

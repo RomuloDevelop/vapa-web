@@ -188,7 +188,7 @@ export function MobileSelect({
                 key={option.value}
                 value={option.value}
                 style={{ color: "white" }}
-                className="focus:bg-[var(--color-primary)] focus:text-[var(--color-bg-dark)]"
+                className="focus:bg-accent focus:text-surface"
               >
                 {option.label}
               </SelectItem>

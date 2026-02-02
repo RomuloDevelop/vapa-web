@@ -32,10 +32,10 @@ export function HeroSection() {
           whileInView="visible"
           viewport={defaultViewport}
           transition={slowTransition}
-          className="flex items-center gap-2 px-4 md:px-5 py-2 rounded-[20px] border border-border-gold w-fit"
+          className="flex items-center gap-2 px-4 md:px-5 py-2 rounded-[20px] border border-border-accent w-fit"
         >
-          <div className="w-2 h-2 rounded-full bg-gold" />
-          <span className="text-xs md:text-[13px] font-medium text-gold">
+          <div className="w-2 h-2 rounded-full bg-accent" />
+          <span className="text-xs md:text-[13px] font-medium text-accent">
             Established 2019 • Texas, USA
           </span>
         </motion.div>

@@ -63,7 +63,7 @@ export function PersonCard({
   return (
     <Component
       {...motionProps}
-      className={`flex flex-col overflow-hidden rounded-xl bg-[var(--color-bg-dark)] ${config.width}`}
+      className={`flex flex-col overflow-hidden rounded-xl bg-surface ${config.width}`}
     >
       <div className={`relative ${config.imageHeight} w-full`}>
         <Image src={image} alt={name} fill className="object-cover" />
@@ -77,7 +77,7 @@ export function PersonCard({
           {name}
         </span>
         <span
-          className={`${config.titleSize} font-medium text-[var(--color-primary)] text-center`}
+          className={`${config.titleSize} font-medium text-accent text-center`}
         >
           {title}
         </span>

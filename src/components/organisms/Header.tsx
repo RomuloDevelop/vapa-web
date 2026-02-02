@@ -122,8 +122,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           onMouseLeave={() => setOpenDropdown(null)}
         >
           <button
-            className={`flex items-center gap-1.5 text-sm xl:text-[15px] font-medium transition-colors hover:text-gold ${
-              isActive || openDropdown === item.label ? "text-gold" : "text-muted"
+            className={`flex items-center gap-1.5 text-sm xl:text-[15px] font-medium transition-colors hover:text-accent ${
+              isActive || openDropdown === item.label ? "text-accent" : "text-foreground-muted"
             }`}
           >
             {item.label}
@@ -217,7 +217,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
       return (
         <span
           key={item.label}
-          className="text-sm xl:text-[15px] font-medium text-tertiary cursor-not-allowed"
+          className="text-sm xl:text-[15px] font-medium text-foreground-faint cursor-not-allowed"
         >
           {item.label}
         </span>
@@ -232,8 +232,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           href={item.href}
           target="_blank"
           rel="noopener noreferrer"
-          className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-gold ${
-            isActive ? "text-gold" : "text-muted"
+          className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-accent ${
+            isActive ? "text-accent" : "text-foreground-muted"
           }`}
         >
           {item.label}
@@ -247,8 +247,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
         <button
           key={item.label}
           onClick={(e) => scrollToElement(e, item.href)}
-          className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-gold ${
-            isActive ? "text-gold" : "text-muted"
+          className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-accent ${
+            isActive ? "text-accent" : "text-foreground-muted"
           }`}
         >
           {item.label}
@@ -261,8 +261,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
       <Link
         key={item.label}
         href={item.href}
-        className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-gold ${
-          isActive ? "text-gold" : "text-muted"
+        className={`text-sm xl:text-[15px] font-medium transition-colors hover:text-accent ${
+          isActive ? "text-accent" : "text-foreground-muted"
         }`}
       >
         {item.label}
@@ -287,8 +287,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
         >
           <button
             onClick={() => setMobileExpandedItem(isExpanded ? null : item.label)}
-            className={`flex items-center justify-between w-full py-4 text-lg font-medium transition-colors border-b border-border-gold-light/30 ${
-              isActive ? "text-gold" : "text-muted"
+            className={`flex items-center justify-between w-full py-4 text-lg font-medium transition-colors border-b border-border-accent-light/30 ${
+              isActive ? "text-accent" : "text-foreground-muted"
             }`}
           >
             {item.label}
@@ -313,7 +313,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                       return (
                         <span
                           key={child.label}
-                          className="block py-3 text-base text-secondary"
+                          className="block py-3 text-base text-foreground-subtle"
                         >
                           {child.label}
                         </span>
@@ -323,10 +323,10 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                       <Link
                         key={child.label}
                         href={child.href}
-                        className={`block py-3 text-base transition-colors hover:text-gold ${
+                        className={`block py-3 text-base transition-colors hover:text-accent ${
                           child.label === activeNav
-                            ? "text-gold"
-                            : "text-secondary"
+                            ? "text-accent"
+                            : "text-foreground-subtle"
                         }`}
                         onClick={() => setIsMenuOpen(false)}
                       >
@@ -351,7 +351,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: index * 0.05 + 0.1 }}
         >
-          <span className="block py-4 text-lg font-medium text-tertiary border-b border-border-gold-light/30 cursor-not-allowed">
+          <span className="block py-4 text-lg font-medium text-foreground-faint border-b border-border-accent-light/30 cursor-not-allowed">
             {item.label}
           </span>
         </motion.div>
@@ -371,8 +371,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`block py-4 text-lg font-medium transition-colors hover:text-gold border-b border-border-gold-light/30 ${
-              isActive ? "text-gold" : "text-muted"
+            className={`block py-4 text-lg font-medium transition-colors hover:text-accent border-b border-border-accent-light/30 ${
+              isActive ? "text-accent" : "text-foreground-muted"
             }`}
             onClick={() => setIsMenuOpen(false)}
           >
@@ -392,8 +392,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           transition={{ delay: index * 0.05 + 0.1 }}
         >
           <button
-            className={`block w-full text-left py-4 text-lg font-medium transition-colors hover:text-gold border-b border-border-gold-light/30 ${
-              isActive ? "text-gold" : "text-muted"
+            className={`block w-full text-left py-4 text-lg font-medium transition-colors hover:text-accent border-b border-border-accent-light/30 ${
+              isActive ? "text-accent" : "text-foreground-muted"
             }`}
             onClick={(e) => {
               setIsMenuOpen(false);
@@ -416,8 +416,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
       >
         <Link
           href={item.href}
-          className={`block py-4 text-lg font-medium transition-colors hover:text-gold border-b border-border-gold-light/30 ${
-            isActive ? "text-gold" : "text-muted"
+          className={`block py-4 text-lg font-medium transition-colors hover:text-accent border-b border-border-accent-light/30 ${
+            isActive ? "text-accent" : "text-foreground-muted"
           }`}
           onClick={() => setIsMenuOpen(false)}
         >
@@ -431,12 +431,12 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
     <>
       {/* Header */}
       <header
-        className={`${isGradient ? "absolute top-0 left-0 right-0 bg-gradient-header" : "relative bg-dark"} z-50`}
+        className={`${isGradient ? "absolute top-0 left-0 right-0 bg-gradient-header" : "relative bg-surface"} z-50`}
       >
         <div className="flex items-center justify-between px-5 py-4 md:px-10 lg:px-20 md:py-6">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 md:gap-3">
-            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-gold" />
+            <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-accent" />
             <span className="text-2xl md:text-[28px] font-bold text-white">VAPA</span>
           </Link>
 
@@ -450,7 +450,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             href={MEMBERSHIP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className={`hidden md:block px-5 lg:px-7 py-3 lg:py-3.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity bg-gold text-dark ${
+            className={`hidden md:block px-5 lg:px-7 py-3 lg:py-3.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity bg-accent text-surface ${
               showJoinButton ? "" : "invisible"
             }`}
           >
@@ -488,12 +488,12 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
-              className="fixed top-0 left-0 h-full w-[70vw] max-w-[320px] bg-dark z-50 lg:hidden overflow-y-auto"
+              className="fixed top-0 left-0 h-full w-[70vw] max-w-[320px] bg-surface z-50 lg:hidden overflow-y-auto"
             >
               <div className="flex flex-col min-h-full">
                 {/* Menu Header */}
-                <div className="flex items-center gap-3 px-6 py-5 border-b border-border-gold-light">
-                  <div className="w-10 h-10 rounded-lg bg-gradient-gold" />
+                <div className="flex items-center gap-3 px-6 py-5 border-b border-border-accent-light">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-accent" />
                   <span className="text-2xl font-bold text-white">VAPA</span>
                 </div>
 
@@ -508,7 +508,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                     href={MEMBERSHIP_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full py-4 bg-gold text-dark text-base font-semibold rounded hover:opacity-90 transition-opacity text-center"
+                    className="block w-full py-4 bg-accent text-surface text-base font-semibold rounded hover:opacity-90 transition-opacity text-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Join VAPA

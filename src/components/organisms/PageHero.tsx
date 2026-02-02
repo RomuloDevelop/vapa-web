@@ -42,7 +42,7 @@ export function PageHero({
           initial="hidden"
           animate="visible"
           transition={slowTransition}
-          className="text-[10px] md:text-xs font-semibold text-gold tracking-[2px]"
+          className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]"
         >
           {label}
         </motion.span>
@@ -60,7 +60,7 @@ export function PageHero({
           initial="hidden"
           animate="visible"
           transition={{ ...slowTransition, delay: 0.2 }}
-          className="text-base md:text-lg lg:text-xl text-muted text-center"
+          className="text-base md:text-lg lg:text-xl text-foreground-muted text-center"
         >
           {subtitle}
         </motion.p>

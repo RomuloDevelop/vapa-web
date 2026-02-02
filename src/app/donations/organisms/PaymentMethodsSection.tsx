@@ -44,13 +44,13 @@ function PaymentCard({
       whileInView="visible"
       viewport={defaultViewport}
       transition={staggerDelay(index)}
-      className="flex flex-col items-center gap-5 p-8 rounded-xl bg-[#152D45] w-full md:w-[300px]"
+      className="flex flex-col items-center gap-5 p-8 rounded-xl bg-surface-raised w-full md:w-[300px]"
     >
-      <div className="flex items-center justify-center w-14 h-14 rounded-full bg-[#D4A85320]">
-        <Icon className="w-6 h-6 text-[var(--color-primary)]" />
+      <div className="flex items-center justify-center w-14 h-14 rounded-full bg-accent-20">
+        <Icon className="w-6 h-6 text-accent" />
       </div>
       <h3 className="text-lg font-semibold text-white">{method.title}</h3>
-      <p className="text-sm text-[var(--color-text-muted)] text-center leading-relaxed">
+      <p className="text-sm text-foreground-muted text-center leading-relaxed">
         {method.description}
       </p>
     </motion.div>
@@ -59,7 +59,7 @@ function PaymentCard({
 
 export function PaymentMethodsSection() {
   return (
-    <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-[var(--color-bg-dark)]">
+    <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface">
       <SectionHeader
         label="WAYS TO GIVE"
         title="Payment Methods"
@@ -79,15 +79,15 @@ export function PaymentMethodsSection() {
         whileInView="visible"
         viewport={defaultViewport}
         transition={{ ...defaultTransition, delay: 0.3 }}
-        className="flex flex-col sm:flex-row items-center justify-center gap-5 p-8 rounded-xl bg-[#D4A85310] w-full max-w-[1000px]"
+        className="flex flex-col sm:flex-row items-center justify-center gap-5 p-8 rounded-xl bg-accent-10 w-full max-w-[1000px]"
       >
-        <Mail className="w-6 h-6 text-[var(--color-primary)]" />
-        <p className="text-base text-[var(--color-text-muted)] text-center sm:text-left">
+        <Mail className="w-6 h-6 text-accent" />
+        <p className="text-base text-foreground-muted text-center sm:text-left">
           For donation certificates, please email your legal name and amount
           to{" "}
           <a
             href="mailto:donations@vapa-us.org"
-            className="text-[var(--color-primary)] hover:underline"
+            className="text-accent hover:underline"
           >
             donations@vapa-us.org
           </a>

@@ -17,9 +17,9 @@ interface IconCardProps {
 }
 
 const variantClasses = {
-  default: "bg-dark",
+  default: "bg-surface",
   dark: "bg-card-dark",
-  light: "bg-gold-tint-10",
+  light: "bg-accent-10",
 };
 
 export function IconCard({
@@ -50,7 +50,7 @@ export function IconCard({
     >
       <IconWrapper icon={icon} size={iconSize} />
       <h3 className="text-xl font-semibold text-white text-center">{title}</h3>
-      <p className="text-[15px] text-muted text-center leading-relaxed">
+      <p className="text-[15px] text-foreground-muted text-center leading-relaxed">
         {description}
       </p>
     </Component>

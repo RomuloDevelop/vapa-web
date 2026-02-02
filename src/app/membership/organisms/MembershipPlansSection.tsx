@@ -77,27 +77,27 @@ function MembershipCard({
       whileInView="visible"
       viewport={defaultViewport}
       transition={staggerDelay(index)}
-      className={`flex flex-col items-center gap-6 p-10 rounded-2xl bg-[var(--color-bg-dark)] ${
-        plan.popular ? "border-2 border-[var(--color-primary)]" : ""
+      className={`flex flex-col items-center gap-6 p-10 rounded-2xl bg-surface ${
+        plan.popular ? "border-2 border-accent" : ""
       }`}
       style={{ width: "100%", maxWidth: 380 }}
     >
       {plan.popular && (
-        <span className="px-4 py-2 text-[11px] font-bold tracking-wider text-[var(--color-bg-dark)] bg-[var(--color-primary)] rounded-full">
+        <span className="px-4 py-2 text-[11px] font-bold tracking-wider text-surface bg-accent rounded-full">
           MOST POPULAR
         </span>
       )}
 
       <div
         className={`flex items-center justify-center w-16 h-16 rounded-full ${
-          plan.popular ? "bg-[var(--color-primary)]" : "bg-[#D4A85320]"
+          plan.popular ? "bg-accent" : "bg-accent-20"
         }`}
       >
         <Icon
           className={`w-7 h-7 ${
             plan.popular
-              ? "text-[var(--color-bg-dark)]"
-              : "text-[var(--color-primary)]"
+              ? "text-surface"
+              : "text-accent"
           }`}
         />
       </div>
@@ -105,24 +105,24 @@ function MembershipCard({
       <h3 className="text-2xl font-bold text-white">{plan.title}</h3>
 
       <div className="flex items-end gap-1">
-        <span className="text-2xl font-semibold text-[var(--color-primary)]">
+        <span className="text-2xl font-semibold text-accent">
           $
         </span>
         <span className="text-[56px] font-bold text-white leading-none">
           {plan.price}
         </span>
-        <span className="text-lg text-[#8899AA] mb-1">/year</span>
+        <span className="text-lg text-foreground-subtle mb-1">/year</span>
       </div>
 
-      <p className="text-[15px] text-[var(--color-text-muted)] text-center leading-relaxed max-w-[280px]">
+      <p className="text-[15px] text-foreground-muted text-center leading-relaxed max-w-[280px]">
         {plan.description}
       </p>
 
       <div className="flex flex-col gap-4 w-full">
         {plan.features.map((feature, i) => (
           <div key={i} className="flex items-center gap-3">
-            <Check className="w-[18px] h-[18px] text-[var(--color-primary)]" />
-            <span className="text-[15px] text-[var(--color-text-muted)]">
+            <Check className="w-[18px] h-[18px] text-accent" />
+            <span className="text-[15px] text-foreground-muted">
               {feature}
             </span>
           </div>
@@ -135,8 +135,8 @@ function MembershipCard({
         rel="noopener noreferrer"
         className={`w-full py-4 text-[15px] font-semibold text-center rounded-lg transition-colors ${
           plan.popular
-            ? "bg-[var(--color-primary)] text-[var(--color-bg-dark)] hover:opacity-90"
-            : "border border-[#D4A85350] text-[var(--color-primary)] hover:bg-[#D4A85310]"
+            ? "bg-accent text-surface hover:opacity-90"
+            : "border border-border-accent-strong text-accent hover:bg-accent-10"
         }`}
       >
         {plan.buttonText}
@@ -147,7 +147,7 @@ function MembershipCard({
 
 export function MembershipPlansSection() {
   return (
-    <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-[#1A3352]">
+    <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface-elevated">
       <SectionHeader
         label="MEMBERSHIP PLANS"
         title="Choose Your Membership"

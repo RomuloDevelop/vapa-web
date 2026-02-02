@@ -38,7 +38,7 @@ export function EventCard({
   return (
     <Component
       {...motionProps}
-      className={`flex flex-col bg-[var(--color-bg-dark)] rounded-xl overflow-hidden h-full ${className}`}
+      className={`flex flex-col bg-surface rounded-xl overflow-hidden h-full ${className}`}
     >
       {/* Image */}
       <div className="relative h-[180px] md:h-[200px] w-full">
@@ -49,8 +49,8 @@ export function EventCard({
       <div className="flex flex-col gap-3 md:gap-4 p-5 md:p-6">
         {/* Date */}
         <div className="flex items-center gap-2.5">
-          <Calendar className="w-4 h-4 md:w-[18px] md:h-[18px] text-[var(--color-primary)]" />
-          <span className="text-sm md:text-[15px] font-medium text-[var(--color-primary)]">
+          <Calendar className="w-4 h-4 md:w-[18px] md:h-[18px] text-accent" />
+          <span className="text-sm md:text-[15px] font-medium text-accent">
             {date}
           </span>
         </div>
@@ -61,7 +61,7 @@ export function EventCard({
         </h3>
 
         {/* Description */}
-        <p className="text-sm md:text-[15px] text-[var(--color-text-secondary)] leading-[1.5]">
+        <p className="text-sm md:text-[15px] text-foreground-subtle leading-[1.5]">
           {description}
         </p>
       </div>

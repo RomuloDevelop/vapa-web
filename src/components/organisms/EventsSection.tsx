@@ -93,7 +93,7 @@ function EventCardInternal({
   return (
     <motion.div
       ref={cardRef}
-      className={`flex flex-col h-full rounded-lg bg-[var(--color-bg-section)] overflow-hidden relative ${className}`}
+      className={`flex flex-col h-full rounded-lg bg-surface-section overflow-hidden relative ${className}`}
       whileHover={{ y: -8, boxShadow: "0 12px 24px rgba(0, 0, 0, 0.3)" }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       onTouchStart={handleTouch}
@@ -114,8 +114,8 @@ function EventCardInternal({
       </div>
       <div className="flex flex-col gap-3 md:gap-4 p-5 md:p-7 flex-1">
         <div className="flex items-center gap-2">
-          <Calendar className="w-3.5 h-3.5 text-[var(--color-primary)]" />
-          <span className="text-xs md:text-[13px] font-medium text-[var(--color-primary)]">
+          <Calendar className="w-3.5 h-3.5 text-accent" />
+          <span className="text-xs md:text-[13px] font-medium text-accent">
             {formatDate(event.date)}
           </span>
         </div>
@@ -139,7 +139,7 @@ function EventCardInternal({
           {isClamped && (
             <button
               onClick={() => setExpanded(!expanded)}
-              className="text-xs text-[var(--color-primary)] hover:underline mt-1"
+              className="text-xs text-accent hover:underline mt-1"
             >
               {expanded ? "less" : "more"}
             </button>
@@ -147,8 +147,8 @@ function EventCardInternal({
         </div>
         {event.time && (
           <div className="flex items-center gap-2">
-            <Clock className="w-3.5 h-3.5 text-[var(--color-text-muted)]" />
-            <span className="text-xs md:text-[13px] text-[var(--color-text-muted)]">
+            <Clock className="w-3.5 h-3.5 text-foreground-muted" />
+            <span className="text-xs md:text-[13px] text-foreground-muted">
               {event.time}
             </span>
           </div>
@@ -159,7 +159,7 @@ function EventCardInternal({
               href={eventLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-medium text-[var(--color-primary)] hover:underline"
+              className="flex items-center gap-1.5 text-xs font-medium text-accent hover:underline"
             >
               <Play className="w-3 h-3" />
               Join us
@@ -173,7 +173,7 @@ function EventCardInternal({
 
 export function EventsSection({ events }: EventsSectionProps) {
   return (
-    <section className="flex flex-col gap-8 md:gap-12 lg:gap-[60px] px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-[var(--color-bg-dark)]">
+    <section className="flex flex-col gap-8 md:gap-12 lg:gap-[60px] px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 w-full">
         <div className="flex flex-col gap-2 md:gap-4">
@@ -183,7 +183,7 @@ export function EventsSection({ events }: EventsSectionProps) {
             whileInView="visible"
             viewport={defaultViewport}
             transition={slowTransition}
-            className="text-[10px] md:text-xs font-semibold text-[var(--color-primary)] tracking-[2px]"
+            className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]"
           >
             UPCOMING EVENTS
           </motion.span>
@@ -207,12 +207,12 @@ export function EventsSection({ events }: EventsSectionProps) {
         >
           <Link
             href="/digital-library"
-            className="flex items-center justify-center sm:justify-start gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded border border-[var(--color-border-gold)] hover:bg-white/5 transition-colors w-full sm:w-auto"
+            className="flex items-center justify-center sm:justify-start gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded border border-border-accent hover:bg-white/5 transition-colors w-full sm:w-auto"
           >
-            <span className="text-sm font-medium text-[var(--color-primary)]">
+            <span className="text-sm font-medium text-accent">
               View All Events
             </span>
-            <ArrowRight className="w-4 h-4 text-[var(--color-primary)]" />
+            <ArrowRight className="w-4 h-4 text-accent" />
           </Link>
         </motion.div>
       </div>
@@ -233,7 +233,7 @@ export function EventsSection({ events }: EventsSectionProps) {
           centeredSlides={false}
           pagination={{
             clickable: true,
-            bulletClass: "swiper-pagination-bullet !bg-[var(--color-primary)] !opacity-30",
+            bulletClass: "swiper-pagination-bullet !bg-accent !opacity-30",
             bulletActiveClass: "!opacity-100",
           }}
           autoplay={{
