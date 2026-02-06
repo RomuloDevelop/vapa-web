@@ -35,6 +35,12 @@ export const defaultTransition = { duration: 0.5 };
 export const slowTransition = { duration: 0.6 };
 export const fastTransition = { duration: 0.3 };
 
+// Shared hover animation for interactive cards
+export const cardHover = {
+  whileHover: { y: -4, boxShadow: "0 8px 16px rgba(0, 0, 0, 0.25)" },
+  transition: { duration: 0.15 },
+};
+
 // Staggered delay helper
 export const staggerDelay = (index: number, baseDelay = 0.1) => ({
   duration: 0.5,

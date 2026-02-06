@@ -6,47 +6,42 @@ const directors = [
   {
     name: "Oman Oquendo",
     title: "President",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop",
+    image: "/members/Oman Oquendo.png",
+    linkedin: "https://www.linkedin.com/in/oman-oquendo-3a719424/",
   },
   {
-    name: "Teresa Martín",
-    title: "Vice-President",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
+    name: "Tomás Marta",
+    title: "Vice President",
+    image: "/members/Tomas Marta.png",
+    linkedin: "https://www.linkedin.com/in/tomasjmata/",
   },
   {
-    name: "Héctor Salinas",
+    name: "María Bolívar",
+    title: "Treasurer",
+    image: "/members/Maria Bolivar.png",
+    linkedin: "https://www.linkedin.com/in/maria-bolivar-70996247/",
+  },
+  {
+    name: "Tyrone Perdomo",
     title: "Secretary",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
-  },
-  {
-    name: "Ysnardo Romero",
-    title: "Director",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
-  },
-  {
-    name: "Elar Rincón",
-    title: "Director",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop",
-  },
-  {
-    name: "Leida Galarraga",
-    title: "Director",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop",
+    image: "/members/Tyrone Perdomo.jpg",
+    linkedin: "https://www.linkedin.com/in/tyrone-perdomo-a3196513",
   },
   {
     name: "Flor Pineda",
     title: "Director",
-    image: "https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=400&h=400&fit=crop",
+    image: "/members/Flor.jpg",
+    linkedin: "https://www.linkedin.com/in/flor-pineda-054a9216",
   },
   {
-    name: "Lino Zambrano",
+    name: "Lirio Quintero",
     title: "Director",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
+    image: "/members/Lirio Quintero.png",
   },
   {
-    name: "Rafael Serrano",
+    name: "Isabel Serrano",
     title: "Director",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop",
+    image: "/members/Isabel Serrano.png",
   },
 ];
 
@@ -61,36 +56,26 @@ export function DirectorsContent() {
             name={person.name}
             title={person.title}
             image={person.image}
+            linkedin={person.linkedin}
             size="medium"
             index={index}
+            priority
           />
         ))}
       </div>
 
-      {/* Row 2 - Next 2 directors */}
+      {/* Row 2 - Last 3 directors */}
       <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8">
-        {directors.slice(4, 6).map((person, index) => (
+        {directors.slice(4).map((person, index) => (
           <PersonCard
             key={person.name}
             name={person.name}
             title={person.title}
             image={person.image}
+            linkedin={person.linkedin}
             size="medium"
             index={index}
-          />
-        ))}
-      </div>
-
-      {/* Row 3 - Last 3 directors */}
-      <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8">
-        {directors.slice(6).map((person, index) => (
-          <PersonCard
-            key={person.name}
-            name={person.name}
-            title={person.title}
-            image={person.image}
-            size="medium"
-            index={index}
+            priority
           />
         ))}
       </div>

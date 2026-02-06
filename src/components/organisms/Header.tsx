@@ -17,6 +17,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpandedItem, setMobileExpandedItem] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -39,6 +40,13 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Clean up close timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    };
   }, []);
 
   const isGradient = variant === "gradient";
@@ -118,10 +126,22 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           key={item.label}
           className="relative"
           ref={dropdownRef}
-          onMouseEnter={() => setOpenDropdown(item.label)}
-          onMouseLeave={() => setOpenDropdown(null)}
+          onMouseEnter={() => {
+            if (closeTimeoutRef.current) {
+              clearTimeout(closeTimeoutRef.current);
+              closeTimeoutRef.current = null;
+            }
+            setOpenDropdown(item.label);
+          }}
+          onMouseLeave={() => {
+            closeTimeoutRef.current = setTimeout(() => {
+              setOpenDropdown(null);
+              closeTimeoutRef.current = null;
+            }, 300);
+          }}
         >
-          <button
+          <Link
+            href={item.href}
             className={`flex items-center gap-1.5 text-sm xl:text-[15px] font-medium transition-colors hover:text-accent ${
               isActive || openDropdown === item.label ? "text-accent" : "text-foreground-muted"
             }`}
@@ -132,7 +152,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                 openDropdown === item.label ? "rotate-180" : ""
               }`}
             />
-          </button>
+          </Link>
 
           <AnimatePresence>
             {openDropdown === item.label && (
@@ -149,18 +169,6 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                   paddingTop: "8px",
                 }}
               >
-                {/* Invisible hover bridge to prevent flickering */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "-8px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    width: "192px",
-                    height: "24px",
-                  }}
-                />
-
                 {/* Pointer arrow */}
                 <div className="mega-menu-pointer" />
 
@@ -170,7 +178,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
-                  className="mega-menu-wrapper"
+                  className="mega-menu-wrapper  backdrop-blur"
                   style={{ marginTop: "12px" }}
                 >
                   {/* Dropdown content */}
@@ -285,17 +293,28 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: index * 0.05 + 0.1 }}
         >
-          <button
-            onClick={() => setMobileExpandedItem(isExpanded ? null : item.label)}
-            className={`flex items-center justify-between w-full py-4 text-lg font-medium transition-colors border-b border-border-accent-light/30 ${
+          <div
+            className={`flex items-center justify-between w-full py-4 text-lg font-medium border-b border-border-accent-light/30 ${
               isActive ? "text-accent" : "text-foreground-muted"
             }`}
           >
-            {item.label}
-            <ChevronDown
-              className={`w-5 h-5 transition-transform ${isExpanded ? "rotate-180" : ""}`}
-            />
-          </button>
+            <Link
+              href={item.href}
+              className="flex-1 py-1 transition-colors hover:text-accent"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              {item.label}
+            </Link>
+            <button
+              onClick={() => setMobileExpandedItem(isExpanded ? null : item.label)}
+              className="p-2 -mr-2 transition-colors hover:text-accent"
+              aria-label={`Expand ${item.label} submenu`}
+            >
+              <ChevronDown
+                className={`w-5 h-5 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+              />
+            </button>
+          </div>
 
           <AnimatePresence>
             {isExpanded && (

@@ -33,11 +33,6 @@ export const navigationConfig: NavItem[] = [
         description: "Industry experts providing guidance and expertise.",
       },
       {
-        label: "Former Boards",
-        href: "/about/formers",
-        description: "Honoring past leaders who shaped our organization.",
-      },
-      {
         label: "VAPA Links",
         href: "",
         description: "Useful resources and partner connections.",

@@ -10,9 +10,9 @@ import {
 } from "@/components/utils/animations";
 
 const missionPoints = [
-  "Unite Venezuelan talent with American expertise",
-  "Facilitate key partnerships across the energy industry",
-  "Contribute to the knowledge transfer and growth in the sector",
+  "VAPA's mission is to connect Venezuelan talent with global opportinities and modern technologies",
+  "Empower future professionals, promote innovation and support sustainable growth",
+  "Contribute to rebuilding Venezuelan's energy sector",
 ];
 
 export function MissionSection() {

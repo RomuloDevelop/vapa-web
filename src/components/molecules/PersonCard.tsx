@@ -2,15 +2,17 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
-import { fadeInUp, smallViewport, staggerDelay } from "../utils/animations";
+import { fadeInUp, smallViewport, staggerDelay, cardHover } from "../utils/animations";
 
 interface PersonCardProps {
   image: string;
   name: string;
   title: string;
+  linkedin?: string;
   size?: "small" | "medium" | "large";
   index?: number;
   animate?: boolean;
+  priority?: boolean;
 }
 
 const sizeConfig = {
@@ -44,29 +46,34 @@ export function PersonCard({
   image,
   name,
   title,
+  linkedin,
   size = "medium",
   index = 0,
   animate = true,
+  priority = false,
 }: PersonCardProps) {
   const config = sizeConfig[size];
-  const Component = animate ? motion.div : "div";
+
   const motionProps = animate
     ? {
         variants: fadeInUp,
-        initial: "hidden",
-        whileInView: "visible",
+        initial: "hidden" as const,
+        whileInView: "visible" as const,
         viewport: smallViewport,
         transition: staggerDelay(index),
       }
     : {};
 
-  return (
-    <Component
+  const hoverProps = linkedin ? cardHover : {};
+
+  const card = (
+    <motion.div
       {...motionProps}
-      className={`flex flex-col overflow-hidden rounded-xl bg-surface ${config.width}`}
+      {...hoverProps}
+      className={`flex flex-col overflow-hidden rounded-xl bg-surface ${config.width} ${linkedin ? "cursor-pointer" : ""}`}
     >
       <div className={`relative ${config.imageHeight} w-full`}>
-        <Image src={image} alt={name} fill className="object-cover" />
+        <Image src={image} alt={name} fill className="object-cover" priority={priority} />
       </div>
       <div
         className={`flex flex-col items-center ${config.gap} ${config.padding}`}
@@ -82,6 +89,16 @@ export function PersonCard({
           {title}
         </span>
       </div>
-    </Component>
+    </motion.div>
   );
+
+  if (linkedin) {
+    return (
+      <a href={linkedin} target="_blank" rel="noopener noreferrer">
+        {card}
+      </a>
+    );
+  }
+
+  return card;
 }

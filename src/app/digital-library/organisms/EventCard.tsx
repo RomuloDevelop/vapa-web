@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { Calendar, Clock, Play } from "lucide-react";
-import { fadeInUp, staggerDelay, smallViewport } from "@/components/utils/animations";
+import { fadeInUp, staggerDelay, smallViewport, cardHover } from "@/components/utils/animations";
 import { formatDate, getVideoUrl } from "../utils";
 import type { Event } from "@/lib/database.types";
 
@@ -45,8 +45,8 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
       initial={animate ? "hidden" : undefined}
       whileInView={animate ? "visible" : undefined}
       viewport={animate ? smallViewport : undefined}
-      transition={animate ? staggerDelay(index) : { duration: 0.15 }}
-      whileHover={{ y: -4, boxShadow: "0 8px 16px rgba(0, 0, 0, 0.25)" }}
+      transition={animate ? staggerDelay(index) : cardHover.transition}
+      whileHover={cardHover.whileHover}
       onTouchStart={handleTouch}
       className="flex flex-col sm:flex-row bg-surface rounded-xl overflow-hidden relative"
     >

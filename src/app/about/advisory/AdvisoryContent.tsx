@@ -6,72 +6,62 @@ const advisors = [
   {
     name: "Carlos Sánchez",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop",
+    image: "/members/Carlos Sanchez.jpg",
+    linkedin: "https://www.linkedin.com/in/carlos-e-sanchez-323a9115/",
   },
   {
-    name: "María González",
+    name: "Francisco Gamarra",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
+    image: "/members/Francisco.jpeg",
+    linkedin: "https://www.linkedin.com/in/francisco-gamarra-652611113",
   },
   {
-    name: "Roberto Pérez",
+    name: "Julio Monsalve",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
+    image: "/members/Julio Monsalve.png",
+    linkedin: "https://www.linkedin.com/in/julio-monsalve-m/",
   },
   {
-    name: "Ana Rodríguez",
+    name: "Alberto Rial",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop",
+    image: "/members/Alberto Rial.png",
+    linkedin: "https://www.linkedin.com/in/alberto-rial-bab79a11/",
   },
   {
-    name: "Luis Hernández",
+    name: "Freddy Goerke",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+    image: "/members/Freddy Goerke.png",
+    linkedin: "https://www.linkedin.com/in/freddy-goerke-garcia-0599b960/",
   },
   {
-    name: "Carmen López",
+    name: "Ender Barillas",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=400&h=400&fit=crop",
+    image: "/members/Ender Barillas.png",
+    linkedin: "https://www.linkedin.com/in/ebarillas",
   },
   {
-    name: "Fernando Díaz",
+    name: "Alexander González",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop",
+    image: "/members/Alexander.jpg",
+    linkedin: "https://www.linkedin.com/in/alexander-gonzalez-9b05a87",
   },
   {
-    name: "Patricia Morales",
+    name: "Carlos Moreno",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=400&fit=crop",
+    image: "/members/Carlos Moreno.jpg",
+    linkedin: "https://www.linkedin.com/in/cmoreno88",
   },
   {
-    name: "Jorge Torres",
+    name: "Lino Carrillo",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
+    image: "/members/Lino Carrillo.png",
+    linkedin: "https://www.linkedin.com/in/linocarrillo",
   },
   {
-    name: "Sofía Ramírez",
+    name: "Franklin Sulbaran",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop",
-  },
-  {
-    name: "Miguel Castro",
-    title: "Advisor",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop",
-  },
-  {
-    name: "Laura Mendoza",
-    title: "Advisor",
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
-  },
-  {
-    name: "Andrés Vargas",
-    title: "Advisor",
-    image: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop",
-  },
-  {
-    name: "Isabella Ruiz",
-    title: "Advisor",
-    image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop",
+    image: "/members/Franklin Sulbaran.png",
+    linkedin: "https://www.linkedin.com/in/franklin-sulbaran-68a28830/",
   },
 ];
 
@@ -86,36 +76,26 @@ export function AdvisoryContent() {
             name={person.name}
             title={person.title}
             image={person.image}
+            linkedin={person.linkedin}
             size="small"
             index={index}
+            priority
           />
         ))}
       </div>
 
-      {/* Row 2 - Next 4 advisors */}
+      {/* Row 2 - Last 5 advisors */}
       <div className="flex flex-wrap justify-center gap-4 md:gap-5 lg:gap-6">
-        {advisors.slice(5, 9).map((person, index) => (
+        {advisors.slice(5).map((person, index) => (
           <PersonCard
             key={person.name}
             name={person.name}
             title={person.title}
             image={person.image}
+            linkedin={person.linkedin}
             size="small"
             index={index}
-          />
-        ))}
-      </div>
-
-      {/* Row 3 - Last 5 advisors */}
-      <div className="flex flex-wrap justify-center gap-4 md:gap-5 lg:gap-6">
-        {advisors.slice(9).map((person, index) => (
-          <PersonCard
-            key={person.name}
-            name={person.name}
-            title={person.title}
-            image={person.image}
-            size="small"
-            index={index}
+            priority
           />
         ))}
       </div>
