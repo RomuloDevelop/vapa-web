@@ -13,7 +13,7 @@ import {
   staggerDelay,
 } from "../utils/animations";
 
-const stats = [
+const defaultStats = [
   { value: "2019", label: "Founded" },
   { value: "5+", label: "Years of Impact" },
   { value: "TX", label: "Headquarters" },
@@ -40,7 +40,11 @@ const pillars = [
   },
 ];
 
-export function AboutSection() {
+interface AboutSectionProps {
+  stats?: { value: string; label: string }[];
+}
+
+export function AboutSection({ stats = defaultStats }: AboutSectionProps) {
   return (
     <section className="flex flex-col gap-10 md:gap-16 lg:gap-20 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface-section">
       {/* Header */}

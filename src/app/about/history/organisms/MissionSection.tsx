@@ -15,7 +15,11 @@ const missionPoints = [
   "Contribute to rebuilding Venezuelan's energy sector",
 ];
 
-export function MissionSection() {
+interface MissionSectionProps {
+  viewport?: { once: boolean; amount: number };
+}
+
+export function MissionSection({ viewport = defaultViewport }: MissionSectionProps) {
   return (
     <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
       {/* Mission Column */}
@@ -23,7 +27,7 @@ export function MissionSection() {
         variants={fadeInLeft}
         initial="hidden"
         whileInView="visible"
-        viewport={defaultViewport}
+        viewport={viewport}
         transition={slowTransition}
         className="flex flex-col gap-6 md:gap-8 flex-1"
       >
@@ -52,7 +56,7 @@ export function MissionSection() {
         variants={fadeInRight}
         initial="hidden"
         whileInView="visible"
-        viewport={defaultViewport}
+        viewport={viewport}
         transition={{ ...slowTransition, delay: 0.1 }}
         className="flex flex-col gap-6 md:gap-8 flex-1"
       >

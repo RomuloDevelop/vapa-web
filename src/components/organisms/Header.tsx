@@ -119,7 +119,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
 
     // Item with children (mega menu dropdown)
     if (hasChildren) {
-      const columns = splitIntoColumns(item.children!, 3);
+      const columns = splitIntoColumns(item.children!, 2);
 
       return (
         <div
@@ -469,7 +469,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             href={MEMBERSHIP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className={`hidden md:block px-5 lg:px-7 py-3 lg:py-3.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity bg-accent text-surface ${
+            className={`hidden lg:block px-5 lg:px-7 py-3 lg:py-3.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity bg-accent text-surface ${
               showJoinButton ? "" : "invisible"
             }`}
           >

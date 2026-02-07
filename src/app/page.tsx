@@ -3,23 +3,29 @@ import {
   HeroSection,
   AboutSection,
   EventsSection,
+  VisionSections,
   CTASection,
   Footer,
 } from "@/components";
+import { MissionSection } from "@/app/about/history/organisms";
 import { getRecentEvents } from "@/lib/services/events";
 
-// Revalidate once per day (86400 seconds = 24 hours)
-export const revalidate = 86400;
+const homeStats = [
+  { value: "2019", label: "Founded" },
+  { value: "TX", label: "Headquarters" },
+];
 
 export default async function Home() {
-  // Fetch the 3 most recent events from Supabase
   const recentEvents = await getRecentEvents(3);
-
   return (
     <main className="flex flex-col min-h-screen bg-surface">
       <Header showJoinButton={false} />
       <HeroSection />
-      <AboutSection />
+      <AboutSection stats={homeStats} />
+      <section className="flex flex-col gap-8 md:gap-12 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface-elevated">
+        <MissionSection viewport={{ once: true, amount: 0.8 }} />
+      </section>
+      <VisionSections />
       <EventsSection events={recentEvents} />
       <CTASection />
       <Footer />

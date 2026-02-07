@@ -5,4 +5,6 @@ export { PageHero } from "./PageHero";
 export { AboutSection } from "./AboutSection";
 export { EventsSection } from "./EventsSection";
 export { CTASection } from "./CTASection";
+export { VisionSections } from "./VisionSections";
 export { ParallaxImage } from "./ParallaxImage";
+export { AboutIntroSection } from "./AboutIntroSection";

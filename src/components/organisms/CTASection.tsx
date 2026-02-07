@@ -60,18 +60,27 @@ export function CTASection() {
           >
             Become a VAPA Member Today
           </motion.h2>
-          <motion.p
+          <motion.div
             variants={fadeInUp}
             initial="hidden"
             whileInView="visible"
             viewport={defaultViewport}
             transition={{ ...slowTransition, delay: 0.2 }}
-            className="text-sm md:text-base lg:text-lg text-foreground-muted leading-[1.6] text-center max-w-full md:max-w-[600px] lg:max-w-[700px]"
+            className="flex flex-col gap-4 max-w-full md:max-w-[700px] lg:max-w-[800px]"
           >
-            Join a network of Venezuelan energy professionals dedicated to
-            excellence, innovation, and the sustainable development of the
-            hydrocarbon industry.
-          </motion.p>
+            <p className="text-sm md:text-base lg:text-lg text-foreground-muted leading-[1.6] text-center">
+              <span className="text-accent font-bold">For Professionals and Students:</span>{" "}
+              Join our network to connect with mentors, peers, and career
+              opportunities. Your knowledge and experience help shape the future
+              of Venezuela&apos;s energy sector.
+            </p>
+            <p className="text-sm md:text-base lg:text-lg text-foreground-muted leading-[1.6] text-center">
+              <span className="text-accent font-bold">For allies like companies, universities, and research institutions:</span>{" "}
+              Access Venezuela&apos;s exceptional talent and contribute to
+              rebuilding an entire energy industry. Your support creates real
+              impact and long-term opportunity.
+            </p>
+          </motion.div>
           <motion.div
             variants={fadeInUp}
             initial="hidden"

@@ -10,7 +10,7 @@ const MEMBERSHIP_URL =
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[600px] md:min-h-[650px] lg:h-[700px] w-full overflow-hidden">
+    <section className="relative h-screen w-full overflow-hidden">
       {/* Background Image with Parallax */}
       <ParallaxImage
         src="https://images.unsplash.com/photo-1726111265336-6bf825e549ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk3MzU5OTN8&ixlib=rb-4.1.0&q=80&w=1080"
@@ -18,13 +18,14 @@ export function HeroSection() {
         priority
         speed={0.2}
         flip
+        objectPosition="right 100%"
       />
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-hero-overlay" />
 
       {/* Content */}
-      <div className="absolute top-16 md:top-24 lg:top-[120px] left-5 md:left-10 lg:left-20 xl:left-[5%] 2xl:left-[8%] right-5 md:right-10 lg:right-auto flex flex-col gap-5 md:gap-6 lg:gap-8 max-w-full sm:max-w-[600px] lg:max-w-[700px] xl:max-w-[750px] 2xl:max-w-[800px]">
+      <div className="absolute inset-0 flex flex-col justify-center left-5 md:left-10 lg:left-20 xl:left-[5%] 2xl:left-[8%] right-5 md:right-10 lg:right-auto gap-5 md:gap-6 lg:gap-8 max-w-full sm:max-w-[600px] lg:max-w-[700px] xl:max-w-[750px] 2xl:max-w-[800px]">
         {/* Badge */}
         <motion.div
           variants={fadeInLeft}
@@ -63,9 +64,9 @@ export function HeroSection() {
           transition={{ ...slowTransition, delay: 0.2 }}
           className="text-sm sm:text-base md:text-lg xl:text-xl text-white/85 leading-[1.6] max-w-full md:max-w-[500px] lg:max-w-[580px] xl:max-w-[620px] 2xl:max-w-[680px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]"
         >
-          A nonprofit professional organization uniting experts in the
-          Hydrocarbon industry and related energies to promote technical
-          advancement, education, and sustainable development.
+          A non-profit professional organization founded in 2019.
+          Restoring Venezuela&apos;s Energy Leadership. Empowering
+          Venezuela&apos;s Energy Future.
         </motion.p>
 
         {/* Buttons */}

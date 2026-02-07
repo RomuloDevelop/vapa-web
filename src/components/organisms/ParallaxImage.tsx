@@ -10,6 +10,7 @@ interface ParallaxImageProps {
   priority?: boolean;
   speed?: number;
   flip?: boolean;
+  objectPosition?: string;
 }
 
 export function ParallaxImage({
@@ -18,6 +19,7 @@ export function ParallaxImage({
   priority = false,
   speed = 0.3,
   flip = false,
+  objectPosition,
 }: ParallaxImageProps) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -36,6 +38,7 @@ export function ParallaxImage({
           alt={alt}
           fill
           className={`object-cover ${flip ? "-scale-x-100" : ""}`}
+          style={objectPosition ? { objectPosition } : undefined}
           priority={priority}
         />
       </motion.div>

@@ -34,12 +34,12 @@ export const navigationConfig: NavItem[] = [
       },
       {
         label: "VAPA Links",
-        href: "",
+        href: "/about/links",
         description: "Useful resources and partner connections.",
       },
       {
         label: "VAPA ResPro",
-        href: "",
+        href: "/about/respro",
         description: "Our professional responsibility and ethics program.",
       },
     ],
