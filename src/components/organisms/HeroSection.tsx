@@ -10,7 +10,7 @@ const MEMBERSHIP_URL =
 
 export function HeroSection() {
   return (
-    <section className="relative h-screen w-full overflow-hidden">
+    <section className="relative h-[600px] md:h-[700px] lg:h-screen w-full overflow-hidden">
       {/* Background Image with Parallax */}
       <ParallaxImage
         src="https://images.unsplash.com/photo-1726111265336-6bf825e549ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk3MzU5OTN8&ixlib=rb-4.1.0&q=80&w=1080"
