@@ -140,19 +140,34 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             }, 300);
           }}
         >
-          <Link
-            href={item.href}
-            className={`flex items-center gap-1.5 text-sm xl:text-[15px] font-medium transition-colors hover:text-accent ${
-              isActive || openDropdown === item.label ? "text-accent" : "text-foreground-muted"
-            }`}
-          >
-            {item.label}
-            <ChevronDown
-              className={`w-4 h-4 transition-transform duration-200 ${
-                openDropdown === item.label ? "rotate-180" : ""
+          {item.href ? (
+            <Link
+              href={item.href}
+              className={`flex items-center gap-1.5 text-sm xl:text-[15px] font-medium transition-colors hover:text-accent ${
+                isActive || openDropdown === item.label ? "text-accent" : "text-foreground-muted"
               }`}
-            />
-          </Link>
+            >
+              {item.label}
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  openDropdown === item.label ? "rotate-180" : ""
+                }`}
+              />
+            </Link>
+          ) : (
+            <button
+              className={`flex items-center gap-1.5 text-sm xl:text-[15px] font-medium transition-colors hover:text-accent ${
+                isActive || openDropdown === item.label ? "text-accent" : "text-foreground-muted"
+              }`}
+            >
+              {item.label}
+              <ChevronDown
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  openDropdown === item.label ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+          )}
 
           <AnimatePresence>
             {openDropdown === item.label && (
@@ -298,13 +313,22 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
               isActive ? "text-accent" : "text-foreground-muted"
             }`}
           >
-            <Link
-              href={item.href}
-              className="flex-1 py-1 transition-colors hover:text-accent"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {item.label}
-            </Link>
+            {item.href ? (
+              <Link
+                href={item.href}
+                className="flex-1 py-1 transition-colors hover:text-accent"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <span
+                className="flex-1 py-1"
+                onClick={() => setMobileExpandedItem(isExpanded ? null : item.label)}
+              >
+                {item.label}
+              </span>
+            )}
             <button
               onClick={() => setMobileExpandedItem(isExpanded ? null : item.label)}
               className="p-2 -mr-2 transition-colors hover:text-accent"

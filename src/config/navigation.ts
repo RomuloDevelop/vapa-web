@@ -20,7 +20,7 @@ export const navigationConfig: NavItem[] = [
   },
   {
     label: "About",
-    href: "/about/history",
+    href: "",
     children: [
       {
         label: "Board of Directors",
