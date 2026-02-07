@@ -1,8 +1,14 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
+import {
+  fadeInUp,
+  smallViewport,
+  slowTransition,
+  staggerDelay,
+} from "../utils/animations";
 
 // === SCROLL TIMING — tweak these to tune the feel ===
 const SCROLL_VH_PER_ITEM = 80; // vh of scroll height per item reveal
@@ -93,8 +99,6 @@ function NumberBadge({ number }: { number: number }) {
         <span className="text-sm md:text-lg font-bold text-surface">
           {number}
         </span>
-        
-
       </div>
     );
   }
@@ -108,7 +112,9 @@ function NumberBadge({ number }: { number: number }) {
   );
 }
 
-
+/* ──────────────────────────────────────────────
+   Desktop: scroll-driven sticky animation (lg+)
+   ────────────────────────────────────────────── */
 
 function VisionRow({
   item,
@@ -123,7 +129,6 @@ function VisionRow({
 }) {
   const timeline = getAccumulateTimeline(index, total);
 
-  // Image: fade in and stay
   const imageOpacity = useTransform(
     scrollYProgress,
     [timeline.imgFadeInStart, timeline.imgFadeInEnd],
@@ -136,7 +141,6 @@ function VisionRow({
     [SLIDE_PX, 0]
   );
 
-  // Text: fade in staggered and stay
   const textOpacity = useTransform(
     scrollYProgress,
     [timeline.txtFadeInStart, timeline.txtFadeInEnd],
@@ -150,11 +154,10 @@ function VisionRow({
   );
 
   return (
-    <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 lg:gap-8">
-      {/* Image — always on the left */}
+    <div className="flex flex-row items-center gap-6 lg:gap-8">
       <motion.div
         style={{ opacity: imageOpacity, y: imageY }}
-        className="relative w-full md:w-[220px] lg:w-[280px] h-[140px] md:h-[120px] lg:h-[140px] rounded-lg overflow-hidden flex-shrink-0"
+        className="relative w-[220px] lg:w-[280px] h-[120px] lg:h-[140px] rounded-lg overflow-hidden flex-shrink-0"
       >
         <Image
           src={item.imageSrc}
@@ -164,18 +167,17 @@ function VisionRow({
         />
       </motion.div>
 
-      {/* Text Content */}
       <motion.div
         style={{ opacity: textOpacity, y: textY }}
-        className="flex flex-col gap-2 md:gap-3 flex-1"
+        className="flex flex-col gap-3 flex-1"
       >
         <div className="flex items-center gap-3">
           <NumberBadge number={item.number} />
-          <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white leading-tight">
+          <h3 className="text-xl lg:text-2xl font-bold text-white leading-tight">
             {item.title}
           </h3>
         </div>
-        <p className="text-xs md:text-sm lg:text-base text-foreground-muted leading-relaxed">
+        <p className="text-sm lg:text-base text-foreground-muted leading-relaxed">
           {item.description}
         </p>
       </motion.div>
@@ -183,7 +185,57 @@ function VisionRow({
   );
 }
 
-export function VisionSections() {
+/* ──────────────────────────────────────────────
+   Mobile: simple stacked list with whileInView
+   ────────────────────────────────────────────── */
+
+function MobileVisionRow({
+  item,
+  index,
+}: {
+  item: VisionItem;
+  index: number;
+}) {
+  return (
+    <motion.div
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={smallViewport}
+      transition={staggerDelay(index)}
+      className="flex flex-row items-start gap-4"
+    >
+      {/* Thumbnail */}
+      <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden flex-shrink-0">
+        <Image
+          src={item.imageSrc}
+          alt={item.imageAlt}
+          fill
+          className="object-cover"
+        />
+      </div>
+
+      {/* Text */}
+      <div className="flex flex-col gap-1.5 flex-1">
+        <div className="flex items-center gap-2">
+          <NumberBadge number={item.number} />
+          <h3 className="text-base md:text-lg font-bold text-white leading-tight">
+            {item.title}
+          </h3>
+        </div>
+        <p className="text-xs md:text-sm text-foreground-muted leading-relaxed">
+          {item.description}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ──────────────────────────────────────────────
+   Desktop wrapper (isolates useScroll hooks)
+   ────────────────────────────────────────────── */
+
+function DesktopVisionSections() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -193,6 +245,7 @@ export function VisionSections() {
   return (
     <div
       ref={containerRef}
+      className="hidden lg:block"
       style={{ height: `${(visionItems.length + 1) * SCROLL_VH_PER_ITEM}vh` }}
     >
       <div
@@ -201,25 +254,74 @@ export function VisionSections() {
           background: "linear-gradient(180deg, #0A1628 0%, #1A3352 100%)",
         }}
       >
-        <div className="w-full px-5 md:px-10 lg:px-20 xl:px-[5%] 2xl:px-[8%]">
-          <div className="flex flex-col gap-6 md:gap-8 max-w-5xl mx-auto">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white text-center">
+        <div className="w-full px-20 xl:px-[5%] 2xl:px-[8%]">
+          <div className="flex flex-col gap-8 max-w-5xl mx-auto">
+            <h2 className="text-4xl font-bold text-white text-center">
               Our Objectives
             </h2>
-            <div className="flex flex-col gap-4 md:gap-5 lg:gap-6">
-            {visionItems.map((item, index) => (
-              <VisionRow
-                key={item.number}
-                item={item}
-                index={index}
-                total={visionItems.length}
-                scrollYProgress={scrollYProgress}
-              />
-            ))}
+            <div className="flex flex-col gap-6">
+              {visionItems.map((item, index) => (
+                <VisionRow
+                  key={item.number}
+                  item={item}
+                  index={index}
+                  total={visionItems.length}
+                  scrollYProgress={scrollYProgress}
+                />
+              ))}
             </div>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+/* ──────────────────────────────────────────────
+   Exported component
+   ────────────────────────────────────────────── */
+
+const LG_BREAKPOINT = 1024;
+
+export function VisionSections() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia(`(min-width: ${LG_BREAKPOINT}px)`);
+    setIsDesktop(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+
+  if (isDesktop) {
+    return <DesktopVisionSections />;
+  }
+
+  return (
+    <section
+      className="px-5 md:px-10 py-16 md:py-20"
+      style={{
+        background: "linear-gradient(180deg, #0A1628 0%, #1A3352 100%)",
+      }}
+    >
+      <div className="flex flex-col gap-8 max-w-2xl mx-auto">
+        <motion.h2
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={smallViewport}
+          transition={slowTransition}
+          className="text-2xl md:text-3xl font-bold text-white text-center"
+        >
+          Our Objectives
+        </motion.h2>
+        <div className="flex flex-col gap-6">
+          {visionItems.map((item, index) => (
+            <MobileVisionRow key={item.number} item={item} index={index} />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
