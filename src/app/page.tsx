@@ -8,7 +8,7 @@ import {
   Footer,
 } from "@/components";
 import { MissionSection } from "@/app/about/history/organisms";
-import { getRecentEvents } from "@/lib/services/events";
+import { getRecentEvents, getRecentSpecialEvents } from "@/lib/services/events";
 
 const homeStats = [
   { value: "2019", label: "Founded" },
@@ -16,7 +16,10 @@ const homeStats = [
 ];
 
 export default async function Home() {
-  const recentEvents = await getRecentEvents(3);
+  const [recentEvents, specialEvents] = await Promise.all([
+    getRecentEvents(3),
+    getRecentSpecialEvents(3),
+  ]);
   return (
     <main className="flex flex-col min-h-screen bg-surface">
       <Header showJoinButton={false} />
@@ -26,7 +29,7 @@ export default async function Home() {
         <MissionSection viewport={{ once: true, amount: 0.8 }} />
       </section>
       <VisionSections />
-      <EventsSection events={recentEvents} />
+      <EventsSection events={recentEvents} specialEvents={specialEvents} />
       <CTASection />
       <Footer />
     </main>

@@ -4,6 +4,7 @@ import type { Event } from "../database.types";
 export interface EventFilters {
   year?: number;
   type?: string;
+  isSpecial?: boolean;
   limit?: number;
   offset?: number;
 }
@@ -24,6 +25,10 @@ export async function getEvents(filters?: EventFilters): Promise<Event[]> {
 
   if (filters?.type) {
     query = query.eq("type", filters.type);
+  }
+
+  if (filters?.isSpecial !== undefined) {
+    query = query.eq("is_special", filters.isSpecial);
   }
 
   if (filters?.limit) {
@@ -151,18 +156,39 @@ export async function getUpcomingEvents(limit = 3): Promise<Event[]> {
 }
 
 /**
- * Get recent past events
+ * Get recent past events (non-special only)
  */
 export async function getRecentEvents(limit = 3): Promise<Event[]> {
   const supabase = createPublicServerClient();
   const { data, error } = await supabase
     .from("events")
     .select("*")
+    .eq("is_special", false)
     .order("date", { ascending: false })
     .limit(limit);
 
   if (error) {
     console.error("Error fetching recent events:", error);
+    throw error;
+  }
+
+  return data ?? [];
+}
+
+/**
+ * Get recent special events
+ */
+export async function getRecentSpecialEvents(limit = 3): Promise<Event[]> {
+  const supabase = createPublicServerClient();
+  const { data, error } = await supabase
+    .from("events")
+    .select("*")
+    .eq("is_special", true)
+    .order("date", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Error fetching special events:", error);
     throw error;
   }
 

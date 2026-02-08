@@ -66,6 +66,18 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 promptly share our Chase Bank account details.
               </p>
 
+              {/* Certificate note */}
+              <p className="text-xs md:text-sm text-foreground-subtle leading-relaxed">
+                For donation certificates, please email your legal name and amount
+                to{" "}
+                <a
+                  href="mailto:donations@vapa-us.org"
+                  className="text-accent hover:underline"
+                >
+                  donations@vapa-us.org
+                </a>
+              </p>
+
               {/* Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <a

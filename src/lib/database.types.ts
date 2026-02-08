@@ -11,6 +11,7 @@ export interface Database {
           time: string;
           presenters: string[];
           links: string[];
+          is_special: boolean;
           created_at: string;
         };
         Insert: {
@@ -22,6 +23,7 @@ export interface Database {
           time: string;
           presenters: string[];
           links: string[];
+          is_special?: boolean;
           created_at?: string;
         };
         Update: {
@@ -33,6 +35,7 @@ export interface Database {
           time?: string;
           presenters?: string[];
           links?: string[];
+          is_special?: boolean;
           created_at?: string;
         };
       };

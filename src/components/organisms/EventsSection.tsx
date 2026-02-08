@@ -22,6 +22,7 @@ import type { Event } from "@/lib/database.types";
 
 interface EventsSectionProps {
   events: Event[];
+  specialEvents?: Event[];
 }
 
 function formatDate(dateString: string): string {
@@ -171,52 +172,9 @@ function EventCardInternal({
   );
 }
 
-export function EventsSection({ events }: EventsSectionProps) {
+function EventsGrid({ events }: { events: Event[] }) {
   return (
-    <section className="flex flex-col gap-8 md:gap-12 lg:gap-[60px] px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 w-full">
-        <div className="flex flex-col gap-2 md:gap-4">
-          <motion.span
-            variants={fadeInLeft}
-            initial="hidden"
-            whileInView="visible"
-            viewport={defaultViewport}
-            transition={slowTransition}
-            className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]"
-          >
-            UPCOMING EVENTS
-          </motion.span>
-          <motion.h2
-            variants={fadeInLeft}
-            initial="hidden"
-            whileInView="visible"
-            viewport={defaultViewport}
-            transition={{ ...slowTransition, delay: 0.1 }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white"
-          >
-            Programs & Webinars
-          </motion.h2>
-        </div>
-        <motion.div
-          variants={fadeInRight}
-          initial="hidden"
-          whileInView="visible"
-          viewport={defaultViewport}
-          transition={slowTransition}
-        >
-          <Link
-            href="/digital-library"
-            className="flex items-center justify-center sm:justify-start gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded border border-border-accent hover:bg-white/5 transition-colors w-full sm:w-auto"
-          >
-            <span className="text-sm font-medium text-accent">
-              View All Events
-            </span>
-            <ArrowRight className="w-4 h-4 text-accent" />
-          </Link>
-        </motion.div>
-      </div>
-
+    <>
       {/* Mobile Swiper Carousel */}
       <motion.div
         variants={fadeInUp}
@@ -266,6 +224,89 @@ export function EventsSection({ events }: EventsSectionProps) {
           </motion.div>
         ))}
       </div>
+    </>
+  );
+}
+
+export function EventsSection({ events, specialEvents = [] }: EventsSectionProps) {
+  return (
+    <section className="flex flex-col gap-8 md:gap-12 lg:gap-[60px] px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 w-full">
+        <div className="flex flex-col gap-2 md:gap-4">
+          <motion.span
+            variants={fadeInLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={defaultViewport}
+            transition={slowTransition}
+            className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]"
+          >
+            UPCOMING EVENTS
+          </motion.span>
+          <motion.h2
+            variants={fadeInLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={defaultViewport}
+            transition={{ ...slowTransition, delay: 0.1 }}
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white"
+          >
+            Programs & Webinars
+          </motion.h2>
+        </div>
+        <motion.div
+          variants={fadeInRight}
+          initial="hidden"
+          whileInView="visible"
+          viewport={defaultViewport}
+          transition={slowTransition}
+        >
+          <Link
+            href="/digital-library"
+            className="flex items-center justify-center sm:justify-start gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded border border-border-accent hover:bg-white/5 transition-colors w-full sm:w-auto"
+          >
+            <span className="text-sm font-medium text-accent">
+              View All Events
+            </span>
+            <ArrowRight className="w-4 h-4 text-accent" />
+          </Link>
+        </motion.div>
+      </div>
+
+      {/* Recent Events */}
+      {events.length > 0 && (
+        <div className="flex flex-col gap-6 md:gap-8">
+          <motion.h3
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={smallViewport}
+            transition={slowTransition}
+            className="text-lg md:text-xl font-semibold text-white"
+          >
+            Recent Events
+          </motion.h3>
+          <EventsGrid events={events} />
+        </div>
+      )}
+
+      {/* Special Events */}
+      {specialEvents.length > 0 && (
+        <div className="flex flex-col gap-6 md:gap-8">
+          <motion.h3
+            variants={fadeInUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={smallViewport}
+            transition={slowTransition}
+            className="text-lg md:text-xl font-semibold text-white"
+          >
+            Special Events
+          </motion.h3>
+          <EventsGrid events={specialEvents} />
+        </div>
+      )}
     </section>
   );
 }
