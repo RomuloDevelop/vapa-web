@@ -12,12 +12,17 @@ interface HeaderProps {
   showJoinButton?: boolean;
 }
 
+const SCROLL_THRESHOLD = 500; // px before hide/show kicks in
+
 export function Header({ variant = "solid", activeNav = "Home", showJoinButton = true }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpandedItem, setMobileExpandedItem] = useState<string | null>(null);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastScrollY = useRef(0);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -29,6 +34,33 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
     return () => {
       document.body.style.overflow = "";
     };
+  }, [isMenuOpen]);
+
+  // Hide on scroll down, show on scroll up
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      setHasScrolled(currentY > 10);
+
+      if (isMenuOpen) {
+        lastScrollY.current = currentY;
+        return;
+      }
+
+      if (currentY < SCROLL_THRESHOLD) {
+        setIsHeaderVisible(true);
+      } else if (currentY > (lastScrollY.current + 15)) {
+        setIsHeaderVisible(false);
+        setOpenDropdown(null);
+      } else if (currentY < (lastScrollY.current - 5)) {
+        setIsHeaderVisible(true);
+      }
+
+      lastScrollY.current = currentY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [isMenuOpen]);
 
   // Close dropdown when clicking outside
@@ -474,7 +506,13 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
     <>
       {/* Header */}
       <header
-        className={`${isGradient ? "absolute top-0 left-0 right-0 bg-gradient-header" : "relative bg-surface"} z-50`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${
+          isHeaderVisible ? "translate-y-0" : "-translate-y-full"
+        } ${
+          isGradient
+            ? hasScrolled ? "bg-surface/95 backdrop-blur-md" : "bg-gradient-header"
+            : hasScrolled ? "bg-surface/95 backdrop-blur-md" : "bg-surface"
+        }`}
       >
         <div className="flex items-center justify-between px-5 py-4 md:px-10 lg:px-20 md:py-6">
           {/* Logo */}
@@ -510,6 +548,9 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           </button>
         </div>
       </header>
+
+      {/* Spacer for fixed header on non-gradient pages */}
+      {!isGradient && <div className="h-[72px] md:h-[88px]" />}
 
       {/* Mobile Slide-out Menu */}
       <AnimatePresence>

@@ -19,7 +19,7 @@ const membershipPlans = [
     title: "Student",
     price: 5,
     description:
-      "Perfect for students in geology, geophysics, or petroleum-related fields",
+      "Perfect for students in the energy industry",
     features: [
       "Access to webinars",
       "Networking events",
@@ -34,7 +34,7 @@ const membershipPlans = [
     title: "Active",
     price: 60,
     description:
-      "For active professionals in the energy industry seeking full access",
+      "For active professionals in the energy industry",
     features: [
       "All webinars & seminars",
       "Full networking access",
@@ -52,9 +52,10 @@ const membershipPlans = [
     description:
       "For professionals between jobs or transitioning careers in energy",
     features: [
-      "Access to webinars",
-      "Networking events",
-      "Career support resources",
+      "All webinars & seminars",
+      "Full networking access",
+      "Event participation",
+      "Digital library access",
     ],
     buttonText: "Join In Transition",
     popular: false,
