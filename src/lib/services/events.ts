@@ -1,10 +1,11 @@
 import { createPublicServerClient } from "../supabase-server";
-import type { Event } from "../database.types";
+import type { Event, EventType } from "../database.types";
 
 export interface EventFilters {
   year?: number;
-  type?: string;
-  isSpecial?: boolean;
+  type?: EventType;
+  dateFrom?: string;
+  dateTo?: string;
   limit?: number;
   offset?: number;
 }
@@ -27,8 +28,12 @@ export async function getEvents(filters?: EventFilters): Promise<Event[]> {
     query = query.eq("type", filters.type);
   }
 
-  if (filters?.isSpecial !== undefined) {
-    query = query.eq("is_special", filters.isSpecial);
+  if (filters?.dateFrom) {
+    query = query.gte("date", filters.dateFrom);
+  }
+
+  if (filters?.dateTo) {
+    query = query.lte("date", filters.dateTo);
   }
 
   if (filters?.limit) {
@@ -123,6 +128,14 @@ export async function getEventsCount(filters?: EventFilters): Promise<number> {
     query = query.eq("type", filters.type);
   }
 
+  if (filters?.dateFrom) {
+    query = query.gte("date", filters.dateFrom);
+  }
+
+  if (filters?.dateTo) {
+    query = query.lte("date", filters.dateTo);
+  }
+
   const { count, error } = await query;
 
   if (error) {
@@ -156,14 +169,14 @@ export async function getUpcomingEvents(limit = 3): Promise<Event[]> {
 }
 
 /**
- * Get recent past events (non-special only)
+ * Get recent webinar events
  */
 export async function getRecentEvents(limit = 3): Promise<Event[]> {
   const supabase = createPublicServerClient();
   const { data, error } = await supabase
     .from("events")
     .select("*")
-    .eq("is_special", false)
+    .eq("type", "webinar")
     .order("date", { ascending: false })
     .limit(limit);
 
@@ -183,7 +196,7 @@ export async function getRecentSpecialEvents(limit = 3): Promise<Event[]> {
   const { data, error } = await supabase
     .from("events")
     .select("*")
-    .eq("is_special", true)
+    .eq("type", "special_event")
     .order("date", { ascending: false })
     .limit(limit);
 

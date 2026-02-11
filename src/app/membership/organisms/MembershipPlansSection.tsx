@@ -26,7 +26,6 @@ const membershipPlans = [
       "Mentorship program access",
     ],
     buttonText: "Join as Student",
-    popular: false,
   },
   {
     id: "active",
@@ -42,7 +41,6 @@ const membershipPlans = [
       "Digital library access",
     ],
     buttonText: "Join as Active Member",
-    popular: true,
   },
   {
     id: "transition",
@@ -58,7 +56,6 @@ const membershipPlans = [
       "Digital library access",
     ],
     buttonText: "Join In Transition",
-    popular: false,
   },
 ];
 
@@ -78,29 +75,11 @@ function MembershipCard({
       whileInView="visible"
       viewport={defaultViewport}
       transition={staggerDelay(index)}
-      className={`flex flex-col items-center gap-6 p-10 rounded-2xl bg-surface ${
-        plan.popular ? "border-2 border-accent" : ""
-      }`}
+      className="flex flex-col items-center gap-6 p-10 rounded-2xl bg-surface h-full"
       style={{ width: "100%", maxWidth: 380 }}
     >
-      {plan.popular && (
-        <span className="px-4 py-2 text-[11px] font-bold tracking-wider text-surface bg-accent rounded-full">
-          MOST POPULAR
-        </span>
-      )}
-
-      <div
-        className={`flex items-center justify-center w-16 h-16 rounded-full ${
-          plan.popular ? "bg-accent" : "bg-accent-20"
-        }`}
-      >
-        <Icon
-          className={`w-7 h-7 ${
-            plan.popular
-              ? "text-surface"
-              : "text-accent"
-          }`}
-        />
+      <div className="flex items-center justify-center w-16 h-16 rounded-full bg-accent-20">
+        <Icon className="w-7 h-7 text-accent" />
       </div>
 
       <h3 className="text-2xl font-bold text-white">{plan.title}</h3>
@@ -119,7 +98,7 @@ function MembershipCard({
         {plan.description}
       </p>
 
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col gap-4 w-full flex-grow">
         {plan.features.map((feature, i) => (
           <div key={i} className="flex items-center gap-3">
             <Check className="w-[18px] h-[18px] text-accent" />
@@ -134,11 +113,7 @@ function MembershipCard({
         href={MEMBERSHIP_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className={`w-full py-4 text-[15px] font-semibold text-center rounded-lg transition-colors ${
-          plan.popular
-            ? "bg-accent text-surface hover:opacity-90"
-            : "border border-border-accent-strong text-accent hover:bg-accent-10"
-        }`}
+        className="w-full py-4 text-[15px] font-semibold text-center rounded-lg transition-colors border border-border-accent-strong text-accent hover:bg-accent-10"
       >
         {plan.buttonText}
       </a>

@@ -8,3 +8,4 @@ export { ContactForm } from "./ContactForm";
 export { DonationModal } from "./DonationModal";
 export { MobileSelect, type SelectOption } from "./MobileSelect";
 export { SlideEmbed } from "./SlideEmbed";
+export { ImageSearchPopover } from "./ImageSearchPopover";

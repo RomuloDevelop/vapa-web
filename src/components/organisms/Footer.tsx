@@ -17,9 +17,9 @@ const footerLinks = {
   events: {
     title: "EVENTS",
     links: [
-      { label: "Weekly Webinars", href: "#" },
-      { label: "Special Events", href: "#" },
-      { label: "Past Events", href: "#" },
+      { label: "Weekly Webinars", href: "/events/webinars" },
+      { label: "Special Events", href: "/events/special" },
+      { label: "Digital Library", href: "/digital-library" },
       { label: "Mentoring Program", href: "#" },
     ],
   },
@@ -35,9 +35,9 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Linkedin, href: "#" },
-  { icon: Instagram, href: "#" },
-  { icon: Youtube, href: "#" },
+  { icon: Linkedin, href: "https://www.linkedin.com/company/40898534/" },
+  { icon: Instagram, href: "https://www.instagram.com/vapa.us/" },
+  { icon: Youtube, href: "https://www.youtube.com/channel/UCT5ejHEYwbGAadcQ7ttmAwA" },
 ];
 
 export function Footer() {

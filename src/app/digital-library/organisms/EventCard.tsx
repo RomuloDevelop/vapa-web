@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { Calendar, Clock, Play } from "lucide-react";
 import { fadeInUp, staggerDelay, smallViewport, cardHover } from "@/components/utils/animations";
 import { formatDate, getVideoUrl } from "../utils";
-import type { Event } from "@/lib/database.types";
+import { getEventTypeLabel, type Event } from "@/lib/database.types";
 
 interface Ripple {
   x: number;
@@ -71,7 +71,7 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
       <div className="flex flex-col gap-3 md:gap-4 p-5 md:p-6 lg:p-8 justify-center">
         {/* Badge */}
         <span className="px-3 py-1.5 text-[10px] md:text-[11px] font-semibold tracking-[1px] text-accent bg-accent-20 rounded-full w-fit">
-          {event.type.toUpperCase()}
+          {getEventTypeLabel(event.type).toUpperCase()}
         </span>
 
         {/* Date and Time Row */}

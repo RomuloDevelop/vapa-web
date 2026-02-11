@@ -46,7 +46,19 @@ export const navigationConfig: NavItem[] = [
   },
   {
     label: "Events",
-    href: "#",
+    href: "",
+    children: [
+      {
+        label: "Webinars",
+        href: "/events/webinars",
+        description: "Weekly webinars on energy, economics, and Venezuela.",
+      },
+      {
+        label: "Special Events",
+        href: "/events/special",
+        description: "Conferences, galas, and landmark occasions.",
+      },
+    ],
   },
   {
     label: "Membership",

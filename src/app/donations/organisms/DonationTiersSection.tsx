@@ -87,7 +87,7 @@ function TierCard({
     >
       {tier.popular && (
         <span className="px-3 py-1.5 text-[10px] font-bold tracking-wider text-surface bg-accent rounded-full">
-          POPULAR
+          MAKE A DIFFERENCE
         </span>
       )}
 

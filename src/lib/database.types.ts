@@ -1,4 +1,15 @@
-export interface Database {
+export type EventType = "webinar" | "special_event";
+
+export const EVENT_TYPES: { value: EventType; label: string }[] = [
+  { value: "webinar", label: "Webinar" },
+  { value: "special_event", label: "Special Event" },
+];
+
+export function getEventTypeLabel(type: EventType): string {
+  return EVENT_TYPES.find((t) => t.value === type)?.label ?? type;
+}
+
+export type Database = {
   public: {
     Tables: {
       events: {
@@ -7,11 +18,10 @@ export interface Database {
           name: string;
           img: string;
           date: string;
-          type: string;
+          type: EventType;
           time: string;
           presenters: string[];
           links: string[];
-          is_special: boolean;
           created_at: string;
         };
         Insert: {
@@ -19,11 +29,10 @@ export interface Database {
           name: string;
           img: string;
           date: string;
-          type: string;
+          type: EventType;
           time: string;
           presenters: string[];
           links: string[];
-          is_special?: boolean;
           created_at?: string;
         };
         Update: {
@@ -31,20 +40,29 @@ export interface Database {
           name?: string;
           img?: string;
           date?: string;
-          type?: string;
+          type?: EventType;
           time?: string;
           presenters?: string[];
           links?: string[];
-          is_special?: boolean;
           created_at?: string;
         };
+        Relationships: [];
       };
     };
-    Views: Record<string, never>;
-    Functions: Record<string, never>;
-    Enums: Record<string, never>;
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
   };
-}
+};
 
 // Convenience type for the events table
 export type Event = Database["public"]["Tables"]["events"]["Row"];

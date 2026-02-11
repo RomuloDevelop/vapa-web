@@ -17,7 +17,62 @@ This document outlines the design system, patterns, and conventions established 
 - **Animations**: Framer Motion (`motion` package)
 - **Carousel**: Swiper.js
 - **Icons**: Lucide React
+- **Data Fetching**: SWR (stale-while-revalidate)
 - **Architecture**: Atomic Design (atoms, molecules, organisms)
+
+## SWR Data Fetching (REQUIRED)
+
+**All client-side data fetching must use SWR.** Do not use raw `fetch` + `useState` for data fetching in components.
+
+### When to Use Which Pattern
+
+| Scenario | SWR Hook | Example |
+|----------|----------|---------|
+| Auto-fetch on mount/key change | `useSWR` | Loading user data, listing events |
+| User-triggered action (search, submit) | `useSWRMutation` | Image search, form submission |
+
+### `useSWR` — Auto-fetching
+
+For data that should load automatically when the component mounts or when a key changes:
+
+```tsx
+import useSWR from "swr";
+
+const { data, error, isLoading, mutate } = useSWR<ResultType>(
+  ["cache-key", filterParams],
+  () => fetchFunction(filterParams),
+  { fallbackData: initialData }
+);
+```
+
+### `useSWRMutation` — User-triggered
+
+For actions triggered by user interaction (button clicks, form submits):
+
+```tsx
+import useSWRMutation from "swr/mutation";
+
+// Define fetcher outside component
+async function doAction(_key: string, { arg }: { arg: ArgType }): Promise<ResultType> {
+  const res = await fetch(`/api/endpoint?param=${arg.value}`);
+  if (!res.ok) throw new Error("Failed");
+  return res.json();
+}
+
+// Inside component
+const { trigger, data, error, isMutating } = useSWRMutation("cache-key", doAction);
+
+// Call on user action
+const handleClick = () => trigger({ value: "something" });
+```
+
+### Rules
+
+1. **Never use raw `fetch` + `useState` + `useEffect`** for data fetching — use SWR instead
+2. **Fetcher functions** should be defined outside the component body
+3. **Use `isMutating`** from `useSWRMutation` instead of manual loading state
+4. **Use `data` and `error`** from SWR instead of manual state management
+5. **Cache keys** should be descriptive strings (e.g., `"admin-events"`, `"image-search"`)
 
 ## Tailwind CSS v4 Configuration (REQUIRED)
 
