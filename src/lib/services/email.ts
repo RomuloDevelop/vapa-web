@@ -132,12 +132,12 @@ This email was sent from the VAPA website contact form.
   <style>
     body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
     .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-    .header { background: #0A1628; color: #D4A853; padding: 20px; text-align: center; }
+    .header { background: #142840; color: #DCBA60; padding: 20px; text-align: center; }
     .content { padding: 20px; background: #f9f9f9; }
     .field { margin-bottom: 15px; }
     .label { font-weight: bold; color: #666; }
     .value { margin-top: 5px; }
-    .message { background: white; padding: 15px; border-left: 3px solid #D4A853; }
+    .message { background: white; padding: 15px; border-left: 3px solid #DCBA60; }
     .footer { padding: 15px; text-align: center; font-size: 12px; color: #999; }
   </style>
 </head>

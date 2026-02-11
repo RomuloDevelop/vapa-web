@@ -63,6 +63,7 @@ export async function createEvent(formData: FormData): Promise<ActionResult> {
       time: formData.get("time") as string,
       presenters: parseArrayField(formData.get("presenters") as string || ""),
       links: parseArrayField(formData.get("links") as string || ""),
+      description: (formData.get("description") as string) || null,
     })
     .select("id")
     .single();
@@ -94,6 +95,7 @@ export async function updateEvent(
       time: formData.get("time") as string,
       presenters: parseArrayField(formData.get("presenters") as string || ""),
       links: parseArrayField(formData.get("links") as string || ""),
+      description: formData.get("description") as string || null,
     })
     .eq("id", id);
 

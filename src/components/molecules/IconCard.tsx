@@ -17,7 +17,7 @@ interface IconCardProps {
 }
 
 const variantClasses = {
-  default: "bg-surface",
+  default: "bg-surface-elevated",
   dark: "bg-card-dark",
   light: "bg-accent-10",
 };

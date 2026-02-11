@@ -3,53 +3,20 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
-import {
-  Pencil,
-  Trash2,
-  ChevronLeft,
-  ChevronRight,
-  Loader2,
-  CalendarIcon,
-} from "lucide-react";
+import { Pencil, Trash2, ChevronLeft, ChevronRight, Loader2, CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { DeleteEventDialog } from "./DeleteEventDialog";
-import {
-  deleteEvent,
-  fetchFilteredEvents,
-  type EventsFilterParams,
-  type FilteredEventsResult,
-} from "@/lib/actions/events";
+import { deleteEvent, fetchFilteredEvents, type EventsFilterParams, type FilteredEventsResult } from "@/lib/actions/events";
 import type { DateRange } from "react-day-picker";
 import { EVENT_TYPES, getEventTypeLabel, type Event, type EventType } from "@/lib/database.types";
 
@@ -77,13 +44,19 @@ interface EventsTableProps {
   availableYears: number[];
 }
 
+const VALID_TYPES = new Set<string>(EVENT_TYPES.map((t) => t.value));
+
 export function EventsTable({
   initialEvents,
   initialTotalCount,
   availableYears,
 }: EventsTableProps) {
+  const searchParams = useSearchParams();
+  const urlType = searchParams.get("type") ?? "";
+  const initialType = VALID_TYPES.has(urlType) ? (urlType as EventType) : "";
+
   const [year, setYear] = useState<string>("");
-  const [typeFilter, setTypeFilter] = useState<EventType | "">("");
+  const [typeFilter, setTypeFilter] = useState<EventType | "">(initialType);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [pendingRange, setPendingRange] = useState<DateRange | undefined>();
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -311,29 +284,122 @@ export function EventsTable({
           )}
         </div>
 
-        {/* Table */}
-        <div className="relative rounded-xl border border-border-accent-light overflow-hidden">
+        {/* Mobile Card List */}
+        <div className="block lg:hidden relative">
+          {isLoading && events.length > 0 && (
+            <div className="absolute inset-0 bg-surface/60 z-10 flex items-center justify-center rounded-xl">
+              <Loader2 className="h-6 w-6 animate-spin text-accent" />
+            </div>
+          )}
+
+          {events.length === 0 && isLoading && (
+            <div className="flex flex-col gap-3">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="flex gap-3 p-3 rounded-lg border border-border-accent-light">
+                  <Skeleton className="w-10 h-10 rounded shrink-0" />
+                  <div className="flex-1 flex flex-col gap-2">
+                    <Skeleton className="h-4 w-3/4" />
+                    <Skeleton className="h-3 w-1/2" />
+                    <Skeleton className="h-3 w-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {events.length === 0 && !isLoading && (
+            <div className="py-12 text-center text-foreground-subtle rounded-xl border border-border-accent-light">
+              No events found.{" "}
+              {hasActiveFilters ? (
+                <button onClick={resetFilters} className="text-accent hover:underline">
+                  Clear filters
+                </button>
+              ) : (
+                <Link href="/admin/events/new" className="text-accent hover:underline">
+                  Create one
+                </Link>
+              )}
+            </div>
+          )}
+
+          {events.length > 0 && (
+            <div className="flex flex-col gap-3">
+              {events.map((event) => (
+                <div
+                  key={event.id}
+                  className="flex gap-3 p-3 rounded-lg border border-border-accent-light"
+                >
+                  {/* Thumbnail */}
+                  <div className="relative w-10 h-10 rounded overflow-hidden bg-surface-sunken shrink-0">
+                    <Image src={event.img} alt={event.name} fill className="object-cover" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0 flex flex-col gap-1">
+                    <p className="text-sm font-medium text-white line-clamp-2 break-words">
+                      {event.name}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                      <span className="text-xs text-foreground-subtle">{formatDate(event.date)}</span>
+                      <Badge variant="outline" className="border-accent-30 text-accent bg-accent-10 text-[10px] px-1.5 py-0">
+                        {getEventTypeLabel(event.type)}
+                      </Badge>
+                    </div>
+                    {event.description && (
+                      <p className="text-xs text-foreground-muted line-clamp-2 break-words">
+                        {event.description}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-col gap-1 shrink-0">
+                    <Link
+                      href={`/admin/events/${event.id}/edit`}
+                      className="p-1.5 rounded text-foreground-muted hover:text-accent hover:bg-accent-10 transition-colors"
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                    </Link>
+                    <button
+                      onClick={() => setDeleteTarget(event)}
+                      disabled={isPending}
+                      className="p-1.5 rounded text-foreground-muted hover:text-red-400 hover:bg-red-400/10 transition-colors disabled:opacity-50"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Desktop Table */}
+        <div className="hidden lg:block relative rounded-xl border border-border-accent-light overflow-x-auto">
           {isLoading && events.length > 0 && (
             <div className="absolute inset-0 bg-surface/60 z-10 flex items-center justify-center">
               <Loader2 className="h-6 w-6 animate-spin text-accent" />
             </div>
           )}
-          <Table>
+          <Table style={{ tableLayout: "fixed", width: "100%" }}>
             <TableHeader>
               <TableRow className="bg-surface-sunken border-b border-border-accent-light hover:bg-surface-sunken">
-                <TableHead className="text-foreground-subtle font-medium py-3 px-4">
+                <TableHead style={{ width: "7%" }} className="text-foreground-subtle font-medium py-3 px-4">
                   Image
                 </TableHead>
-                <TableHead className="text-foreground-subtle font-medium py-3 px-4 max-w-[300px]">
+                <TableHead style={{ width: "30%" }} className="text-foreground-subtle font-medium py-3 px-4">
                   Name
                 </TableHead>
-                <TableHead className="text-foreground-subtle font-medium py-3 px-4">
+                <TableHead style={{ width: "27%" }} className="text-foreground-subtle font-medium py-3 px-4">
+                  Description
+                </TableHead>
+                <TableHead style={{ width: "14%" }} className="text-foreground-subtle font-medium py-3 px-4">
                   Date
                 </TableHead>
-                <TableHead className="text-foreground-subtle font-medium py-3 px-4">
+                <TableHead style={{ width: "12%" }} className="text-foreground-subtle font-medium py-3 px-4">
                   Type
                 </TableHead>
-                <TableHead className="text-foreground-subtle font-medium py-3 px-4 text-right">
+                <TableHead style={{ width: "10%" }} className="text-foreground-subtle font-medium py-3 px-4 text-right">
                   Actions
                 </TableHead>
               </TableRow>
@@ -351,6 +417,9 @@ export function EventsTable({
                       </TableCell>
                       <TableCell className="py-3 px-4">
                         <Skeleton className="h-4 w-48" />
+                      </TableCell>
+                      <TableCell className="py-3 px-4">
+                        <Skeleton className="h-4 w-32" />
                       </TableCell>
                       <TableCell className="py-3 px-4">
                         <Skeleton className="h-4 w-24" />
@@ -371,7 +440,7 @@ export function EventsTable({
               {events.length === 0 && !isLoading && (
                 <TableRow className="hover:bg-transparent">
                   <TableCell
-                    colSpan={5}
+                    colSpan={6}
                     className="py-12 text-center text-foreground-subtle"
                   >
                     No events found.{" "}
@@ -408,10 +477,19 @@ export function EventsTable({
                       />
                     </div>
                   </TableCell>
-                  <TableCell className="py-3 px-4 max-w-[300px]">
-                    <span className="text-white font-medium">
+                  <TableCell className="py-3 px-4 overflow-hidden whitespace-normal">
+                    <span className="text-white font-medium line-clamp-2 break-words">
                       {event.name}
                     </span>
+                  </TableCell>
+                  <TableCell className="py-3 px-4 overflow-hidden whitespace-normal">
+                    {event.description ? (
+                      <span className="text-foreground-muted text-sm line-clamp-2 break-words">
+                        {event.description}
+                      </span>
+                    ) : (
+                      <span className="text-foreground-faint text-sm">&mdash;</span>
+                    )}
                   </TableCell>
                   <TableCell className="py-3 px-4 text-foreground-muted whitespace-nowrap">
                     {formatDate(event.date)}

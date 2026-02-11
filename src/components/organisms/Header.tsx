@@ -133,7 +133,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
       >
         <span
           className="mega-menu-item-title"
-          style={{ color: isHovered ? "#D4A853" : undefined }}
+          style={{ color: isHovered ? "var(--color-primary)" : undefined }}
         >
           {child.label}
         </span>

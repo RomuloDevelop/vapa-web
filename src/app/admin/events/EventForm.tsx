@@ -1,14 +1,25 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import useSWRMutation from "swr/mutation";
+import { format, parse } from "date-fns";
+import { Upload, CalendarIcon, X, ImageIcon } from "lucide-react";
 import { createEvent, updateEvent } from "@/lib/actions/events";
 import { EVENT_TYPES, type Event, type EventType } from "@/lib/database.types";
 import { ImageSearchPopover } from "@/components/molecules";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { TimePicker } from "@/components/ui/time-picker";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -17,17 +28,47 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const MAX_SIZE = 5 * 1024 * 1024; // 5MB
+
+async function uploadImage(
+  _key: string,
+  { arg }: { arg: File }
+): Promise<{ url: string }> {
+  const formData = new FormData();
+  formData.append("file", arg);
+  const res = await fetch("/api/images/upload", {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) {
+    const data = await res.json();
+    throw new Error(data.error || "Upload failed");
+  }
+  return res.json();
+}
+
 interface EventFormProps {
   event?: Event;
 }
 
 const inputClass =
-  "bg-surface border-border-accent-light text-white placeholder:text-foreground-faint focus-visible:border-accent focus-visible:ring-accent/20";
+  "bg-surface border-border-accent text-white placeholder:text-foreground-faint focus-visible:border-accent focus-visible:ring-accent/20";
 
 export function EventForm({ event }: EventFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const isEdit = !!event;
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { trigger: uploadFile, isMutating: isUploading } = useSWRMutation(
+    "image-upload",
+    uploadImage
+  );
+
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [isDragging, setIsDragging] = useState(false);
+  const [dateOpen, setDateOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     name: event?.name ?? "",
@@ -37,31 +78,127 @@ export function EventForm({ event }: EventFormProps) {
     time: event?.time ?? "",
     presenters: event?.presenters?.join(", ") ?? "",
     links: event?.links?.join(", ") ?? "",
+    description: event?.description ?? "",
   });
 
+  // Clean up object URLs
+  useEffect(() => {
+    return () => {
+      if (previewUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
+
+  const validateAndSetFile = useCallback((file: File) => {
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      toast.error("Invalid file type. Allowed: JPEG, PNG, WebP, GIF");
+      return;
+    }
+    if (file.size > MAX_SIZE) {
+      toast.error("File too large. Maximum size is 5MB");
+      return;
+    }
+
+    // Revoke previous preview
+    setPreviewUrl((prev) => {
+      if (prev.startsWith("blob:")) URL.revokeObjectURL(prev);
+      return URL.createObjectURL(file);
+    });
+    setPendingFile(file);
+    setFormData((prev) => ({ ...prev, img: "__pending__" }));
+  }, []);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) validateAndSetFile(file);
+    e.target.value = "";
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) validateAndSetFile(file);
+  };
+
+  const handleRemoveImage = () => {
+    if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl("");
+    setPendingFile(null);
+    setFormData((prev) => ({ ...prev, img: "" }));
+  };
+
+  const handleUnsplashSelect = (url: string) => {
+    if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl("");
+    setPendingFile(null);
+    setFormData((prev) => ({ ...prev, img: url }));
+  };
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  // Parse date string to Date for Calendar
+  const selectedDate = formData.date
+    ? parse(formData.date, "yyyy-MM-dd", new Date())
+    : undefined;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const fd = new FormData();
-    fd.set("name", formData.name);
-    fd.set("img", formData.img);
-    fd.set("date", formData.date);
-    fd.set("type", formData.type);
-    fd.set("time", formData.time);
-    fd.set("presenters", formData.presenters);
-    fd.set("links", formData.links);
-
     startTransition(async () => {
+      let imgUrl = formData.img;
+
+      // Upload pending file first
+      if (pendingFile) {
+        try {
+          const result = await uploadFile(pendingFile);
+          imgUrl = result.url;
+        } catch (err) {
+          toast.error(err instanceof Error ? err.message : "Image upload failed");
+          return;
+        }
+      }
+
+      if (!imgUrl || imgUrl === "__pending__") {
+        toast.error("Please select an image");
+        return;
+      }
+
+      const fd = new FormData();
+      fd.set("name", formData.name);
+      fd.set("img", imgUrl);
+      fd.set("date", formData.date);
+      fd.set("type", formData.type);
+      fd.set("time", formData.time);
+      fd.set("presenters", formData.presenters);
+      fd.set("links", formData.links);
+      fd.set("description", formData.description);
+
       const result = isEdit
         ? await updateEvent(event!.id, fd)
         : await createEvent(fd);
@@ -74,6 +211,9 @@ export function EventForm({ event }: EventFormProps) {
       }
     });
   };
+
+  const hasImage = pendingFile || (formData.img && formData.img !== "__pending__");
+  const displayImageUrl = pendingFile ? previewUrl : formData.img;
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-8 max-w-2xl">
@@ -130,30 +270,53 @@ export function EventForm({ event }: EventFormProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2">
-            <Label htmlFor="date" className="text-foreground-muted">
+            <Label className="text-foreground-muted">
               Date *
             </Label>
-            <Input
-              id="date"
-              name="date"
-              type="date"
-              value={formData.date}
-              onChange={handleChange}
-              required
-              className={`${inputClass} [color-scheme:dark]`}
-            />
+            <Popover open={dateOpen} onOpenChange={setDateOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={`w-full justify-start text-left font-normal ${inputClass} ${!formData.date ? "text-foreground-faint" : ""}`}
+                >
+                  <CalendarIcon className="mr-2 h-4 w-4 text-foreground-subtle" />
+                  {formData.date
+                    ? format(selectedDate!, "MMM d, yyyy")
+                    : "Select date"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-auto p-0 bg-surface-section border-border-accent-light"
+                align="start"
+              >
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={(day) => {
+                    if (day) {
+                      setFormData((prev) => ({
+                        ...prev,
+                        date: format(day, "yyyy-MM-dd"),
+                      }));
+                    }
+                    setDateOpen(false);
+                  }}
+                  defaultMonth={selectedDate}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="time" className="text-foreground-muted">
+            <Label className="text-foreground-muted">
               Time
             </Label>
-            <Input
-              id="time"
-              name="time"
-              type="time"
+            <TimePicker
               value={formData.time}
-              onChange={handleChange}
-              className={`${inputClass} [color-scheme:dark]`}
+              onChange={(time) =>
+                setFormData((prev) => ({ ...prev, time }))
+              }
+              className={`w-full ${inputClass}`}
             />
           </div>
         </div>
@@ -166,34 +329,104 @@ export function EventForm({ event }: EventFormProps) {
         </legend>
 
         <div className="flex flex-col gap-2">
-          <Label htmlFor="img" className="text-foreground-muted">
-            Image URL *
-          </Label>
-          <div className="flex gap-2">
-            <Input
-              id="img"
-              name="img"
-              value={formData.img}
-              onChange={handleChange}
-              required
-              placeholder="https://..."
-              className={inputClass}
-            />
+          <div className="flex items-center justify-between">
+            <Label className="text-foreground-muted">
+              Image *
+            </Label>
             <ImageSearchPopover
-              onSelectImage={(url) =>
-                setFormData((prev) => ({ ...prev, img: url }))
-              }
+              onSelectImage={handleUnsplashSelect}
               eventName={formData.name}
             />
           </div>
-          {formData.img && (
-            <div className="relative w-full max-w-md h-48 rounded-lg overflow-hidden bg-surface-sunken mt-1">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={formData.img}
-                alt="Preview"
-                className="w-full h-full object-cover"
-              />
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+
+          {hasImage ? (
+            /* Preview state */
+            <div className="flex flex-col gap-3">
+              <div
+                className="relative w-full h-48 rounded-lg overflow-hidden bg-surface-sunken group"
+                onDragOver={handleDragOver}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={displayImageUrl}
+                  alt="Preview"
+                  className="w-full h-full object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="absolute top-2 right-2 p-1.5 rounded-md bg-black/60 text-white hover:bg-black/80 transition-colors"
+                  aria-label="Remove image"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+                {isDragging && (
+                  <div className="absolute inset-0 bg-accent/20 border-2 border-dashed border-accent flex items-center justify-center">
+                    <span className="text-white font-medium text-sm bg-black/50 px-3 py-1.5 rounded-md">
+                      Drop to replace
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="border-border-accent text-foreground-muted hover:bg-accent-10 hover:text-white"
+                >
+                  <Upload className="w-3.5 h-3.5 mr-1.5" />
+                  Change image
+                </Button>
+              </div>
+            </div>
+          ) : (
+            /* Empty drop zone */
+            <div className="flex flex-col gap-3">
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => fileInputRef.current?.click()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    fileInputRef.current?.click();
+                  }
+                }}
+                onDragOver={handleDragOver}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={`flex flex-col items-center justify-center gap-3 w-full h-48 rounded-lg border-2 border-dashed transition-colors cursor-pointer ${
+                  isDragging
+                    ? "border-accent bg-accent/10"
+                    : "border-border-accent hover:border-accent hover:bg-accent-10"
+                }`}
+              >
+                <div className="p-3 rounded-full bg-accent-10">
+                  <ImageIcon className="w-6 h-6 text-accent" />
+                </div>
+                <div className="text-center">
+                  <p className="text-sm text-foreground-muted">
+                    Drag & drop an image here, or click to browse
+                  </p>
+                  <p className="text-xs text-foreground-faint mt-1">
+                    JPEG, PNG, WebP, GIF &middot; Max 5MB
+                  </p>
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -233,17 +466,33 @@ export function EventForm({ event }: EventFormProps) {
           />
         </div>
 
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="description" className="text-foreground-muted">
+            Description
+          </Label>
+          <Textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Optional event description..."
+            rows={4}
+            className={inputClass}
+          />
+        </div>
       </fieldset>
 
       {/* Actions */}
       <div className="flex items-center gap-3 pt-2 border-t border-border-accent-light">
         <Button
           type="submit"
-          disabled={isPending}
+          disabled={isPending || isUploading}
           className="bg-accent text-surface font-semibold hover:bg-accent-hover"
         >
           {isPending
-            ? "Saving..."
+            ? isUploading
+              ? "Uploading image..."
+              : "Saving..."
             : isEdit
               ? "Update Event"
               : "Create Event"}

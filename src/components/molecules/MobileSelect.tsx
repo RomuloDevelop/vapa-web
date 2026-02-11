@@ -77,7 +77,7 @@ export function MobileSelect({
                 position: "fixed",
                 inset: 0,
                 zIndex: 50,
-                backgroundColor: "rgba(0, 0, 0, 0.6)",
+                backgroundColor: "var(--color-overlay)",
               }}
             />
             <Drawer.Content
@@ -104,7 +104,7 @@ export function MobileSelect({
                   height: "6px",
                   width: "48px",
                   borderRadius: "9999px",
-                  backgroundColor: "rgba(212, 168, 83, 0.5)",
+                  backgroundColor: "var(--color-border-gold-strong)",
                   flexShrink: 0,
                 }}
               />
@@ -114,7 +114,7 @@ export function MobileSelect({
                   style={{
                     fontSize: "16px",
                     fontWeight: 600,
-                    color: "white",
+                    color: "var(--color-text-white)",
                   }}
                 >
                   {title}

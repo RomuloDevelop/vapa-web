@@ -62,7 +62,7 @@ export function HeroSection() {
           whileInView="visible"
           viewport={defaultViewport}
           transition={{ ...slowTransition, delay: 0.2 }}
-          className="text-sm sm:text-base md:text-lg xl:text-xl text-white/85 leading-[1.6] max-w-full md:max-w-[500px] lg:max-w-[580px] xl:max-w-[620px] 2xl:max-w-[680px] drop-shadow-[0_2px_6px_rgba(0,0,0,0.7)]"
+          className="text-sm sm:text-base md:text-lg xl:text-xl text-white/85 leading-[1.6] max-w-full md:max-w-[500px] lg:max-w-[580px] xl:max-w-[620px] 2xl:max-w-[680px] drop-shadow-text"
         >
           A non-profit professional organization founded in 2019.
           Restoring Venezuela&apos;s Energy Leadership. Empowering

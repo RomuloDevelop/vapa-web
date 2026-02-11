@@ -37,7 +37,7 @@ export const fastTransition = { duration: 0.3 };
 
 // Shared hover animation for interactive cards
 export const cardHover = {
-  whileHover: { y: -4, boxShadow: "0 8px 16px rgba(0, 0, 0, 0.25)" },
+  whileHover: { y: -4, boxShadow: "var(--shadow-card-hover)" },
   transition: { duration: 0.15 },
 };
 

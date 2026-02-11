@@ -1,15 +1,48 @@
 import Link from "next/link";
-import { Calendar, Plus, Star } from "lucide-react";
-import { getEventsCount } from "@/lib/services/events";
-import type { EventType } from "@/lib/database.types";
+import { format } from "date-fns";
+import { Calendar, Plus, Star, Video, ArrowRight } from "lucide-react";
+import {
+  getEventsCount,
+  getRecentEvents,
+  getRecentSpecialEvents,
+} from "@/lib/services/events";
+import type { Event, EventType } from "@/lib/database.types";
 
 const SPECIAL_EVENT: EventType = "special_event";
 
+function EventRow({ event }: { event: Event }) {
+  return (
+    <Link
+      href={`/admin/events/${event.id}/edit`}
+      className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent-10 transition-colors group"
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={event.img}
+        alt={event.name}
+        className="w-12 h-12 rounded-lg object-cover shrink-0"
+      />
+      <div className="flex-1 min-w-0">
+        <p className="text-sm font-medium text-white truncate group-hover:text-accent transition-colors">
+          {event.name}
+        </p>
+        <p className="text-xs text-foreground-subtle">
+          {format(new Date(event.date), "MMM d, yyyy")}
+        </p>
+      </div>
+      <ArrowRight className="w-4 h-4 text-foreground-faint group-hover:text-accent transition-colors shrink-0" />
+    </Link>
+  );
+}
+
 export default async function AdminDashboardPage() {
-  const [totalEvents, specialEvents] = await Promise.all([
-    getEventsCount(),
-    getEventsCount({ type: SPECIAL_EVENT }),
-  ]);
+  const [totalEvents, specialEventsCount, recentWebinars, recentSpecialEvents] =
+    await Promise.all([
+      getEventsCount(),
+      getEventsCount({ type: SPECIAL_EVENT }),
+      getRecentEvents(5),
+      getRecentSpecialEvents(5),
+    ]);
 
   const stats = [
     {
@@ -19,7 +52,7 @@ export default async function AdminDashboardPage() {
     },
     {
       label: "Special Events",
-      value: specialEvents,
+      value: specialEventsCount,
       icon: Star,
     },
   ];
@@ -67,6 +100,63 @@ export default async function AdminDashboardPage() {
             <Calendar className="w-4 h-4" />
             View All Events
           </Link>
+        </div>
+      </div>
+
+      {/* Recent Events */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Latest Webinars */}
+        <div className="flex flex-col gap-3 p-5 rounded-xl bg-surface-section border border-border-accent-light">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-semibold text-white flex items-center gap-2">
+              <Video className="w-4 h-4 text-accent" />
+              Latest Webinars
+            </h2>
+            <Link
+              href="/admin/events?type=webinar"
+              className="text-xs text-foreground-subtle hover:text-accent transition-colors"
+            >
+              View all
+            </Link>
+          </div>
+          {recentWebinars.length > 0 ? (
+            <div className="flex flex-col">
+              {recentWebinars.map((event) => (
+                <EventRow key={event.id} event={event} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-foreground-subtle py-4 text-center">
+              No webinars yet.
+            </p>
+          )}
+        </div>
+
+        {/* Latest Special Events */}
+        <div className="flex flex-col gap-3 p-5 rounded-xl bg-surface-section border border-border-accent-light">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-semibold text-white flex items-center gap-2">
+              <Star className="w-4 h-4 text-accent" />
+              Latest Special Events
+            </h2>
+            <Link
+              href="/admin/events?type=special_event"
+              className="text-xs text-foreground-subtle hover:text-accent transition-colors"
+            >
+              View all
+            </Link>
+          </div>
+          {recentSpecialEvents.length > 0 ? (
+            <div className="flex flex-col">
+              {recentSpecialEvents.map((event) => (
+                <EventRow key={event.id} event={event} />
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-foreground-subtle py-4 text-center">
+              No special events yet.
+            </p>
+          )}
         </div>
       </div>
     </div>

@@ -30,13 +30,7 @@ export function CTASection() {
         />
 
         {/* Gradient Overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(10, 22, 40, 0.9) 0%, rgba(13, 30, 51, 0.8) 100%)",
-          }}
-        />
+        <div className="absolute inset-0 bg-gradient-cta-overlay" />
 
         {/* Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 md:gap-6 lg:gap-8 px-5 md:px-10 lg:px-20 py-12 md:py-16">

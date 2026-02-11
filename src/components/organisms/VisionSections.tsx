@@ -249,10 +249,7 @@ function DesktopVisionSections() {
       style={{ height: `${(visionItems.length + 1) * SCROLL_VH_PER_ITEM}vh` }}
     >
       <div
-        className="sticky top-0 h-screen overflow-hidden flex items-center"
-        style={{
-          background: "linear-gradient(180deg, #0A1628 0%, #1A3352 100%)",
-        }}
+        className="sticky top-0 h-screen overflow-hidden flex items-center bg-gradient-vision"
       >
         <div className="w-full px-20 xl:px-[5%] 2xl:px-[8%]">
           <div className="flex flex-col gap-8 max-w-5xl mx-auto">
@@ -300,10 +297,7 @@ export function VisionSections() {
 
   return (
     <section
-      className="px-5 md:px-10 py-16 md:py-20"
-      style={{
-        background: "linear-gradient(180deg, #0A1628 0%, #1A3352 100%)",
-      }}
+      className="px-5 md:px-10 py-16 md:py-20 bg-gradient-vision"
     >
       <div className="flex flex-col gap-8 max-w-2xl mx-auto">
         <motion.h2

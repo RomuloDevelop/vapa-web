@@ -5,40 +5,47 @@
 
 :root {
   /* Primary Colors */
-  --color-primary: #D4A853;
-  --color-primary-dark: #B8923D;
+  --color-primary: #DCBA60;
+  --color-primary-dark: #C49D48;
 
   /* Background Colors */
-  --color-bg-dark: #0A1628;
-  --color-bg-darker: #06101C;
-  --color-bg-section: #0D1E33;
-  --color-bg-content: #1A3352;
-  --color-bg-content-alpha: rgba(26, 51, 82, 0.92);
-  --color-bg-card-dark: #152D45;
+  --color-bg-dark: #142840;
+  --color-bg-darker: #0F1E32;
+  --color-bg-section: #1B3455;
+  --color-bg-content: #284B6B;
+  --color-bg-content-alpha: rgba(40, 75, 107, 0.92);
+  --color-bg-card-dark: #224060;
 
   /* Text Colors */
   --color-text-white: #FFFFFF;
-  --color-text-muted: #B8C5D3;
-  --color-text-secondary: #8899AA;
-  --color-text-tertiary: #6B7A8A;
+  --color-text-muted: #C2CEDB;
+  --color-text-secondary: #95A7B8;
+  --color-text-tertiary: #7A8C9C;
 
   /* Border Colors */
-  --color-border-gold: #D4A85340;
-  --color-border-gold-light: #D4A85320;
-  --color-border-gold-strong: #D4A85380;
+  --color-border-gold: #DCBA6040;
+  --color-border-gold-light: #DCBA6020;
+  --color-border-gold-strong: #DCBA6080;
   --color-border-white: #FFFFFF40;
 
   /* Hover/Background Tints */
-  --color-gold-tint: #D4A85310;
-  --color-gold-tint-15: #D4A85315;
-  --color-gold-tint-20: #D4A85320;
-  --color-gold-tint-30: #D4A85330;
+  --color-gold-tint: #DCBA6010;
+  --color-gold-tint-15: #DCBA6015;
+  --color-gold-tint-20: #DCBA6020;
+  --color-gold-tint-30: #DCBA6030;
+
+  /* Overlay Colors */
+  --color-overlay: rgba(0, 0, 0, 0.6);
+
+  /* Shadow Tokens */
+  --shadow-card-hover: 0 8px 16px rgba(0, 0, 0, 0.25);
+  --shadow-card-hover-lg: 0 12px 24px rgba(0, 0, 0, 0.3);
 
   /* Gradients */
-  --gradient-gold: linear-gradient(135deg, #D4A853 0%, #B8923D 100%);
-  --gradient-header: linear-gradient(180deg, #0A1628 0%, #0A1628 40%, transparent 100%);
-  --gradient-hero-overlay: linear-gradient(180deg, #0A1628 0%, rgba(10, 22, 40, 0.5) 40%, rgba(10, 22, 40, 0) 70%);
-  --gradient-page-hero: linear-gradient(180deg, #0A1628 0%, #0A1628CC 50%, #0A162880 100%);
+  --gradient-gold: linear-gradient(135deg, #DCBA60 0%, #C49D48 100%);
+  --gradient-header: linear-gradient(180deg, #142840 0%, #142840 40%, transparent 100%);
+  --gradient-hero-overlay: linear-gradient(180deg, #142840 0%, rgba(20, 40, 64, 0.5) 40%, rgba(20, 40, 64, 0) 70%);
+  --gradient-page-hero: linear-gradient(180deg, #142840 0%, #142840CC 50%, #14284080 100%);
 
   /* Typography Scale */
   --font-size-xs: 10px;
@@ -58,37 +65,37 @@
   --space-8: 32px;
   --space-10: 40px;
   --radius: 0.625rem;
-  --background: #0D1E33;
+  --background: #1B3455;
   --foreground: #FFFFFF;
-  --card: #152D45;
+  --card: #224060;
   --card-foreground: #FFFFFF;
-  --popover: #0D1E33;
+  --popover: #1B3455;
   --popover-foreground: #FFFFFF;
-  --primary: #D4A853;
-  --primary-foreground: #0A1628;
-  --secondary: #1A3352;
+  --primary: #DCBA60;
+  --primary-foreground: #142840;
+  --secondary: #284B6B;
   --secondary-foreground: #FFFFFF;
-  --muted: #1A3352;
-  --muted-foreground: #8899AA;
-  --accent: #D4A85315;
+  --muted: #284B6B;
+  --muted-foreground: #95A7B8;
+  --accent: #DCBA6015;
   --accent-foreground: #FFFFFF;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #D4A85320;
-  --input: #D4A85320;
-  --ring: #D4A853;
+  --border: #DCBA6020;
+  --input: #DCBA6020;
+  --ring: #DCBA60;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: #0A1628;
+  --sidebar: #142840;
   --sidebar-foreground: #FFFFFF;
-  --sidebar-primary: #D4A853;
-  --sidebar-primary-foreground: #0A1628;
-  --sidebar-accent: #D4A85315;
+  --sidebar-primary: #DCBA60;
+  --sidebar-primary-foreground: #142840;
+  --sidebar-accent: #DCBA6015;
   --sidebar-accent-foreground: #FFFFFF;
-  --sidebar-border: #D4A85320;
-  --sidebar-ring: #D4A853;
+  --sidebar-border: #DCBA6020;
+  --sidebar-ring: #DCBA60;
 }
 
 @layer base {
@@ -133,38 +140,38 @@
      ============================================ */
 
   /* ACCENT COLORS (Gold - draws attention) */
-  --color-accent: #D4A853;
-  --color-accent-hover: #B8923D;
+  --color-accent: #DCBA60;
+  --color-accent-hover: #C49D48;
 
-  /* SURFACE COLORS (Navy Blue - dominant background) */
-  --color-surface: #0A1628;           /* Main background */
-  --color-surface-sunken: #06101C;    /* Footer, deeper areas */
-  --color-surface-section: #0D1E33;   /* Section backgrounds */
-  --color-surface-elevated: #1A3352;  /* Cards, content sections */
-  --color-surface-raised: #152D45;    /* Elevated cards */
+  /* SURFACE COLORS (Blue - dominant background) */
+  --color-surface: #142840;           /* Main background */
+  --color-surface-sunken: #0F1E32;    /* Footer, deeper areas */
+  --color-surface-section: #1B3455;   /* Section backgrounds */
+  --color-surface-elevated: #284B6B;  /* Cards, content sections */
+  --color-surface-raised: #224060;    /* Elevated cards */
 
   /* FOREGROUND COLORS (Text hierarchy) */
   --color-foreground: #FFFFFF;        /* Primary text */
-  --color-foreground-muted: #B8C5D3;  /* Secondary text */
-  --color-foreground-subtle: #8899AA; /* Tertiary text */
-  --color-foreground-faint: #6B7A8A;  /* Disabled/hint text */
+  --color-foreground-muted: #C2CEDB;  /* Secondary text */
+  --color-foreground-subtle: #95A7B8; /* Tertiary text */
+  --color-foreground-faint: #7A8C9C;  /* Disabled/hint text */
 
   /* BORDER COLORS (Accent-based with opacity) */
-  --color-border-accent: #D4A85340;        /* 25% opacity */
-  --color-border-accent-light: #D4A85320;  /* 12% opacity */
-  --color-border-accent-strong: #D4A85380; /* 50% opacity */
+  --color-border-accent: #DCBA6040;        /* 25% opacity */
+  --color-border-accent-light: #DCBA6020;  /* 12% opacity */
+  --color-border-accent-strong: #DCBA6080; /* 50% opacity */
   --color-border-white: #FFFFFF40;
 
   /* ACCENT TINTS (for hover/focus states) */
-  --color-accent-10: #D4A85310;
-  --color-accent-15: #D4A85315;
-  --color-accent-20: #D4A85320;
-  --color-accent-30: #D4A85330;
+  --color-accent-10: #DCBA6010;
+  --color-accent-15: #DCBA6015;
+  --color-accent-20: #DCBA6020;
+  --color-accent-30: #DCBA6030;
 
   /* ============================================
      SHADCN UI TOKENS (for shadcn components)
      Note: --color-accent is NOT redefined here to
-     preserve our gold accent color (#D4A853)
+     preserve our gold accent color (#DCBA60)
      ============================================ */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -254,22 +261,42 @@
 
 /* Accent gradient background - use instead of inline gradient styles */
 .bg-gradient-accent {
-  background: linear-gradient(135deg, #D4A853 0%, #B8923D 100%);
+  background: linear-gradient(135deg, #DCBA60 0%, #C49D48 100%);
 }
 
 /* Header gradient (fades to transparent) */
 .bg-gradient-header {
-  background: linear-gradient(180deg, #0A1628 0%, #0A1628 40%, transparent 100%);
+  background: linear-gradient(180deg, #142840 0%, #142840 40%, transparent 100%);
 }
 
 /* Hero overlay gradient */
 .bg-gradient-hero-overlay {
-  background: linear-gradient(180deg, #0A1628 0%, rgba(10, 22, 40, 0.5) 40%, rgba(10, 22, 40, 0) 70%);
+  background: linear-gradient(180deg, #142840 0%, rgba(20, 40, 64, 0.5) 40%, rgba(20, 40, 64, 0) 70%);
 }
 
 /* Page hero gradient */
 .bg-gradient-page-hero {
-  background: linear-gradient(180deg, #0A1628 0%, #0A1628CC 50%, #0A162880 100%);
+  background: linear-gradient(180deg, #142840 0%, #142840CC 50%, #14284080 100%);
+}
+
+/* Vision section gradient (surface → elevated) */
+.bg-gradient-vision {
+  background: linear-gradient(180deg, #142840 0%, #284B6B 100%);
+}
+
+/* CTA overlay gradient (surface with opacity) */
+.bg-gradient-cta-overlay {
+  background: linear-gradient(90deg, rgba(20, 40, 64, 0.9) 0%, rgba(27, 52, 85, 0.8) 100%);
+}
+
+/* Text drop shadow for readability over images */
+.drop-shadow-text {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+}
+
+/* Popover deep shadow with accent ring */
+.shadow-popover {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--color-gold-tint);
 }
 
 /* ============================================

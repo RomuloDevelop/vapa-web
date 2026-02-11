@@ -105,7 +105,7 @@ export default function AdminLayout({
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-5 lg:p-8">{children}</main>
+        <main className="flex-1 p-5 pb-20 lg:p-8 lg:pb-24">{children}</main>
       </div>
     </div>
   );

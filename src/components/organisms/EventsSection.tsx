@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, ArrowRight, Play, Clock } from "lucide-react";
+import { Calendar, ArrowRight, Play, Clock, Info } from "lucide-react";
 import { motion } from "motion/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
@@ -95,7 +95,7 @@ function EventCardInternal({
     <motion.div
       ref={cardRef}
       className={`flex flex-col h-full rounded-lg bg-surface-section overflow-hidden relative ${className}`}
-      whileHover={{ y: -8, boxShadow: "0 12px 24px rgba(0, 0, 0, 0.3)" }}
+      whileHover={{ y: -8, boxShadow: "var(--shadow-card-hover-lg)" }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       onTouchStart={handleTouch}
     >
@@ -154,6 +154,11 @@ function EventCardInternal({
             </span>
           </div>
         )}
+        {event.description && (
+          <p className="text-xs md:text-[13px] text-foreground-muted line-clamp-2">
+            {event.description}
+          </p>
+        )}
         {eventLink && (
           <div className="flex justify-end mt-auto pt-2">
             <a
@@ -162,8 +167,17 @@ function EventCardInternal({
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-xs font-medium text-accent hover:underline"
             >
-              <Play className="w-3 h-3" />
-              Join us
+              {event.type === "special_event" ? (
+                <>
+                  <Info className="w-3 h-3" />
+                  More Info
+                </>
+              ) : (
+                <>
+                  <Play className="w-3 h-3" />
+                  Join us
+                </>
+              )}
             </a>
           </div>
         )}

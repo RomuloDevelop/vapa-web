@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { getEvents, getEventsCount, getEventYears } from "@/lib/services/events";
@@ -26,11 +27,13 @@ export default async function AdminEventsPage() {
         </Button>
       </div>
 
-      <EventsTable
-        initialEvents={events}
-        initialTotalCount={totalCount}
-        availableYears={years}
-      />
+      <Suspense>
+        <EventsTable
+          initialEvents={events}
+          initialTotalCount={totalCount}
+          availableYears={years}
+        />
+      </Suspense>
     </div>
   );
 }

@@ -116,7 +116,7 @@ export function AboutSection({ stats = defaultStats }: AboutSectionProps) {
             whileInView="visible"
             viewport={smallViewport}
             transition={staggerDelay(index)}
-            className="flex flex-col gap-4 md:gap-5 flex-1 p-6 md:p-8 lg:p-10 rounded-lg bg-surface"
+            className="flex flex-col gap-4 md:gap-5 flex-1 p-6 md:p-8 lg:p-10 rounded-lg bg-surface-raised"
           >
             <IconWrapper icon={pillar.icon} size="md" variant="muted" />
             <h3 className="text-lg md:text-xl lg:text-[22px] font-semibold text-white">

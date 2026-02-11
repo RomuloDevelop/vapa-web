@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
-import { Calendar, Clock, Play } from "lucide-react";
+import { Calendar, Clock, Play, Info } from "lucide-react";
 import { fadeInUp, staggerDelay, smallViewport, cardHover } from "@/components/utils/animations";
 import { formatDate, getVideoUrl } from "../utils";
 import { getEventTypeLabel, type Event } from "@/lib/database.types";
@@ -48,7 +48,7 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
       transition={animate ? staggerDelay(index) : cardHover.transition}
       whileHover={cardHover.whileHover}
       onTouchStart={handleTouch}
-      className="flex flex-col sm:flex-row bg-surface rounded-xl overflow-hidden relative"
+      className="flex flex-col sm:flex-row bg-surface-elevated rounded-xl overflow-hidden relative"
     >
       {/* Mobile ripple effect */}
       {ripples.map((ripple) => (
@@ -110,6 +110,13 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
           </p>
         )}
 
+        {/* Description */}
+        {event.description && (
+          <p className="text-sm md:text-base text-foreground-muted line-clamp-2">
+            {event.description}
+          </p>
+        )}
+
         {/* Actions */}
         <div className="flex flex-wrap items-center gap-3 mt-1">
           {videoUrl && videoUrl !== "#" && videoUrl !== "#." && (
@@ -119,8 +126,17 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-4 md:px-5 py-2.5 md:py-3 bg-accent text-surface text-xs md:text-sm font-semibold rounded-md hover:opacity-90 transition-opacity"
             >
-              <Play className="w-3.5 h-3.5 md:w-4 md:h-4" />
-              Watch Recording
+              {event.type === "special_event" ? (
+                <>
+                  <Info className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                  More Info
+                </>
+              ) : (
+                <>
+                  <Play className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                  Watch Recording
+                </>
+              )}
             </a>
           )}
         </div>

@@ -22,6 +22,7 @@ export type Database = {
           time: string;
           presenters: string[];
           links: string[];
+          description: string | null;
           created_at: string;
         };
         Insert: {
@@ -33,6 +34,7 @@ export type Database = {
           time: string;
           presenters: string[];
           links: string[];
+          description?: string | null;
           created_at?: string;
         };
         Update: {
@@ -44,6 +46,7 @@ export type Database = {
           time?: string;
           presenters?: string[];
           links?: string[];
+          description?: string | null;
           created_at?: string;
         };
         Relationships: [];

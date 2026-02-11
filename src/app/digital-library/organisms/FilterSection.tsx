@@ -60,9 +60,9 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
                     gap: "8px",
                     padding: "8px 16px",
                     borderRadius: "6px",
-                    border: "1px solid #D4A853",
+                    border: "1px solid var(--color-primary)",
                     backgroundColor: "transparent",
-                    color: "#D4A853",
+                    color: "var(--color-primary)",
                     fontSize: "14px",
                     fontWeight: 500,
                     cursor: "pointer",
@@ -78,7 +78,7 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
                     position: "fixed",
                     inset: 0,
                     zIndex: 50,
-                    backgroundColor: "rgba(0, 0, 0, 0.6)",
+                    backgroundColor: "var(--color-overlay)",
                   }}
                 />
                 <Drawer.Content
@@ -94,8 +94,8 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
                     flexDirection: "column",
                     borderTopLeftRadius: "1rem",
                     borderTopRightRadius: "1rem",
-                    borderTop: "1px solid rgba(212, 168, 83, 0.25)",
-                    backgroundColor: "#0A1628",
+                    borderTop: "1px solid var(--color-border-gold)",
+                    backgroundColor: "var(--color-bg-dark)",
                   }}
                 >
                   {/* Drag handle */}
@@ -105,7 +105,7 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
                       height: "6px",
                       width: "48px",
                       borderRadius: "9999px",
-                      backgroundColor: "rgba(212, 168, 83, 0.5)",
+                      backgroundColor: "var(--color-border-gold-strong)",
                       flexShrink: 0,
                     }}
                   />
@@ -115,7 +115,7 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
                       style={{
                         fontSize: "16px",
                         fontWeight: 600,
-                        color: "white",
+                        color: "var(--color-text-white)",
                       }}
                     >
                       Filter by Year
@@ -149,8 +149,8 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
                           border: "none",
                           cursor: "pointer",
                           backgroundColor:
-                            activeFilter === year ? "#D4A853" : "transparent",
-                          color: activeFilter === year ? "#0A1628" : "white",
+                            activeFilter === year ? "var(--color-primary)" : "transparent",
+                          color: activeFilter === year ? "var(--color-bg-dark)" : "var(--color-text-white)",
                           fontWeight: activeFilter === year ? 600 : 400,
                         }}
                       >
