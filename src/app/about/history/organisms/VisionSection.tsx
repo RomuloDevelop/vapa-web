@@ -27,7 +27,7 @@ export function VisionSection() {
         />
       </div>
       <div className="flex flex-col justify-center gap-4 md:gap-5 p-8 md:p-10 lg:p-12">
-        <span className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]">
+        <span className="text-xs md:text-sm font-semibold text-accent tracking-[2px]">
           CORE VALUE
         </span>
         <h3 className="text-xl md:text-2xl lg:text-[32px] font-bold text-white">

@@ -175,7 +175,7 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
                 className={`px-4 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-medium rounded transition-colors ${
                   activeFilter === year
                     ? "bg-accent text-surface font-semibold"
-                    : "text-foreground-subtle border border-border-accent hover:border-accent hover:text-accent"
+                    : "text-foreground-subtle border border-border-interactive hover:border-accent hover:text-accent"
                 }`}
               >
                 {year}

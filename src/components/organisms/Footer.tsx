@@ -112,19 +112,19 @@ export function Footer() {
 
       {/* Bottom Bar */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 px-5 md:px-10 lg:px-20 py-5 md:py-6 border-t border-border-accent-light">
-        <span className="text-xs md:text-[13px] text-foreground-faint">
+        <span className="text-sm text-foreground-faint">
           © 2025 VAPA. All rights reserved.
         </span>
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 md:gap-8">
           <div className="flex items-center gap-2">
             <MapPin className="w-3.5 h-3.5 text-foreground-faint flex-shrink-0" />
-            <span className="text-xs md:text-[13px] text-foreground-faint">
+            <span className="text-sm text-foreground-faint">
               26009 Budde Rd. Suite A-200, The Woodlands, TX 77380
             </span>
           </div>
           <div className="flex items-center gap-2">
             <Mail className="w-3.5 h-3.5 text-foreground-faint flex-shrink-0" />
-            <span className="text-xs md:text-[13px] text-foreground-faint">
+            <span className="text-sm text-foreground-faint">
               info@vapa-us.org
             </span>
           </div>

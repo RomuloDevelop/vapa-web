@@ -108,40 +108,43 @@ All tokens are defined in `globals.css` under `@theme inline`:
 #### Accent Colors (Gold - draws attention, 10-20% of UI)
 | Token | Utility | Value |
 |-------|---------|-------|
-| Accent | `bg-accent`, `text-accent`, `border-accent` | `#D4A853` |
-| Accent Hover | `bg-accent-hover`, `text-accent-hover` | `#B8923D` |
+| Accent | `bg-accent`, `text-accent`, `border-accent` | `#DCBA60` |
+| Accent Hover | `bg-accent-hover`, `text-accent-hover` | `#C49D48` |
 
 #### Surface Colors (Navy Blue - dominant, 60-70% of UI)
 | Token | Utility | Value |
 |-------|---------|-------|
-| Surface (main) | `bg-surface`, `text-surface` | `#0A1628` |
-| Surface Sunken | `bg-surface-sunken` | `#06101C` |
-| Surface Section | `bg-surface-section` | `#0D1E33` |
-| Surface Elevated | `bg-surface-elevated` | `#1A3352` |
-| Surface Raised | `bg-surface-raised` | `#152D45` |
+| Surface (main) | `bg-surface`, `text-surface` | `#142840` |
+| Surface Sunken | `bg-surface-sunken` | `#0F1E32` |
+| Surface Section | `bg-surface-section` | `#1B3455` |
+| Surface Elevated | `bg-surface-elevated` | `#345A80` |
+| Surface Raised | `bg-surface-raised` | `#224060` |
 
 #### Foreground Colors (Text hierarchy)
 | Token | Utility | Value |
 |-------|---------|-------|
 | Foreground | `text-foreground` | `#FFFFFF` |
-| Foreground Muted | `text-foreground-muted` | `#B8C5D3` |
-| Foreground Subtle | `text-foreground-subtle` | `#8899AA` |
-| Foreground Faint | `text-foreground-faint` | `#6B7A8A` |
+| Foreground Muted | `text-foreground-muted` | `#C2CEDB` |
+| Foreground Subtle | `text-foreground-subtle` | `#ADBCCA` |
+| Foreground Faint | `text-foreground-faint` | `#8FA3B3` |
 
-#### Border Colors (Accent-based with opacity)
-| Token | Utility | Value |
-|-------|---------|-------|
-| Border Accent | `border-border-accent` | `#D4A85340` |
-| Border Accent Light | `border-border-accent-light` | `#D4A85320` |
-| Border Accent Strong | `border-border-accent-strong` | `#D4A85380` |
+#### Border Colors
+| Token | Utility | Value | Usage |
+|-------|---------|-------|-------|
+| Border Interactive | `border-border-interactive` | `#DCBA60` | **Functional** — buttons, inputs, interactive controls (3:1+ on all surfaces) |
+| Border Accent | `border-border-accent` | `#DCBA6040` | Decorative — subtle card edges, non-interactive borders |
+| Border Accent Light | `border-border-accent-light` | `#DCBA6020` | Decorative — dividers, separators |
+| Border Accent Strong | `border-border-accent-strong` | `#DCBA6080` | Decorative — slightly stronger visual accents |
+
+**WCAG SC 1.4.11 Rule**: All interactive element borders (buttons, inputs, form controls) MUST use `border-border-interactive` to meet the 3:1 non-text contrast requirement. The lower-opacity tokens (`border-accent`, `border-accent-light`, `border-accent-strong`) are only for decorative/non-functional borders.
 
 #### Accent Tints (for hover/focus states)
 | Token | Utility | Value |
 |-------|---------|-------|
-| Accent 10% | `bg-accent-10` | `#D4A85310` |
-| Accent 15% | `bg-accent-15` | `#D4A85315` |
-| Accent 20% | `bg-accent-20` | `#D4A85320` |
-| Accent 30% | `bg-accent-30`, `border-accent-30` | `#D4A85330` |
+| Accent 10% | `bg-accent-10` | `#DCBA6010` |
+| Accent 15% | `bg-accent-15` | `#DCBA6015` |
+| Accent 20% | `bg-accent-20` | `#DCBA6020` |
+| Accent 30% | `bg-accent-30`, `border-accent-30` | `#DCBA6030` |
 
 ### Gradient Classes (CSS Classes, not Tailwind)
 
@@ -167,7 +170,7 @@ const [isHovered, setIsHovered] = useState(false);
   onMouseEnter={() => setIsHovered(true)}
   onMouseLeave={() => setIsHovered(false)}
 >
-  <span style={{ color: isHovered ? "#D4A853" : undefined }}>
+  <span style={{ color: isHovered ? "#DCBA60" : undefined }}>
     Link Text
   </span>
 </Link>
@@ -348,32 +351,32 @@ All colors are defined as CSS custom properties in `src/app/globals.css`:
 
 ### Primary Colors (Gold Accent)
 ```css
---color-primary: #D4A853        /* Main gold accent */
---color-primary-dark: #B8923D   /* Darker gold variant */
+--color-primary: #DCBA60        /* Main gold accent */
+--color-primary-dark: #C49D48   /* Darker gold variant */
 ```
 
 ### Background Colors (Blue Primary)
 ```css
---color-bg-surface: #0A1628        /* Main dark blue background */
---color-bg-surfaceer: #06101C      /* Footer/darker sections */
---color-bg-section: #0D1E33     /* Section backgrounds */
+--color-bg-dark: #142840           /* Main dark blue background */
+--color-bg-darker: #0F1E32        /* Footer/darker sections */
+--color-bg-section: #1B3455       /* Section backgrounds */
+--color-bg-content: #284B6B       /* Content sections on interior pages */
+--color-bg-card-dark: #224060     /* Card backgrounds */
 ```
-
-Additional section background: `#1A3352` for content sections on interior pages.
 
 ### Text Colors
 ```css
 --color-text-white: #FFFFFF
---color-text-muted: #B8C5D3     /* Primary body text */
---color-text-secondary: #8899AA /* Secondary text */
---color-text-tertiary: #6B7A8A  /* Subtle text */
+--color-text-muted: #C2CEDB        /* Primary body text */
+--color-text-secondary: #ADBCCA   /* Secondary text */
+--color-text-tertiary: #8FA3B3    /* Subtle text */
 ```
 
 ### Border Colors
 ```css
---color-border-gold: #D4A85340        /* 25% opacity gold */
---color-border-gold-light: #D4A85320  /* 12% opacity gold */
---color-border-gold-strong: #D4A85380 /* 50% opacity gold */
+--color-border-gold: #DCBA6040        /* 25% opacity gold */
+--color-border-gold-light: #DCBA6020  /* 12% opacity gold */
+--color-border-gold-strong: #DCBA6080 /* 50% opacity gold */
 --color-border-white: #FFFFFF40       /* 25% opacity white */
 ```
 
@@ -776,16 +779,16 @@ src/
 
 ## Key Design Rules
 
-1. **Gold accent (#D4A853)** is used for:
+1. **Gold accent (#DCBA60)** is used for:
    - Primary buttons
    - Section labels
    - Active navigation items
    - Decorative borders
 
 2. **Blue backgrounds** create visual hierarchy:
-   - `#0A1628` - Main/darkest (header, cards)
-   - `#1A3352` - Content sections
-   - `#06101C` - Footer
+   - `#142840` - Main/darkest (header, cards)
+   - `#284B6B` - Content sections
+   - `#0F1E32` - Footer
 
 3. **Header gradient variant** should be used when:
    - The page has a hero image immediately below the header

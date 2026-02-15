@@ -100,7 +100,7 @@ function ImageSearchContent({
           </button>
         </div>
         {refinedQuery && (
-          <p className="text-[11px] text-foreground-faint -mt-1">
+          <p className="text-xs text-foreground-faint -mt-1">
             AI refined:{" "}
             <span className="text-foreground-subtle italic">
               &quot;{refinedQuery}&quot;
@@ -158,7 +158,7 @@ function ImageSearchContent({
               ))}
             </div>
 
-            <p className="text-[10px] text-foreground-faint text-center mt-3">
+            <p className="text-xs text-foreground-faint text-center mt-3">
               Photos from{" "}
               <a
                 href="https://unsplash.com/?utm_source=vapa_admin&utm_medium=referral"

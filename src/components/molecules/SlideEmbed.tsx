@@ -40,7 +40,7 @@ export function SlideEmbed({ embedUrl, title }: SlideEmbedProps) {
       </div>
       <button
         onClick={handleFullScreen}
-        className="flex items-center justify-center gap-2 self-end px-4 py-2 rounded border border-border-accent text-accent text-sm font-medium hover:bg-accent-10 transition-colors md:hidden"
+        className="flex items-center justify-center gap-2 self-end px-4 py-2 rounded border border-border-interactive text-accent text-sm font-medium hover:bg-accent-10 transition-colors md:hidden"
       >
         <Maximize2 className="w-4 h-4" />
         Full Screen

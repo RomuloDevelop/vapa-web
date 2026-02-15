@@ -13,10 +13,10 @@ export function TaxBadge() {
         whileInView="visible"
         viewport={defaultViewport}
         transition={defaultTransition}
-        className="flex items-center gap-2.5 px-6 py-3 rounded-full bg-accent-20"
+        className="flex items-center gap-2.5 px-6 py-3 rounded-full bg-surface border border-border-accent"
       >
-        <ShieldCheck className="w-[18px] h-[18px] text-accent" />
-        <span className="text-sm font-medium text-accent">
+        <ShieldCheck className="w-5 h-5 md:w-6 md:h-6 text-accent" />
+        <span className="text-base md:text-lg font-semibold text-accent">
           501(c)(3) Tax-Deductible Organization
         </span>
       </motion.div>

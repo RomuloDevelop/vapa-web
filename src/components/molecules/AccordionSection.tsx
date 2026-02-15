@@ -30,7 +30,7 @@ export function AccordionSection({
         onClick={onToggle}
         className="flex items-center justify-between w-full py-4 lg:hidden"
       >
-        <span className="text-[10px] md:text-[11px] font-semibold text-accent tracking-[1.5px]">
+        <span className="text-xs md:text-sm font-semibold text-accent tracking-[1.5px]">
           {title}
         </span>
         <motion.div
@@ -42,7 +42,7 @@ export function AccordionSection({
       </button>
 
       {/* Desktop: Static header */}
-      <span className="hidden lg:block text-[10px] md:text-[11px] font-semibold text-accent tracking-[1.5px] mb-5">
+      <span className="hidden lg:block text-xs md:text-sm font-semibold text-accent tracking-[1.5px] mb-5">
         {title}
       </span>
 

@@ -42,7 +42,7 @@ export function PageHero({
           initial="hidden"
           animate="visible"
           transition={slowTransition}
-          className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]"
+          className="text-xs md:text-sm font-semibold text-accent tracking-[2px]"
         >
           {label}
         </motion.span>

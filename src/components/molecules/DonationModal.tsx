@@ -48,7 +48,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
 
               {/* Header */}
               <div className="flex flex-col gap-2 pr-8">
-                <span className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]">
+                <span className="text-xs md:text-sm font-semibold text-accent tracking-[2px]">
                   SUPPORT VAPA
                 </span>
                 <h3 className="text-xl md:text-2xl font-bold text-white">
@@ -89,7 +89,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 </a>
                 <button
                   onClick={onClose}
-                  className="flex-1 py-3.5 px-6 border border-border-accent text-foreground-muted text-sm font-medium rounded text-center hover:bg-white/5 transition-colors"
+                  className="flex-1 py-3.5 px-6 border border-border-interactive text-foreground-muted text-sm font-medium rounded text-center hover:bg-white/5 transition-colors"
                 >
                   Maybe Later
                 </button>

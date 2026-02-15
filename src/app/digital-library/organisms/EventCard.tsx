@@ -48,7 +48,7 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
       transition={animate ? staggerDelay(index) : cardHover.transition}
       whileHover={cardHover.whileHover}
       onTouchStart={handleTouch}
-      className="flex flex-col sm:flex-row bg-surface-elevated rounded-xl overflow-hidden relative"
+      className="flex flex-col sm:flex-row bg-surface-elevated shadow-[0_2px_12px_rgba(0,0,0,0.3)] rounded-xl overflow-hidden relative"
     >
       {/* Mobile ripple effect */}
       {ripples.map((ripple) => (
@@ -70,7 +70,7 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
       {/* Content */}
       <div className="flex flex-col gap-3 md:gap-4 p-5 md:p-6 lg:p-8 justify-center">
         {/* Badge */}
-        <span className="px-3 py-1.5 text-[10px] md:text-[11px] font-semibold tracking-[1px] text-accent bg-accent-20 rounded-full w-fit">
+        <span className="px-3 py-1.5 text-xs md:text-sm font-semibold tracking-[1px] text-accent bg-accent-20 rounded-full w-fit">
           {getEventTypeLabel(event.type).toUpperCase()}
         </span>
 

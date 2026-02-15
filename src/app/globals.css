@@ -31,8 +31,8 @@
   /* --- Colors: Text --- */
   --color-text-white: #FFFFFF;
   --color-text-muted: #C2CEDB;
-  --color-text-secondary: #95A7B8;
-  --color-text-tertiary: #7A8C9C;
+  --color-text-secondary: #ADBCCA;
+  --color-text-tertiary: #8FA3B3;
 
   /* --- Colors: Borders --- */
   --color-border-gold: #DCBA6040;
@@ -90,12 +90,12 @@
   --secondary: #284B6B;
   --secondary-foreground: #FFFFFF;
   --muted: #284B6B;
-  --muted-foreground: #95A7B8;
+  --muted-foreground: #ADBCCA;
   --accent: #DCBA6015;
   --accent-foreground: #FFFFFF;
   --destructive: oklch(0.577 0.245 27.325);
   --border: #DCBA6020;
-  --input: #DCBA6020;
+  --input: #DCBA60;
   --ring: #DCBA60;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -162,20 +162,23 @@
   --color-surface: #142840;
   --color-surface-sunken: #0F1E32;
   --color-surface-section: #1B3455;
-  --color-surface-elevated: #284B6B;
+  --color-surface-elevated: #345A80;
   --color-surface-raised: #224060;
 
   /* FOREGROUND COLORS (Text hierarchy) */
   --color-foreground: #FFFFFF;
   --color-foreground-muted: #C2CEDB;
-  --color-foreground-subtle: #95A7B8;
-  --color-foreground-faint: #7A8C9C;
+  --color-foreground-subtle: #ADBCCA;
+  --color-foreground-faint: #8FA3B3;
 
   /* BORDER COLORS (Accent-based with opacity) */
   --color-border-accent: #DCBA6040;
   --color-border-accent-light: #DCBA6020;
   --color-border-accent-strong: #DCBA6080;
   --color-border-white: #FFFFFF40;
+
+  /* FUNCTIONAL BORDER (solid gold, 3:1+ on all surfaces — WCAG SC 1.4.11) */
+  --color-border-interactive: #DCBA60;
 
   /* ACCENT TINTS (hover/focus states) */
   --color-accent-10: #DCBA6010;
@@ -232,7 +235,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring;
   }
 
   html, body {

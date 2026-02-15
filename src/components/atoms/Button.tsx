@@ -28,9 +28,9 @@ const variantClasses: Record<ButtonVariant, string> = {
   primary:
     "bg-accent text-surface font-semibold hover:opacity-90",
   secondary:
-    "text-white font-medium border border-border-accent-strong bg-black/20 backdrop-blur-sm hover:bg-white/10",
+    "text-white font-medium border border-border-interactive bg-black/20 backdrop-blur-sm hover:bg-white/10",
   outline:
-    "border border-border-accent text-accent hover:bg-accent-10",
+    "border border-border-interactive text-accent hover:bg-accent-10",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {

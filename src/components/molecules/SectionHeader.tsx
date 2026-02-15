@@ -34,7 +34,7 @@ export function SectionHeader({
           whileInView={animate ? "visible" : undefined}
           viewport={animate ? defaultViewport : undefined}
           transition={animate ? defaultTransition : undefined}
-          className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px] uppercase"
+          className="text-xs md:text-sm font-semibold text-accent tracking-[2px] uppercase"
         >
           {label}
         </motion.span>

@@ -19,10 +19,10 @@ export default async function WebinarsPage() {
         height={350}
       />
 
-      <section className="flex flex-col items-center gap-10 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-12 md:py-16 lg:py-20 bg-surface-raised">
+      <section className="flex flex-col items-center gap-10 md:gap-14 lg:gap-16 px-5 md:px-10 lg:px-20 py-12 md:py-16 lg:py-20 bg-surface">
         <div className="w-full lg:w-[60vw] lg:min-w-[600px] lg:max-w-[1000px] flex flex-col gap-8 md:gap-12">
           <div className="flex flex-col gap-2 md:gap-4">
-            <span className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]">
+            <span className="text-xs md:text-sm font-semibold text-accent tracking-[2px]">
               RECENT WEBINARS
             </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white">

@@ -32,7 +32,7 @@ const benefits = [
 
 export function BenefitsSection() {
   return (
-    <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface-raised">
+    <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface">
       <SectionHeader
         label="WHY JOIN VAPA"
         title="Membership Benefits"

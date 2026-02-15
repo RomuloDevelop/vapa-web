@@ -112,7 +112,7 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
 
   return (
     <div id={id} className={`flex flex-col gap-4 scroll-mt-8 ${className}`}>
-      <span className="text-[10px] md:text-[11px] font-semibold text-accent tracking-[1.5px]">
+      <span className="text-xs md:text-sm font-semibold text-accent tracking-[1.5px]">
         QUICK CONTACT
       </span>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -129,11 +129,11 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
               className={`w-full px-3.5 py-3 text-[13px] text-white placeholder:text-foreground-faint bg-surface border rounded-md focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.email
                   ? "border-red-500 focus:border-red-500"
-                  : "border-border-accent-light focus:border-accent"
+                  : "border-border-interactive focus:border-accent"
               }`}
             />
             {errors.email && (
-              <span className="text-[11px] text-red-500 font-medium">{errors.email}</span>
+              <span className="text-xs text-red-500 font-medium">{errors.email}</span>
             )}
           </div>
 
@@ -161,11 +161,11 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
               className={`w-full px-3.5 py-3 text-[13px] text-white placeholder:text-foreground-faint bg-surface border rounded-md resize-none focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.message
                   ? "border-red-500 focus:border-red-500"
-                  : "border-border-accent-light focus:border-accent"
+                  : "border-border-interactive focus:border-accent"
               }`}
             />
             {errors.message && (
-              <span className="text-[11px] text-red-500 font-medium">{errors.message}</span>
+              <span className="text-xs text-red-500 font-medium">{errors.message}</span>
             )}
           </div>
 

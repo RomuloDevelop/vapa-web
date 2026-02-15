@@ -86,7 +86,7 @@ function TierCard({
       }`}
     >
       {tier.popular && (
-        <span className="px-3 py-1.5 text-[10px] font-bold tracking-wider text-surface bg-accent rounded-full">
+        <span className="px-3 py-1.5 text-xs font-bold tracking-wider text-surface bg-accent rounded-full">
           MAKE A DIFFERENCE
         </span>
       )}
@@ -124,7 +124,7 @@ function TierCard({
         className={`w-full py-2.5 text-sm font-semibold text-center rounded-md transition-colors ${
           tier.popular
             ? "bg-accent text-surface hover:opacity-90"
-            : "border border-border-accent text-accent hover:bg-accent-10"
+            : "border border-border-interactive text-accent hover:bg-accent-10"
         }`}
       >
         {tier.popular ? "Donate Now" : "Donate"}

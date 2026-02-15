@@ -59,7 +59,7 @@ export function PricingCard({
       } ${className}`}
     >
       {popular && (
-        <span className="px-4 py-2 text-[11px] font-bold tracking-wider text-surface bg-accent rounded-full">
+        <span className="px-4 py-2 text-xs font-bold tracking-wider text-surface bg-accent rounded-full">
           {isDonation ? "POPULAR" : "MOST POPULAR"}
         </span>
       )}
@@ -114,7 +114,7 @@ export function PricingCard({
         className={`w-full py-4 text-[15px] font-semibold text-center rounded-lg transition-colors ${
           popular
             ? "bg-accent text-surface hover:opacity-90"
-            : "border border-border-accent text-accent hover:bg-accent-10"
+            : "border border-border-interactive text-accent hover:bg-accent-10"
         }`}
       >
         {buttonText}

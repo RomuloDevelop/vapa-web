@@ -94,7 +94,7 @@ function EventCardInternal({
   return (
     <motion.div
       ref={cardRef}
-      className={`flex flex-col h-full rounded-lg bg-surface-section overflow-hidden relative ${className}`}
+      className={`flex flex-col h-full rounded-lg bg-surface-elevated shadow-[0_2px_12px_rgba(0,0,0,0.3)] overflow-hidden relative ${className}`}
       whileHover={{ y: -8, boxShadow: "var(--shadow-card-hover-lg)" }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       onTouchStart={handleTouch}
@@ -116,7 +116,7 @@ function EventCardInternal({
       <div className="flex flex-col gap-3 md:gap-4 p-5 md:p-7 flex-1">
         <div className="flex items-center gap-2">
           <Calendar className="w-3.5 h-3.5 text-accent" />
-          <span className="text-xs md:text-[13px] font-medium text-accent">
+          <span className="text-sm font-medium text-accent">
             {formatDate(event.date)}
           </span>
         </div>
@@ -140,7 +140,7 @@ function EventCardInternal({
           {isClamped && (
             <button
               onClick={() => setExpanded(!expanded)}
-              className="text-xs text-accent hover:underline mt-1"
+              className="text-sm text-accent hover:underline mt-1"
             >
               {expanded ? "less" : "more"}
             </button>
@@ -149,13 +149,13 @@ function EventCardInternal({
         {event.time && (
           <div className="flex items-center gap-2">
             <Clock className="w-3.5 h-3.5 text-foreground-muted" />
-            <span className="text-xs md:text-[13px] text-foreground-muted">
+            <span className="text-sm text-foreground-muted">
               {event.time}
             </span>
           </div>
         )}
         {event.description && (
-          <p className="text-xs md:text-[13px] text-foreground-muted line-clamp-2">
+          <p className="text-sm text-foreground-muted line-clamp-2">
             {event.description}
           </p>
         )}
@@ -165,7 +165,7 @@ function EventCardInternal({
               href={eventLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-medium text-accent hover:underline"
+              className="flex items-center gap-1.5 text-sm font-medium text-accent hover:underline"
             >
               {event.type === "special_event" ? (
                 <>
@@ -255,7 +255,7 @@ export function EventsSection({ events, specialEvents = [] }: EventsSectionProps
             whileInView="visible"
             viewport={defaultViewport}
             transition={slowTransition}
-            className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]"
+            className="text-xs md:text-sm font-semibold text-accent tracking-[2px]"
           >
             UPCOMING EVENTS
           </motion.span>
@@ -279,7 +279,7 @@ export function EventsSection({ events, specialEvents = [] }: EventsSectionProps
         >
           <Link
             href="/digital-library"
-            className="flex items-center justify-center sm:justify-start gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded border border-border-accent hover:bg-white/5 transition-colors w-full sm:w-auto"
+            className="flex items-center justify-center sm:justify-start gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded border border-border-interactive hover:bg-white/5 transition-colors w-full sm:w-auto"
           >
             <span className="text-sm font-medium text-accent">
               View All Events

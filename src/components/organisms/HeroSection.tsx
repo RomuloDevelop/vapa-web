@@ -114,7 +114,7 @@ export function HeroSection() {
       <button
         onClick={handlePrev}
         aria-label="Previous slide"
-        className="hidden lg:flex absolute left-5 top-1/2 z-30 w-12 h-12 items-center justify-center rounded border border-border-accent-strong text-white cursor-pointer"
+        className="hidden lg:flex absolute left-5 top-1/2 z-30 w-12 h-12 items-center justify-center rounded border border-border-interactive text-white cursor-pointer"
         style={{
           background: "rgba(0, 0, 0, 0.2)",
           backdropFilter: "blur(4px)",
@@ -133,7 +133,7 @@ export function HeroSection() {
       <button
         onClick={handleNext}
         aria-label="Next slide"
-        className="hidden lg:flex absolute right-5 top-1/2 z-30 w-12 h-12 items-center justify-center rounded border border-border-accent-strong text-white cursor-pointer"
+        className="hidden lg:flex absolute right-5 top-1/2 z-30 w-12 h-12 items-center justify-center rounded border border-border-interactive text-white cursor-pointer"
         style={{
           background: "rgba(0, 0, 0, 0.2)",
           backdropFilter: "blur(4px)",
@@ -161,7 +161,7 @@ export function HeroSection() {
           className="flex items-center gap-2 px-4 md:px-5 py-2 rounded-[20px] border border-border-accent w-fit pointer-events-auto"
         >
           <div className="w-2 h-2 rounded-full bg-accent" />
-          <span className="text-xs md:text-[13px] font-medium text-accent">
+          <span className="text-sm font-medium text-accent">
             Established 2019 • Texas, USA
           </span>
         </motion.div>

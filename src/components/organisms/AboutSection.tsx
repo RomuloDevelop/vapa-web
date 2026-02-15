@@ -55,7 +55,7 @@ export function AboutSection({ stats = defaultStats }: AboutSectionProps) {
           whileInView="visible"
           viewport={defaultViewport}
           transition={slowTransition}
-          className="text-[10px] md:text-xs font-semibold text-accent tracking-[2px]"
+          className="text-xs md:text-sm font-semibold text-accent tracking-[2px]"
         >
           ABOUT VAPA
         </motion.span>

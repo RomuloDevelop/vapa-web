@@ -31,7 +31,7 @@ export function MissionSection({ viewport = defaultViewport }: MissionSectionPro
         transition={slowTransition}
         className="flex flex-col gap-6 md:gap-8 flex-1"
       >
-        <span className="inline-flex px-4 py-2 rounded-full bg-accent-20 text-[10px] md:text-xs font-semibold text-accent tracking-[1.5px] w-fit">
+        <span className="inline-flex px-4 py-2 rounded-full bg-accent-20 text-xs md:text-sm font-semibold text-accent tracking-[1.5px] w-fit">
           OUR MISSION
         </span>
         <h2 className="text-2xl md:text-3xl lg:text-[32px] font-bold text-white leading-[1.2]">
@@ -60,7 +60,7 @@ export function MissionSection({ viewport = defaultViewport }: MissionSectionPro
         transition={{ ...slowTransition, delay: 0.1 }}
         className="flex flex-col gap-6 md:gap-8 flex-1"
       >
-        <span className="inline-flex px-4 py-2 rounded-full bg-accent-20 text-[10px] md:text-xs font-semibold text-accent tracking-[1.5px] w-fit">
+        <span className="inline-flex px-4 py-2 rounded-full bg-accent-20 text-xs md:text-sm font-semibold text-accent tracking-[1.5px] w-fit">
           OUR VISION
         </span>
         <h2 className="text-2xl md:text-3xl lg:text-[32px] font-bold text-white leading-[1.2]">

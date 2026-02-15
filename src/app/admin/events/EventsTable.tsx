@@ -341,7 +341,7 @@ export function EventsTable({
                     </p>
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                       <span className="text-xs text-foreground-subtle">{formatDate(event.date)}</span>
-                      <Badge variant="outline" className="border-accent-30 text-accent bg-accent-10 text-[10px] px-1.5 py-0">
+                      <Badge variant="outline" className="border-accent-30 text-accent bg-accent-10 text-xs px-1.5 py-0">
                         {getEventTypeLabel(event.type)}
                       </Badge>
                     </div>

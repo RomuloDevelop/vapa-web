@@ -94,15 +94,15 @@ function MembershipCard({
         <span className="text-lg text-foreground-subtle mb-1">/year</span>
       </div>
 
-      <p className="text-[15px] text-foreground-muted text-center leading-relaxed max-w-[280px]">
+      <p className="text-base md:text-[17px] text-foreground-muted text-center leading-relaxed max-w-[280px]">
         {plan.description}
       </p>
 
       <div className="flex flex-col gap-4 w-full flex-grow">
         {plan.features.map((feature, i) => (
           <div key={i} className="flex items-center gap-3">
-            <Check className="w-[18px] h-[18px] text-accent" />
-            <span className="text-[15px] text-foreground-muted">
+            <Check className="w-5 h-5 text-accent" />
+            <span className="text-base md:text-[17px] text-foreground-muted">
               {feature}
             </span>
           </div>
@@ -113,7 +113,7 @@ function MembershipCard({
         href={MEMBERSHIP_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full py-4 text-[15px] font-semibold text-center rounded-lg transition-colors border border-border-accent-strong text-accent hover:bg-accent-10"
+        className="w-full py-4 text-base font-semibold text-center rounded-lg transition-colors border border-border-interactive text-accent hover:bg-accent-10"
       >
         {plan.buttonText}
       </a>

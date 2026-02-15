@@ -162,7 +162,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
         className={`w-10 h-10 rounded text-sm font-medium transition-colors ${
           currentPage === page
             ? "bg-accent text-surface"
-            : "border border-border-accent text-foreground-muted hover:border-accent hover:text-accent"
+            : "border border-border-interactive text-foreground-muted hover:border-accent hover:text-accent"
         }`}
         aria-label={`Page ${page}`}
         aria-current={currentPage === page ? "page" : undefined}
@@ -178,7 +178,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
       <button
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         disabled={currentPage === 1}
-        className="p-2 rounded border border-border-accent text-foreground-muted hover:border-accent hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-border-accent disabled:hover:text-foreground-muted transition-colors"
+        className="p-2 rounded border border-border-interactive text-foreground-muted hover:border-accent hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-border-interactive disabled:hover:text-foreground-muted transition-colors"
         aria-label="Previous page"
       >
         <ChevronLeft className="w-5 h-5" />
@@ -198,7 +198,7 @@ function Pagination({ currentPage, totalPages, onPageChange }: PaginationProps) 
       <button
         onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
         disabled={currentPage === totalPages}
-        className="p-2 rounded border border-border-accent text-foreground-muted hover:border-accent hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-border-accent disabled:hover:text-foreground-muted transition-colors"
+        className="p-2 rounded border border-border-interactive text-foreground-muted hover:border-accent hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-border-interactive disabled:hover:text-foreground-muted transition-colors"
         aria-label="Next page"
       >
         <ChevronRight className="w-5 h-5" />
