@@ -1,10 +1,16 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Linkedin, Instagram, Youtube } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
-import { navigationConfig, MEMBERSHIP_URL, type NavItem, type NavSubItem } from "@/config/navigation";
+import { navigationConfig, MEMBERSHIP_URL, socialLinks, type NavItem, type NavSubItem } from "@/config/navigation";
+
+const socialIconMap = {
+  linkedin: Linkedin,
+  instagram: Instagram,
+  youtube: Youtube,
+} as const;
 
 interface HeaderProps {
   variant?: "solid" | "gradient";
@@ -526,17 +532,42 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             {navigationConfig.map((item) => renderDesktopNavItem(item))}
           </nav>
 
-          {/* Desktop CTA Button */}
-          <a
-            href={MEMBERSHIP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`hidden lg:block px-5 lg:px-7 py-3 lg:py-3.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity bg-accent text-surface ${
-              showJoinButton ? "" : "invisible"
-            }`}
-          >
-            Join VAPA
-          </a>
+          {/* Desktop Social + CTA */}
+          <div className="hidden lg:flex items-center gap-5">
+            {/* Social Icons */}
+            <div className="flex items-center gap-2">
+              {socialLinks.map((social) => {
+                const Icon = socialIconMap[social.icon];
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    className="flex items-center justify-center w-8 h-8 rounded-md text-foreground-muted hover:text-accent transition-colors"
+                  >
+                    <Icon className="w-4 h-4" />
+                  </a>
+                );
+              })}
+            </div>
+
+            {/* Divider */}
+            <div className="w-px h-6 bg-border-accent-light" />
+
+            {/* CTA Button */}
+            <a
+              href={MEMBERSHIP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`px-5 lg:px-7 py-3 lg:py-3.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity bg-accent text-surface ${
+                showJoinButton ? "" : "invisible"
+              }`}
+            >
+              Join VAPA
+            </a>
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -586,8 +617,27 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                   {navigationConfig.map((item, index) => renderMobileNavItem(item, index))}
                 </nav>
 
-                {/* CTA Button */}
-                <div className="px-6 py-6 mt-auto">
+                {/* Social Links + CTA Button */}
+                <div className="px-6 py-6 mt-auto flex flex-col gap-5">
+                  {/* Social Icons */}
+                  <div className="flex items-center gap-3">
+                    {socialLinks.map((social) => {
+                      const Icon = socialIconMap[social.icon];
+                      return (
+                        <a
+                          key={social.label}
+                          href={social.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={social.label}
+                          className="flex items-center justify-center w-10 h-10 rounded-md border border-accent-30 hover:border-accent text-accent transition-colors"
+                        >
+                          <Icon className="w-4 h-4" />
+                        </a>
+                      );
+                    })}
+                  </div>
+
                   <a
                     href={MEMBERSHIP_URL}
                     target="_blank"

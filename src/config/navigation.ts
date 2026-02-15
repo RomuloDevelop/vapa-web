@@ -70,7 +70,24 @@ export const navigationConfig: NavItem[] = [
   },
   {
     label: "Digital Library",
-    href: "/digital-library",
+    href: "",
+    children: [
+      {
+        label: "Webinars",
+        href: "/digital-library/webinars",
+        description: "Recordings and materials from past webinars.",
+      },
+      {
+        label: "References",
+        href: "/digital-library/references",
+        description: "Reference documents and technical resources.",
+      },
+      {
+        label: "Presentations",
+        href: "/digital-library/presentations",
+        description: "Slides and materials from presentations.",
+      },
+    ],
   },
   {
     label: "Contact",
@@ -81,3 +98,15 @@ export const navigationConfig: NavItem[] = [
 
 export const MEMBERSHIP_URL =
   "https://www.memberplanet.com/Groups/GroupJoinLoginNew.aspx?ISPUB=true&invitee=p7vh47274p43y&mid";
+
+export interface SocialLink {
+  label: string;
+  icon: "linkedin" | "instagram" | "youtube";
+  href: string;
+}
+
+export const socialLinks: SocialLink[] = [
+  { label: "LinkedIn", icon: "linkedin", href: "https://www.linkedin.com/company/40898534/" },
+  { label: "Instagram", icon: "instagram", href: "https://www.instagram.com/vapa.us/" },
+  { label: "YouTube", icon: "youtube", href: "https://www.youtube.com/channel/UCT5ejHEYwbGAadcQ7ttmAwA" },
+];

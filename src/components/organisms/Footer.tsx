@@ -3,6 +3,13 @@
 import { useState } from "react";
 import { Linkedin, Instagram, Youtube, MapPin, Mail } from "lucide-react";
 import { AccordionSection, ContactForm } from "../molecules";
+import { socialLinks } from "@/config/navigation";
+
+const socialIconMap = {
+  linkedin: Linkedin,
+  instagram: Instagram,
+  youtube: Youtube,
+} as const;
 
 const footerLinks = {
   organization: {
@@ -34,11 +41,6 @@ const footerLinks = {
   },
 };
 
-const socialLinks = [
-  { icon: Linkedin, href: "https://www.linkedin.com/company/40898534/" },
-  { icon: Instagram, href: "https://www.instagram.com/vapa.us/" },
-  { icon: Youtube, href: "https://www.youtube.com/channel/UCT5ejHEYwbGAadcQ7ttmAwA" },
-];
 
 export function Footer() {
   const [openSection, setOpenSection] = useState<string | null>(null);
@@ -75,15 +77,21 @@ export function Footer() {
 
           {/* Social Links */}
           <div className="flex gap-3 md:gap-4">
-            {socialLinks.map((social, index) => (
-              <a
-                key={index}
-                href={social.href}
-                className="flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-md border border-accent-30 hover:border-accent transition-colors"
-              >
-                <social.icon className="w-4 h-4 md:w-5 md:h-5 text-accent" />
-              </a>
-            ))}
+            {socialLinks.map((social) => {
+              const Icon = socialIconMap[social.icon];
+              return (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className="flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-md border border-accent-30 hover:border-accent transition-colors"
+                >
+                  <Icon className="w-4 h-4 md:w-5 md:h-5 text-accent" />
+                </a>
+              );
+            })}
           </div>
         </div>
 
