@@ -81,7 +81,7 @@ function TierCard({
         tier.popular
           ? "bg-surface border-2 border-accent"
           : index % 2 === 1
-            ? "bg-surface-section"
+            ? "bg-surface-sunken"
             : "bg-surface"
       }`}
     >
