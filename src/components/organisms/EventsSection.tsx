@@ -205,8 +205,9 @@ function EventsGrid({ events }: { events: Event[] }) {
           centeredSlides={false}
           pagination={{
             clickable: true,
-            bulletClass: "swiper-pagination-bullet !bg-accent !opacity-30",
-            bulletActiveClass: "!opacity-100",
+            bulletClass:
+              "swiper-pagination-bullet !bg-accent !opacity-30 !w-6 !h-[3px] !rounded-full",
+            bulletActiveClass: "!opacity-100 !w-10",
           }}
           autoplay={{
             delay: 4000,

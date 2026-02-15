@@ -83,51 +83,6 @@ export function AboutSection({ stats = defaultStats }: AboutSectionProps) {
           development of the energy sector.
         </motion.p>
       </div>
-
-      {/* Stats */}
-      <div className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6 lg:gap-10 w-full">
-        {stats.map((stat, index) => (
-          <motion.div
-            key={stat.label}
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={defaultViewport}
-            transition={staggerDelay(index)}
-            className="flex flex-col items-center gap-2 px-8 sm:px-10 md:px-[60px] py-6 md:py-10 rounded border border-border-accent-light"
-          >
-            <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-accent">
-              {stat.value}
-            </span>
-            <span className="text-xs md:text-sm font-medium text-foreground-muted">
-              {stat.label}
-            </span>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Pillars */}
-      <div className="flex flex-col md:flex-row gap-4 md:gap-6 w-full">
-        {pillars.map((pillar, index) => (
-          <motion.div
-            key={pillar.title}
-            variants={fadeInUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={smallViewport}
-            transition={staggerDelay(index)}
-            className="flex flex-col gap-4 md:gap-5 flex-1 p-6 md:p-8 lg:p-10 rounded-lg bg-surface-raised"
-          >
-            <IconWrapper icon={pillar.icon} size="md" variant="muted" />
-            <h3 className="text-lg md:text-xl lg:text-[22px] font-semibold text-white">
-              {pillar.title}
-            </h3>
-            <p className="text-sm md:text-[15px] text-foreground-subtle leading-[1.6]">
-              {pillar.description}
-            </p>
-          </motion.div>
-        ))}
-      </div>
     </section>
   );
 }

@@ -141,7 +141,7 @@ export function DonationTiersSection() {
       <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface-elevated">
         <SectionHeader
           label="GIVING LEVELS"
-          title="Choose Your Impact Level"
+          title="Select Your Impact Level"
           subtitle="Every contribution makes a difference. Select a giving level that works for you."
           align="center"
         />

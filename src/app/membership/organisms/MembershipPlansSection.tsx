@@ -126,7 +126,7 @@ export function MembershipPlansSection() {
     <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface-elevated">
       <SectionHeader
         label="MEMBERSHIP PLANS"
-        title="Choose Your Membership"
+        title="Select Your Annual Membership"
         subtitle="Join VAPA and gain access to exclusive events, educational resources, and networking opportunities"
         align="center"
       />

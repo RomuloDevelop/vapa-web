@@ -52,7 +52,7 @@ export function CTASection() {
             transition={{ ...slowTransition, delay: 0.1 }}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-[52px] font-bold text-white text-center"
           >
-            Become a VAPA Member Today
+            Why Join VAPA?
           </motion.h2>
           <motion.div
             variants={fadeInUp}

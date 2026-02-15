@@ -1,14 +1,26 @@
+/* ============================================================
+   IMPORTS
+   ============================================================ */
+
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./styles/utilities.css";
+@import "./styles/components.css";
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================================
+   1. CSS VARIABLES
+   Design tokens used by components via var() references.
+   Organized by category: colors, typography, spacing, effects.
+   ============================================================ */
+
 :root {
-  /* Primary Colors */
+  /* --- Colors: Primary --- */
   --color-primary: #DCBA60;
   --color-primary-dark: #C49D48;
 
-  /* Background Colors */
+  /* --- Colors: Backgrounds --- */
   --color-bg-dark: #142840;
   --color-bg-darker: #0F1E32;
   --color-bg-section: #1B3455;
@@ -16,38 +28,38 @@
   --color-bg-content-alpha: rgba(40, 75, 107, 0.92);
   --color-bg-card-dark: #224060;
 
-  /* Text Colors */
+  /* --- Colors: Text --- */
   --color-text-white: #FFFFFF;
   --color-text-muted: #C2CEDB;
   --color-text-secondary: #95A7B8;
   --color-text-tertiary: #7A8C9C;
 
-  /* Border Colors */
+  /* --- Colors: Borders --- */
   --color-border-gold: #DCBA6040;
   --color-border-gold-light: #DCBA6020;
   --color-border-gold-strong: #DCBA6080;
   --color-border-white: #FFFFFF40;
 
-  /* Hover/Background Tints */
+  /* --- Colors: Tints (hover/focus states) --- */
   --color-gold-tint: #DCBA6010;
   --color-gold-tint-15: #DCBA6015;
   --color-gold-tint-20: #DCBA6020;
   --color-gold-tint-30: #DCBA6030;
 
-  /* Overlay Colors */
+  /* --- Colors: Overlays --- */
   --color-overlay: rgba(0, 0, 0, 0.6);
 
-  /* Shadow Tokens */
-  --shadow-card-hover: 0 8px 16px rgba(0, 0, 0, 0.25);
-  --shadow-card-hover-lg: 0 12px 24px rgba(0, 0, 0, 0.3);
-
-  /* Gradients */
+  /* --- Gradients --- */
   --gradient-gold: linear-gradient(135deg, #DCBA60 0%, #C49D48 100%);
   --gradient-header: linear-gradient(180deg, #142840 0%, #142840 40%, transparent 100%);
   --gradient-hero-overlay: linear-gradient(180deg, #142840 0%, rgba(20, 40, 64, 0.5) 40%, rgba(20, 40, 64, 0) 70%);
   --gradient-page-hero: linear-gradient(180deg, #142840 0%, #142840CC 50%, #14284080 100%);
 
-  /* Typography Scale */
+  /* --- Shadows --- */
+  --shadow-card-hover: 0 8px 16px rgba(0, 0, 0, 0.25);
+  --shadow-card-hover-lg: 0 12px 24px rgba(0, 0, 0, 0.3);
+
+  /* --- Typography Scale --- */
   --font-size-xs: 10px;
   --font-size-sm: 13px;
   --font-size-base: 15px;
@@ -56,7 +68,7 @@
   --font-size-2xl: 32px;
   --font-size-3xl: 42px;
 
-  /* Spacing Scale */
+  /* --- Spacing Scale --- */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -64,6 +76,8 @@
   --space-6: 24px;
   --space-8: 32px;
   --space-10: 40px;
+
+  /* --- shadcn/ui Tokens --- */
   --radius: 0.625rem;
   --background: #1B3455;
   --foreground: #FFFFFF;
@@ -98,81 +112,80 @@
   --sidebar-ring: #DCBA60;
 }
 
-@layer base {
-  html, body {
-    height: 100%;
-    scrollbar-width: thin;
-  }
-
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.35);
-    border-radius: 3px;
-  }
-
-  .font-primary {
-    font-family: "Outfit", sans-serif;
-  }
-
-  button, a {
-    cursor: pointer;
-  }
+/* --- Dark Mode Overrides (shadcn/ui) --- */
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* ============================================================
+   2. TAILWIND THEME TOKENS
+   Exposed as native Tailwind utilities (e.g. bg-accent, text-surface).
+   Safari-compatible: use these instead of var() in class names.
+   ============================================================ */
+
 @theme inline {
-  /* ============================================
-     VAPA DESIGN TOKENS (Semantic Naming)
-
-     COLOR THEORY:
-     - Surface (navy blue): Primary/dominant color (60-70% of UI)
-     - Accent (gold): Draws attention, CTAs (10-20% of UI)
-     - Foreground: Text hierarchy on dark backgrounds
-
-     Safari-compatible: Use native utilities, not var()
-     ============================================ */
-
-  /* ACCENT COLORS (Gold - draws attention) */
+  /* ACCENT COLORS (Gold - draws attention, 10-20% of UI) */
   --color-accent: #DCBA60;
   --color-accent-hover: #C49D48;
 
-  /* SURFACE COLORS (Blue - dominant background) */
-  --color-surface: #142840;           /* Main background */
-  --color-surface-sunken: #0F1E32;    /* Footer, deeper areas */
-  --color-surface-section: #1B3455;   /* Section backgrounds */
-  --color-surface-elevated: #284B6B;  /* Cards, content sections */
-  --color-surface-raised: #224060;    /* Elevated cards */
+  /* SURFACE COLORS (Navy blue - dominant, 60-70% of UI) */
+  --color-surface: #142840;
+  --color-surface-sunken: #0F1E32;
+  --color-surface-section: #1B3455;
+  --color-surface-elevated: #284B6B;
+  --color-surface-raised: #224060;
 
   /* FOREGROUND COLORS (Text hierarchy) */
-  --color-foreground: #FFFFFF;        /* Primary text */
-  --color-foreground-muted: #C2CEDB;  /* Secondary text */
-  --color-foreground-subtle: #95A7B8; /* Tertiary text */
-  --color-foreground-faint: #7A8C9C;  /* Disabled/hint text */
+  --color-foreground: #FFFFFF;
+  --color-foreground-muted: #C2CEDB;
+  --color-foreground-subtle: #95A7B8;
+  --color-foreground-faint: #7A8C9C;
 
   /* BORDER COLORS (Accent-based with opacity) */
-  --color-border-accent: #DCBA6040;        /* 25% opacity */
-  --color-border-accent-light: #DCBA6020;  /* 12% opacity */
-  --color-border-accent-strong: #DCBA6080; /* 50% opacity */
+  --color-border-accent: #DCBA6040;
+  --color-border-accent-light: #DCBA6020;
+  --color-border-accent-strong: #DCBA6080;
   --color-border-white: #FFFFFF40;
 
-  /* ACCENT TINTS (for hover/focus states) */
+  /* ACCENT TINTS (hover/focus states) */
   --color-accent-10: #DCBA6010;
   --color-accent-15: #DCBA6015;
   --color-accent-20: #DCBA6020;
   --color-accent-30: #DCBA6030;
 
-  /* ============================================
-     SHADCN UI TOKENS (for shadcn components)
+  /* SHADCN UI TOKENS (mapped from :root variables)
      Note: --color-accent is NOT redefined here to
-     preserve our gold accent color (#DCBA60)
-     ============================================ */
+     preserve our gold accent color (#DCBA60) */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -212,163 +225,44 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
+/* ============================================================
+   3. BASE STYLES
+   Global resets, scrollbar, typography, and default behaviors.
+   ============================================================ */
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
+  html, body {
+    height: 100%;
+    scrollbar-width: thin;
+  }
+
   body {
     @apply bg-background text-foreground;
   }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 3px;
+  }
+
+  .font-primary {
+    font-family: "Outfit", sans-serif;
+  }
+
+  button, a {
+    cursor: pointer;
+  }
 }
-
-/* ============================================
-   UTILITY CLASSES (Safari-compatible gradients)
-   ============================================ */
-
-/* Accent gradient background - use instead of inline gradient styles */
-.bg-gradient-accent {
-  background: linear-gradient(135deg, #DCBA60 0%, #C49D48 100%);
-}
-
-/* Header gradient (fades to transparent) */
-.bg-gradient-header {
-  background: linear-gradient(180deg, #142840 0%, #142840 40%, transparent 100%);
-}
-
-/* Hero overlay gradient */
-.bg-gradient-hero-overlay {
-  background: linear-gradient(180deg, #142840 0%, rgba(20, 40, 64, 0.5) 40%, rgba(20, 40, 64, 0) 70%);
-}
-
-/* Page hero gradient */
-.bg-gradient-page-hero {
-  background: linear-gradient(180deg, #142840 0%, #142840CC 50%, #14284080 100%);
-}
-
-/* Vision section gradient (surface → elevated) */
-.bg-gradient-vision {
-  background: linear-gradient(180deg, #142840 0%, #284B6B 100%);
-}
-
-/* CTA overlay gradient (surface with opacity) */
-.bg-gradient-cta-overlay {
-  background: linear-gradient(90deg, rgba(20, 40, 64, 0.9) 0%, rgba(27, 52, 85, 0.8) 100%);
-}
-
-/* Text drop shadow for readability over images */
-.drop-shadow-text {
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
-}
-
-/* Popover deep shadow with accent ring */
-.shadow-popover {
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--color-gold-tint);
-}
-
-/* ============================================
-   MEGA MENU COMPONENT STYLES
-   ============================================ */
-
-/* Dropdown Container */
-.mega-menu-dropdown {
-  display: flex;
-  gap: var(--space-6);
-  padding: 24px;
-  width: 580px;
-  background-color: var(--color-bg-content-alpha);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-/* Dropdown Wrapper (for animation) */
-.mega-menu-wrapper {
-  overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-
-/* Pointer Arrow */
-.mega-menu-pointer {
-  position: absolute;
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  width: 0;
-  height: 0;
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  border-bottom: 12px solid var(--color-bg-content);
-}
-
-/* Menu Item */
-.mega-menu-item {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  cursor: pointer;
-  text-decoration: none;
-  color: var(--color-text-white);
-}
-
-/* Menu Item Title */
-.mega-menu-item-title {
-  font-size: var(--font-size-base);
-  font-weight: 600;
-  color: var(--color-text-white);
-  transition: color 0.2s ease;
-}
-
-.mega-menu-item:hover .mega-menu-item-title {
-  color: var(--color-primary);
-}
-
-/* Menu Item Description */
-.mega-menu-item-description {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-  line-height: 1.3;
-}
-
-/* Menu Column */
-.mega-menu-column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-

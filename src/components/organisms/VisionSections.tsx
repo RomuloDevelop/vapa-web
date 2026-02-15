@@ -75,7 +75,7 @@ const visionItems: VisionItem[] = [
 // Compute fade-in keyframes for accumulation (items fade in and STAY)
 // +1 segment: hold after last item so all stay visible before scrolling away
 function getAccumulateTimeline(index: number, total: number) {
-  const seg = 1 / (total + 1);
+  const seg = 1 / total;
   const base = index * seg; // starts immediately when section reaches top
   const fade = FADE_DURATION * seg;
   const stagger = TEXT_STAGGER * seg;

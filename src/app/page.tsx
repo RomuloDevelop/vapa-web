@@ -22,7 +22,7 @@ export default async function Home() {
   ]);
   return (
     <main className="flex flex-col min-h-screen bg-surface">
-      <Header showJoinButton={false} />
+      <Header variant="gradient" showJoinButton={false} />
       <HeroSection />
       <AboutSection stats={homeStats} />
       <section className="flex flex-col gap-8 md:gap-12 lg:gap-16 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface-elevated">

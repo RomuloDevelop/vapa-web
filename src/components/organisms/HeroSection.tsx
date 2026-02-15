@@ -1,31 +1,156 @@
 "use client";
 
+import Image from "next/image";
+import { useState, useRef, useCallback } from "react";
 import { motion } from "motion/react";
-import { ParallaxImage } from "./ParallaxImage";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectFade, Autoplay, Pagination, Navigation } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/pagination";
 import { Button } from "../atoms/Button";
 import { fadeInLeft, defaultViewport, slowTransition } from "../utils/animations";
 
 const MEMBERSHIP_URL =
   "https://www.memberplanet.com/Groups/GroupJoinLoginNew.aspx?ISPUB=true&invitee=p7vh47274p43y&mid";
 
+const EDGE_ZONE = 120; // px from edge to trigger arrow
+
+const heroSlides = [
+  {
+    src: "https://images.unsplash.com/photo-1726111265336-6bf825e549ce?ixlib=rb-4.1.0&q=80&w=1920&fit=crop",
+    alt: "Oil refinery at dusk",
+    className: "object-cover -scale-x-100",
+    objectPosition: "right 100%",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1624771002998-4aadfd43e7c4?ixlib=rb-4.1.0&q=80&w=1920&fit=crop",
+    alt: "Oil pumpjack in the field",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1641112690965-090b86da6b3f?ixlib=rb-4.1.0&q=80&w=1920&fit=crop",
+    alt: "Aerial view of an oil refinery complex with storage tanks",
+  },
+];
+
 export function HeroSection() {
+  const swiperRef = useRef<SwiperType | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(false);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const width = rect.width;
+
+    setShowLeftArrow(x < EDGE_ZONE);
+    setShowRightArrow(x > width - EDGE_ZONE);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setShowLeftArrow(false);
+    setShowRightArrow(false);
+  }, []);
+
+  const handlePrev = useCallback(() => {
+    swiperRef.current?.slidePrev();
+  }, []);
+
+  const handleNext = useCallback(() => {
+    swiperRef.current?.slideNext();
+  }, []);
+
   return (
-    <section className="relative h-[600px] md:h-[700px] lg:h-screen w-full overflow-hidden">
-      {/* Background Image with Parallax */}
-      <ParallaxImage
-        src="https://images.unsplash.com/photo-1726111265336-6bf825e549ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk3MzU5OTN8&ixlib=rb-4.1.0&q=80&w=1080"
-        alt="Oil refinery at dusk"
-        priority
-        speed={0.2}
-        flip
-        objectPosition="right 100%"
-      />
+    <section
+      ref={sectionRef}
+      className="relative h-[600px] md:h-[700px] lg:h-screen w-full overflow-hidden"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Background Image Carousel */}
+      <Swiper
+        modules={[EffectFade, Autoplay, Pagination, Navigation]}
+        effect="fade"
+        speed={1500}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        pagination={{
+          clickable: true,
+          bulletClass:
+            "swiper-pagination-bullet !bg-accent !opacity-30 !w-6 !h-[3px] !rounded-full",
+          bulletActiveClass: "!opacity-100 !w-10",
+        }}
+        loop
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+        }}
+        className="absolute inset-0 h-full w-full z-0 [&_.swiper-pagination]:!bottom-6 [&_.swiper-pagination]:!z-30"
+      >
+        {heroSlides.map((slide, index) => (
+          <SwiperSlide key={index} className="relative w-full h-full">
+            <Image
+              src={slide.src}
+              alt={slide.alt}
+              fill
+              className={slide.className || "object-cover"}
+              style={
+                slide.objectPosition
+                  ? { objectPosition: slide.objectPosition }
+                  : undefined
+              }
+              priority={index === 0}
+              sizes="100vw"
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-hero-overlay" />
+      <div className="absolute inset-0 bg-gradient-hero-overlay z-10 pointer-events-none" />
+
+      {/* Navigation Arrows - Desktop only */}
+      <button
+        onClick={handlePrev}
+        aria-label="Previous slide"
+        className="hidden lg:flex absolute left-5 top-1/2 z-30 w-12 h-12 items-center justify-center rounded border border-border-accent-strong text-white cursor-pointer"
+        style={{
+          background: "rgba(0, 0, 0, 0.2)",
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)",
+          opacity: showLeftArrow ? 1 : 0,
+          transform: showLeftArrow
+            ? "translateY(-50%) translateX(0)"
+            : "translateY(-50%) translateX(-8px)",
+          transition: "opacity 0.3s ease, transform 0.3s ease",
+          pointerEvents: showLeftArrow ? "auto" : "none",
+        }}
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+
+      <button
+        onClick={handleNext}
+        aria-label="Next slide"
+        className="hidden lg:flex absolute right-5 top-1/2 z-30 w-12 h-12 items-center justify-center rounded border border-border-accent-strong text-white cursor-pointer"
+        style={{
+          background: "rgba(0, 0, 0, 0.2)",
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)",
+          opacity: showRightArrow ? 1 : 0,
+          transform: showRightArrow
+            ? "translateY(-50%) translateX(0)"
+            : "translateY(-50%) translateX(8px)",
+          transition: "opacity 0.3s ease, transform 0.3s ease",
+          pointerEvents: showRightArrow ? "auto" : "none",
+        }}
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
 
       {/* Content */}
-      <div className="absolute inset-0 flex flex-col justify-center left-5 md:left-10 lg:left-20 xl:left-[5%] 2xl:left-[8%] right-5 md:right-10 lg:right-auto gap-5 md:gap-6 lg:gap-8 max-w-full sm:max-w-[600px] lg:max-w-[700px] xl:max-w-[750px] 2xl:max-w-[800px]">
+      <div className="absolute inset-0 flex flex-col justify-center left-5 md:left-10 lg:left-20 xl:left-[5%] 2xl:left-[8%] right-5 md:right-10 lg:right-auto gap-5 md:gap-6 lg:gap-8 max-w-full sm:max-w-[600px] lg:max-w-[700px] xl:max-w-[750px] 2xl:max-w-[800px] z-20 pointer-events-none">
         {/* Badge */}
         <motion.div
           variants={fadeInLeft}
@@ -33,7 +158,7 @@ export function HeroSection() {
           whileInView="visible"
           viewport={defaultViewport}
           transition={slowTransition}
-          className="flex items-center gap-2 px-4 md:px-5 py-2 rounded-[20px] border border-border-accent w-fit"
+          className="flex items-center gap-2 px-4 md:px-5 py-2 rounded-[20px] border border-border-accent w-fit pointer-events-auto"
         >
           <div className="w-2 h-2 rounded-full bg-accent" />
           <span className="text-xs md:text-[13px] font-medium text-accent">
@@ -76,7 +201,7 @@ export function HeroSection() {
           whileInView="visible"
           viewport={defaultViewport}
           transition={{ ...slowTransition, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4"
+          className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 md:gap-4 pointer-events-auto"
         >
           <Button href={MEMBERSHIP_URL} external variant="primary">
             Become a Member

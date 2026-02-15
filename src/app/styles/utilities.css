@@ -1,0 +1,41 @@
+/* ============================================================
+   UTILITY CLASSES
+   Safari-compatible gradients, shadows, and visual effects.
+   Defined as plain CSS classes (not Tailwind arbitrary values).
+   ============================================================ */
+
+/* --- Gradients --- */
+
+.bg-gradient-accent {
+  background: linear-gradient(135deg, #DCBA60 0%, #C49D48 100%);
+}
+
+.bg-gradient-header {
+  background: linear-gradient(180deg, #142840 0%, #142840 40%, transparent 100%);
+}
+
+.bg-gradient-hero-overlay {
+  background: linear-gradient(180deg, #142840 0%, rgba(20, 40, 64, 0.5) 40%, rgba(20, 40, 64, 0) 70%);
+}
+
+.bg-gradient-page-hero {
+  background: linear-gradient(180deg, #142840 0%, #142840CC 50%, #14284080 100%);
+}
+
+.bg-gradient-vision {
+  background: linear-gradient(180deg, #142840 0%, #284B6B 100%);
+}
+
+.bg-gradient-cta-overlay {
+  background: linear-gradient(90deg, rgba(20, 40, 64, 0.9) 0%, rgba(27, 52, 85, 0.8) 100%);
+}
+
+/* --- Shadows & Effects --- */
+
+.drop-shadow-text {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+}
+
+.shadow-popover {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--color-gold-tint);
+}
