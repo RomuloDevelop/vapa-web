@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import dynamic from "next/dynamic";
 import { motion } from "motion/react";
 import { Heart, HandHelping, Award, Trophy, Star } from "lucide-react";
 import {
@@ -11,10 +9,7 @@ import {
 } from "@/components/utils/animations";
 import { SectionHeader } from "@/components/molecules";
 
-const DonationModal = dynamic(
-  () => import("@/components/molecules/DonationModal").then((mod) => mod.DonationModal),
-  { ssr: false }
-);
+const STRIPE_BASE_URL = "https://donate.stripe.com/test_dRm4gy9ak8UGgQN0Ma77O00";
 
 const donationTiers = [
   {
@@ -22,6 +17,7 @@ const donationTiers = [
     icon: Heart,
     name: "Friend",
     amount: "$250+",
+    stripeAmount: 25000,
     popular: false,
     height: "h-[280px]",
   },
@@ -30,6 +26,7 @@ const donationTiers = [
     icon: HandHelping,
     name: "Supporter",
     amount: "$500+",
+    stripeAmount: 50000,
     popular: false,
     height: "h-[320px]",
   },
@@ -38,6 +35,7 @@ const donationTiers = [
     icon: Award,
     name: "Advocate",
     amount: "$1,000+",
+    stripeAmount: 100000,
     popular: true,
     height: "h-[370px]",
   },
@@ -46,6 +44,7 @@ const donationTiers = [
     icon: Trophy,
     name: "Champion",
     amount: "$2,000+",
+    stripeAmount: 200000,
     popular: false,
     height: "h-[320px]",
   },
@@ -54,6 +53,7 @@ const donationTiers = [
     icon: Star,
     name: "Visionary",
     amount: "$4,000+",
+    stripeAmount: 400000,
     popular: false,
     height: "h-[280px]",
   },
@@ -62,13 +62,12 @@ const donationTiers = [
 function TierCard({
   tier,
   index,
-  onDonateClick,
 }: {
   tier: (typeof donationTiers)[0];
   index: number;
-  onDonateClick: () => void;
 }) {
   const Icon = tier.icon;
+  const stripeUrl = `${STRIPE_BASE_URL}?__prefilled_amount=${tier.stripeAmount}`;
 
   return (
     <motion.div
@@ -119,8 +118,10 @@ function TierCard({
         {tier.amount}
       </span>
 
-      <button
-        onClick={onDonateClick}
+      <a
+        href={stripeUrl}
+        target="_blank"
+        rel="noopener noreferrer"
         className={`w-full py-2.5 text-sm font-semibold text-center rounded-md transition-colors ${
           tier.popular
             ? "bg-accent text-surface hover:opacity-90"
@@ -128,40 +129,30 @@ function TierCard({
         }`}
       >
         {tier.popular ? "Donate Now" : "Donate"}
-      </button>
+      </a>
     </motion.div>
   );
 }
 
 export function DonationTiersSection() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
-    <>
-      <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface-elevated">
-        <SectionHeader
-          label="GIVING LEVELS"
-          title="Select Your Impact Level"
-          subtitle="Every contribution makes a difference. Select a giving level that works for you."
-          align="center"
-        />
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-0 items-end w-full max-w-[1280px]">
-          {donationTiers.map((tier, index) => (
-            <TierCard
-              key={tier.id}
-              tier={tier}
-              index={index}
-              onDonateClick={() => setIsModalOpen(true)}
-            />
-          ))}
-        </div>
-      </section>
-
-      <DonationModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+    <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface-elevated">
+      <SectionHeader
+        label="GIVING LEVELS"
+        title="Select Your Impact Level"
+        subtitle="Every contribution makes a difference. Select a giving level that works for you."
+        align="center"
       />
-    </>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-0 items-end w-full max-w-[1280px]">
+        {donationTiers.map((tier, index) => (
+          <TierCard
+            key={tier.id}
+            tier={tier}
+            index={index}
+          />
+        ))}
+      </div>
+    </section>
   );
 }
