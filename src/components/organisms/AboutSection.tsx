@@ -57,13 +57,9 @@ export function AboutSection() {
         transition={{ ...slowTransition, delay: 0.3 }}
         className="w-full"
       >
-        <Script src="https://cdn.lightwidget.com/widgets/lightwidget.js" strategy="lazyOnload" />
-        <iframe
-          src="//lightwidget.com/widgets/524635331c5a5e23b0dac54e4c2fdbe4.html"
-          allowTransparency={true}
-          className="lightwidget-widget"
-          style={{ width: "100%", border: 0, overflow: "hidden" }}
-        />
+        <Script src="https://elfsightcdn.com/platform.js" strategy="lazyOnload" />
+        <script src="" async></script>
+        <div className="elfsight-app-9fc3f7cd-f330-469a-9c5e-7a11f696d706" data-elfsight-app-lazy></div>
       </motion.div>
     </section>
   );
