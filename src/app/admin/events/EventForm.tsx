@@ -207,7 +207,7 @@ export function EventForm({ event }: EventFormProps) {
         toast.success(isEdit ? "Event updated" : "Event created");
         router.push("/admin/events");
       } else {
-        toast.error(result.error || "Something went wrong");
+        toast.error(result.error.message);
       }
     });
   };

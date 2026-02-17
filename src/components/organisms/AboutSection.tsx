@@ -1,50 +1,14 @@
 "use client";
 
-import { Users, GraduationCap, Globe } from "lucide-react";
 import { motion } from "motion/react";
-import { SectionHeader } from "../molecules/SectionHeader";
-import { IconWrapper } from "../atoms/IconWrapper";
+import Script from "next/script";
 import {
   fadeInRight,
-  fadeInUp,
   defaultViewport,
-  smallViewport,
   slowTransition,
-  staggerDelay,
 } from "../utils/animations";
 
-const defaultStats = [
-  { value: "2019", label: "Founded" },
-  { value: "5+", label: "Years of Impact" },
-  { value: "TX", label: "Headquarters" },
-];
-
-const pillars = [
-  {
-    icon: Users,
-    title: "Professional Unity",
-    description:
-      "Unite Venezuelan energy professionals while promoting technical advancement in upstream, midstream, and downstream operations.",
-  },
-  {
-    icon: GraduationCap,
-    title: "Education & Training",
-    description:
-      "Provide technical support, education and training resources for sustainable industry development and professional growth.",
-  },
-  {
-    icon: Globe,
-    title: "Global Network",
-    description:
-      "Establish relationships with organizations and institutions worldwide to support the Venezuelan energy sector development.",
-  },
-];
-
-interface AboutSectionProps {
-  stats?: { value: string; label: string }[];
-}
-
-export function AboutSection({ stats = defaultStats }: AboutSectionProps) {
+export function AboutSection() {
   return (
     <section className="flex flex-col gap-10 md:gap-16 lg:gap-20 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface-section">
       {/* Header */}
@@ -83,6 +47,24 @@ export function AboutSection({ stats = defaultStats }: AboutSectionProps) {
           development of the energy sector.
         </motion.p>
       </div>
+
+      {/* Instagram Feed */}
+      <motion.div
+        variants={fadeInRight}
+        initial="hidden"
+        whileInView="visible"
+        viewport={defaultViewport}
+        transition={{ ...slowTransition, delay: 0.3 }}
+        className="w-full"
+      >
+        <Script src="https://cdn.lightwidget.com/widgets/lightwidget.js" strategy="lazyOnload" />
+        <iframe
+          src="//lightwidget.com/widgets/524635331c5a5e23b0dac54e4c2fdbe4.html"
+          allowTransparency={true}
+          className="lightwidget-widget"
+          style={{ width: "100%", border: 0, overflow: "hidden" }}
+        />
+      </motion.div>
     </section>
   );
 }

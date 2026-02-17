@@ -143,7 +143,7 @@ export function EventsTable({
         toast.success("Event deleted");
         mutate();
       } else {
-        toast.error(result.error || "Failed to delete event");
+        toast.error(result.error.message);
       }
       setDeleteTarget(null);
     });

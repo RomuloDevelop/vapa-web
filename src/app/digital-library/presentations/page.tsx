@@ -1,7 +1,11 @@
 import { Header, PageHero, Footer } from "@/components";
 import { Presentation } from "lucide-react";
+import { requireMemberAuth } from "@/lib/auth";
 
-export default function PresentationsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function PresentationsPage() {
+  const session = await requireMemberAuth();
   return (
     <main className="flex flex-col min-h-screen bg-surface">
       <Header variant="gradient" activeNav="Digital Library" />
@@ -16,7 +20,8 @@ export default function PresentationsPage() {
       <section className="flex flex-col items-center justify-center gap-4 px-5 md:px-10 lg:px-20 py-20 md:py-28 lg:py-36 bg-surface">
         <Presentation className="w-12 h-12 text-foreground-faint" />
         <p className="text-foreground-muted text-center max-w-md">
-          Presentation slides and materials will be available here soon.
+          Welcome, {session.user?.name || "Member"}. Presentation slides and
+          materials will be available here soon.
         </p>
       </section>
       <Footer />

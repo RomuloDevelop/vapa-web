@@ -1,40 +1,50 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { createMiddlewareSupabaseClient } from "@/lib/supabase-middleware";
+import { getToken } from "next-auth/jwt";
 
-const PUBLIC_ADMIN_ROUTES = ["/admin/login", "/admin/auth/callback"];
+const LOGIN_URL = "/login";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const token = await getToken({ req: request, secret: process.env.AUTH_SECRET });
 
-  // Allow public admin routes
-  if (PUBLIC_ADMIN_ROUTES.some((route) => pathname.startsWith(route))) {
+  // ── ADMIN ROUTES ─────────────────────────────────────
+  if (pathname.startsWith("/admin")) {
+    if (!token) {
+      const loginUrl = new URL(LOGIN_URL, request.url);
+      loginUrl.searchParams.set("callbackUrl", request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    if (token.role !== "admin") {
+      const loginUrl = new URL(LOGIN_URL, request.url);
+      loginUrl.searchParams.set("error", "unauthorized");
+      return NextResponse.redirect(loginUrl);
+    }
+
     return NextResponse.next();
   }
 
-  const { supabase, response } = createMiddlewareSupabaseClient(request);
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // ── MEMBER-PROTECTED ROUTES ──────────────────────────
+  if (
+    pathname.startsWith("/digital-library/presentations") ||
+    pathname.startsWith("/digital-library/references")
+  ) {
+    if (!token) {
+      const loginUrl = new URL(LOGIN_URL, request.url);
+      loginUrl.searchParams.set("callbackUrl", request.url);
+      return NextResponse.redirect(loginUrl);
+    }
 
-  // No session → redirect to login
-  if (!user) {
-    const loginUrl = new URL("/admin/login", request.url);
-    return NextResponse.redirect(loginUrl);
+    return NextResponse.next();
   }
 
-  // Check allowed emails
-  const adminEmails = (process.env.ADMIN_EMAILS || "")
-    .split(",")
-    .map((e) => e.trim().toLowerCase());
-
-  if (!adminEmails.includes(user.email?.toLowerCase() || "")) {
-    const loginUrl = new URL("/admin/login?error=unauthorized", request.url);
-    return NextResponse.redirect(loginUrl);
-  }
-
-  return response;
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/digital-library/presentations/:path*",
+    "/digital-library/references/:path*",
+  ],
 };

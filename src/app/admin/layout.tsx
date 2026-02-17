@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import useSWR from "swr";
-import { LayoutDashboard, Calendar, LogOut, Menu } from "lucide-react";
-import { signOut, getAuthUser } from "@/lib/actions/auth";
+import { usePathname, useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
+import { LayoutDashboard, Calendar, Users, LogOut, Menu, ExternalLink } from "lucide-react";
 
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Events", href: "/admin/events", icon: Calendar },
+  { label: "Members", href: "/admin/members", icon: Users },
 ];
 
 export default function AdminLayout({
@@ -18,13 +18,19 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { data: userEmail } = useSWR("auth-user", getAuthUser);
+  const { data: session } = useSession();
 
   // Skip layout for login page
   if (pathname === "/admin/login" || pathname.startsWith("/admin/auth")) {
     return <>{children}</>;
   }
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    router.push("/login");
+  };
 
   return (
     <div className="flex min-h-screen bg-surface">
@@ -75,10 +81,17 @@ export default function AdminLayout({
           })}
         </nav>
 
-        {/* Logout */}
-        <div className="p-3 border-t border-border-accent-light">
+        {/* Bottom actions */}
+        <div className="p-3 border-t border-border-accent-light flex flex-col gap-1">
+          <Link
+            href="/"
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-foreground-muted hover:text-white hover:bg-white/5 transition-colors"
+          >
+            <ExternalLink className="w-5 h-5" />
+            View Site
+          </Link>
           <button
-            onClick={() => signOut()}
+            onClick={handleLogout}
             className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-foreground-muted hover:text-white hover:bg-white/5 transition-colors"
           >
             <LogOut className="w-5 h-5" />
@@ -99,8 +112,10 @@ export default function AdminLayout({
             <Menu className="w-5 h-5" />
           </button>
           <div className="flex-1" />
-          {userEmail && (
-            <span className="text-xs text-foreground-subtle">{userEmail}</span>
+          {session?.user?.email && (
+            <span className="text-xs text-foreground-subtle">
+              {session.user.email}
+            </span>
           )}
         </header>
 

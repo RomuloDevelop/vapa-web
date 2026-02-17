@@ -94,6 +94,96 @@ function createTransporter() {
 }
 
 /**
+ * Send invitation email with link to set password
+ */
+export async function sendInvitationEmail(
+  email: string,
+  name: string,
+  token: string
+): Promise<EmailResult> {
+  const configError = validateConfig();
+  if (configError) return configError;
+
+  const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL || "http://localhost:3000";
+  const setPasswordUrl = `${baseUrl}/auth/set-password?token=${token}`;
+
+  const transporter = createTransporter();
+
+  const mailOptions = {
+    from: `"VAPA" <${SMTP_USER}>`,
+    to: email,
+    subject: "You're invited to VAPA — Set your password",
+    text: `
+Hi ${name},
+
+You've been invited to join the VAPA members area.
+
+Please click the link below to set your password and activate your account:
+
+${setPasswordUrl}
+
+This link will expire in 48 hours.
+
+If you did not expect this invitation, you can safely ignore this email.
+
+— VAPA Team
+    `.trim(),
+    html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: #142840; color: #DCBA60; padding: 20px; text-align: center; }
+    .content { padding: 30px 20px; background: #f9f9f9; }
+    .btn { display: inline-block; padding: 14px 28px; background: #DCBA60; color: #142840; text-decoration: none; font-weight: bold; border-radius: 6px; }
+    .footer { padding: 15px; text-align: center; font-size: 12px; color: #999; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>Welcome to VAPA</h2>
+    </div>
+    <div class="content">
+      <p>Hi ${name},</p>
+      <p>You've been invited to join the VAPA members area. Click the button below to set your password and activate your account:</p>
+      <p style="text-align: center; margin: 30px 0;">
+        <a href="${setPasswordUrl}" class="btn">Set Your Password</a>
+      </p>
+      <p style="font-size: 13px; color: #666;">This link will expire in 48 hours. If the button doesn't work, copy and paste this URL into your browser:</p>
+      <p style="font-size: 12px; word-break: break-all; color: #888;">${setPasswordUrl}</p>
+    </div>
+    <div class="footer">
+      If you did not expect this invitation, you can safely ignore this email.
+    </div>
+  </div>
+</body>
+</html>
+    `.trim(),
+  };
+
+  try {
+    const sendPromise = transporter.sendMail(mailOptions);
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error("TIMEOUT")), SMTP_TIMEOUT);
+    });
+
+    await Promise.race([sendPromise, timeoutPromise]);
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending invitation email:", error);
+    if (error instanceof Error && error.message === "TIMEOUT") {
+      return { success: false, error: "Email server timeout.", errorCode: "TIMEOUT" };
+    }
+    return { success: false, error: "Failed to send invitation email.", errorCode: "SMTP" };
+  } finally {
+    transporter.close();
+  }
+}
+
+/**
  * Send contact form email with timeout handling
  */
 export async function sendContactEmail(data: ContactFormData): Promise<EmailResult> {

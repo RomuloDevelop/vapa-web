@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Menu, X, ChevronDown, Linkedin, Instagram, Youtube } from "lucide-react";
+import { Menu, X, ChevronDown, Linkedin, Instagram, Youtube, LogOut, User, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
+import { useSession, signOut as memberSignOut } from "next-auth/react";
 import { navigationConfig, MEMBERSHIP_URL, socialLinks, type NavItem, type NavSubItem } from "@/config/navigation";
 
 const socialIconMap = {
@@ -21,6 +22,7 @@ interface HeaderProps {
 const SCROLL_THRESHOLD = 500; // px before hide/show kicks in
 
 export function Header({ variant = "solid", activeNav = "Home", showJoinButton = true }: HeaderProps) {
+  const { data: memberSession } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpandedItem, setMobileExpandedItem] = useState<string | null>(null);
@@ -556,12 +558,50 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             {/* Divider */}
             <div className="w-px h-6 bg-border-accent-light" />
 
+            {/* Member Login/Status */}
+            {memberSession?.user ? (
+              <div className="flex items-center gap-3">
+                {memberSession.user.role === "admin" && (
+                  <Link
+                    href="/admin"
+                    className="flex items-center gap-1 text-xs text-accent hover:text-accent-hover transition-colors"
+                  >
+                    <Shield className="w-3.5 h-3.5" />
+                    Admin
+                  </Link>
+                )}
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4 text-accent" />
+                  <span className="text-xs text-foreground-subtle max-w-[120px] truncate">
+                    {memberSession.user.name || memberSession.user.email}
+                  </span>
+                </div>
+                <button
+                  onClick={() => memberSignOut({ callbackUrl: "/" })}
+                  className="flex items-center gap-1 text-xs text-foreground-faint hover:text-accent transition-colors"
+                  aria-label="Log out"
+                >
+                  <LogOut className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="text-sm text-foreground-muted hover:text-accent transition-colors"
+              >
+                Login
+              </Link>
+            )}
+
+            {/* Divider */}
+            <div className={`w-px h-6 bg-border-accent-light ${showJoinButton ? "" : "invisible"}`} />
+
             {/* CTA Button */}
             <a
               href={MEMBERSHIP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className={`px-5 lg:px-7 py-3 lg:py-3.5 text-sm font-semibold rounded hover:opacity-90 transition-opacity bg-accent text-surface ${
+              className={`px-4 py-2 text-xs font-semibold rounded hover:opacity-90 transition-opacity bg-accent text-surface ${
                 showJoinButton ? "" : "invisible"
               }`}
             >
@@ -637,6 +677,47 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                       );
                     })}
                   </div>
+
+                  {/* Member Login/Status (Mobile) */}
+                  {memberSession?.user ? (
+                    <div className="flex flex-col gap-2">
+                      {memberSession.user.role === "admin" && (
+                        <Link
+                          href="/admin"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-2 py-3 px-4 rounded-lg bg-accent-10 border border-accent-30 text-sm font-medium text-accent"
+                        >
+                          <Shield className="w-4 h-4" />
+                          Admin Panel
+                        </Link>
+                      )}
+                      <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-surface-section border border-border-accent-light">
+                        <div className="flex items-center gap-2">
+                          <User className="w-4 h-4 text-accent" />
+                          <span className="text-sm text-foreground-subtle truncate max-w-[150px]">
+                            {memberSession.user.name || memberSession.user.email}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            memberSignOut({ callbackUrl: "/" });
+                          }}
+                          className="text-xs text-foreground-faint hover:text-accent transition-colors"
+                        >
+                          Log out
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      href="/login"
+                      className="block w-full py-3.5 text-center text-sm font-medium text-foreground-muted border border-border-accent-light rounded hover:text-accent hover:border-accent transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Login
+                    </Link>
+                  )}
 
                   <a
                     href={MEMBERSHIP_URL}

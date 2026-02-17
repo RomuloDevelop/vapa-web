@@ -1,3 +1,5 @@
+export type UserRole = "admin" | "member";
+
 export type EventType = "webinar" | "special_event";
 
 export const EVENT_TYPES: { value: EventType; label: string }[] = [
@@ -51,6 +53,45 @@ export type Database = {
         };
         Relationships: [];
       };
+      users: {
+        Row: {
+          id: string;
+          email: string;
+          password_hash: string | null;
+          name: string;
+          role: UserRole;
+          membership_tier: string;
+          is_active: boolean;
+          invitation_token: string | null;
+          invitation_expires: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          password_hash?: string | null;
+          name: string;
+          role?: UserRole;
+          membership_tier?: string;
+          is_active?: boolean;
+          invitation_token?: string | null;
+          invitation_expires?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          password_hash?: string | null;
+          name?: string;
+          role?: UserRole;
+          membership_tier?: string;
+          is_active?: boolean;
+          invitation_token?: string | null;
+          invitation_expires?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -71,3 +112,29 @@ export type Database = {
 export type Event = Database["public"]["Tables"]["events"]["Row"];
 export type EventInsert = Database["public"]["Tables"]["events"]["Insert"];
 export type EventUpdate = Database["public"]["Tables"]["events"]["Update"];
+
+// Member types
+export type MembershipTier = "student" | "active" | "in_transition";
+
+export const MEMBERSHIP_TIERS: { value: MembershipTier; label: string }[] = [
+  { value: "student", label: "Student" },
+  { value: "active", label: "Active" },
+  { value: "in_transition", label: "In Transition" },
+];
+
+export function getMembershipTierLabel(tier: MembershipTier): string {
+  return MEMBERSHIP_TIERS.find((t) => t.value === tier)?.label ?? tier;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  password_hash: string | null;
+  name: string;
+  role: UserRole;
+  membership_tier: MembershipTier;
+  is_active: boolean;
+  invitation_token: string | null;
+  invitation_expires: string | null;
+  created_at: string;
+}

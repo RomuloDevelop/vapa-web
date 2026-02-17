@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createServerClient } from "../supabase-server";
 import { getEvents, getEventsCount } from "../services/events";
+import { adminAction, ActionError } from "./safe-action";
 import type { Event, EventType } from "../database.types";
 
 const PAGE_SIZE = 10;
@@ -20,6 +21,9 @@ export interface FilteredEventsResult {
   totalCount: number;
 }
 
+/**
+ * Fetch filtered events (read action — not wrapped, SWR handles errors)
+ */
 export async function fetchFilteredEvents(
   params: EventsFilterParams
 ): Promise<FilteredEventsResult> {
@@ -37,12 +41,6 @@ export async function fetchFilteredEvents(
   return { events, totalCount };
 }
 
-interface ActionResult {
-  success: boolean;
-  error?: string;
-  id?: string;
-}
-
 function parseArrayField(value: string): string[] {
   return value
     .split(",")
@@ -50,79 +48,82 @@ function parseArrayField(value: string): string[] {
     .filter(Boolean);
 }
 
-export async function createEvent(formData: FormData): Promise<ActionResult> {
-  const supabase = createServerClient();
+const EVENT_REVALIDATION_PATHS = ["/", "/digital-library", "/admin/events"];
 
-  const { data, error } = await supabase
-    .from("events")
-    .insert({
-      name: formData.get("name") as string,
-      img: formData.get("img") as string,
-      date: formData.get("date") as string,
-      type: formData.get("type") as EventType,
-      time: formData.get("time") as string,
-      presenters: parseArrayField(formData.get("presenters") as string || ""),
-      links: parseArrayField(formData.get("links") as string || ""),
-      description: (formData.get("description") as string) || null,
-    })
-    .select("id")
-    .single();
-
-  if (error) {
-    return { success: false, error: error.message };
-  }
-
-  revalidatePath("/");
-  revalidatePath("/digital-library");
-  revalidatePath("/admin/events");
-
-  return { success: true, id: data.id };
+function revalidateEventPaths() {
+  EVENT_REVALIDATION_PATHS.forEach((path) => revalidatePath(path));
 }
 
-export async function updateEvent(
-  id: string,
-  formData: FormData
-): Promise<ActionResult> {
-  const supabase = createServerClient();
+/**
+ * Create a new event (admin-only)
+ */
+export const createEvent = adminAction(
+  async (formData: FormData): Promise<{ id: string }> => {
+    const supabase = createServerClient();
 
-  const { error } = await supabase
-    .from("events")
-    .update({
-      name: formData.get("name") as string,
-      img: formData.get("img") as string,
-      date: formData.get("date") as string,
-      type: formData.get("type") as EventType,
-      time: formData.get("time") as string,
-      presenters: parseArrayField(formData.get("presenters") as string || ""),
-      links: parseArrayField(formData.get("links") as string || ""),
-      description: formData.get("description") as string || null,
-    })
-    .eq("id", id);
+    const { data, error } = await supabase
+      .from("events")
+      .insert({
+        name: formData.get("name") as string,
+        img: formData.get("img") as string,
+        date: formData.get("date") as string,
+        type: formData.get("type") as EventType,
+        time: formData.get("time") as string,
+        presenters: parseArrayField((formData.get("presenters") as string) || ""),
+        links: parseArrayField((formData.get("links") as string) || ""),
+        description: (formData.get("description") as string) || null,
+      })
+      .select("id")
+      .single();
 
-  if (error) {
-    return { success: false, error: error.message };
+    if (error) {
+      throw new ActionError("SERVER_ERROR", error.message);
+    }
+
+    revalidateEventPaths();
+    return { id: data.id };
   }
+);
 
-  revalidatePath("/");
-  revalidatePath("/digital-library");
-  revalidatePath("/admin/events");
+/**
+ * Update an existing event (admin-only)
+ */
+export const updateEvent = adminAction(
+  async (id: string, formData: FormData) => {
+    const supabase = createServerClient();
 
-  return { success: true };
-}
+    const { error } = await supabase
+      .from("events")
+      .update({
+        name: formData.get("name") as string,
+        img: formData.get("img") as string,
+        date: formData.get("date") as string,
+        type: formData.get("type") as EventType,
+        time: formData.get("time") as string,
+        presenters: parseArrayField((formData.get("presenters") as string) || ""),
+        links: parseArrayField((formData.get("links") as string) || ""),
+        description: (formData.get("description") as string) || null,
+      })
+      .eq("id", id);
 
-export async function deleteEvent(id: string): Promise<ActionResult> {
+    if (error) {
+      throw new ActionError("SERVER_ERROR", error.message);
+    }
+
+    revalidateEventPaths();
+  }
+);
+
+/**
+ * Delete an event (admin-only)
+ */
+export const deleteEvent = adminAction(async (id: string) => {
   const supabase = createServerClient();
-
   const { error } = await supabase.from("events").delete().eq("id", id);
 
   if (error) {
-    return { success: false, error: error.message };
+    throw new ActionError("SERVER_ERROR", error.message);
   }
 
-  revalidatePath("/");
-  revalidatePath("/digital-library");
-  revalidatePath("/admin/events");
-
-  return { success: true };
-}
-
+  revalidateEventPaths();
+});
