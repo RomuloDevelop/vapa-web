@@ -8,6 +8,14 @@ export type { ActionResult, ActionErrorData, ErrorCode } from "./action-result";
 
 // ─── Auth Check ──────────────────────────────────────────────────────────────
 
+export async function requireAuth(): Promise<void> {
+  const session = await auth();
+
+  if (!session?.user) {
+    throw new ActionError("UNAUTHORIZED", "Not authenticated");
+  }
+}
+
 export async function requireAdmin(): Promise<void> {
   const session = await auth();
 
@@ -51,6 +59,17 @@ export function safeAction<TArgs extends unknown[], TData = void>(
       };
     }
   };
+}
+
+// ─── Wrapper: memberAction (any authenticated user) ─────────────────────────
+
+export function memberAction<TArgs extends unknown[], TData = void>(
+  fn: (...args: TArgs) => Promise<TData>
+): (...args: TArgs) => Promise<ActionResult<TData>> {
+  return safeAction(async (...args: TArgs): Promise<TData> => {
+    await requireAuth();
+    return fn(...args);
+  });
 }
 
 // ─── Wrapper: adminAction ────────────────────────────────────────────────────

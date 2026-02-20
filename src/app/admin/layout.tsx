@@ -4,11 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { LayoutDashboard, Calendar, Users, LogOut, Menu, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Calendar, Users, LogOut, Menu, ExternalLink, Presentation } from "lucide-react";
 
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { label: "Events", href: "/admin/events", icon: Calendar },
+  { label: "Presentations", href: "/admin/presentations", icon: Presentation },
   { label: "Members", href: "/admin/members", icon: Users },
 ];
 

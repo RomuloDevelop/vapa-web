@@ -53,6 +53,33 @@ export type Database = {
         };
         Relationships: [];
       };
+      presentations: {
+        Row: {
+          id: string;
+          title: string;
+          description: string | null;
+          img: string;
+          file_path: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          description?: string | null;
+          img: string;
+          file_path: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          description?: string | null;
+          img?: string;
+          file_path?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       users: {
         Row: {
           id: string;
@@ -64,6 +91,8 @@ export type Database = {
           is_active: boolean;
           invitation_token: string | null;
           invitation_expires: string | null;
+          reset_token: string | null;
+          reset_expires: string | null;
           created_at: string;
         };
         Insert: {
@@ -76,6 +105,8 @@ export type Database = {
           is_active?: boolean;
           invitation_token?: string | null;
           invitation_expires?: string | null;
+          reset_token?: string | null;
+          reset_expires?: string | null;
           created_at?: string;
         };
         Update: {
@@ -88,6 +119,8 @@ export type Database = {
           is_active?: boolean;
           invitation_token?: string | null;
           invitation_expires?: string | null;
+          reset_token?: string | null;
+          reset_expires?: string | null;
           created_at?: string;
         };
         Relationships: [];
@@ -113,6 +146,14 @@ export type Event = Database["public"]["Tables"]["events"]["Row"];
 export type EventInsert = Database["public"]["Tables"]["events"]["Insert"];
 export type EventUpdate = Database["public"]["Tables"]["events"]["Update"];
 
+// Convenience type for the presentations table
+export type Presentation =
+  Database["public"]["Tables"]["presentations"]["Row"];
+export type PresentationInsert =
+  Database["public"]["Tables"]["presentations"]["Insert"];
+export type PresentationUpdate =
+  Database["public"]["Tables"]["presentations"]["Update"];
+
 // Member types
 export type MembershipTier = "student" | "active" | "in_transition";
 
@@ -136,5 +177,7 @@ export interface User {
   is_active: boolean;
   invitation_token: string | null;
   invitation_expires: string | null;
+  reset_token: string | null;
+  reset_expires: string | null;
   created_at: string;
 }

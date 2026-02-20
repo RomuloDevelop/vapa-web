@@ -184,6 +184,96 @@ If you did not expect this invitation, you can safely ignore this email.
 }
 
 /**
+ * Send password reset email with link to reset password
+ */
+export async function sendPasswordResetEmail(
+  email: string,
+  name: string,
+  token: string
+): Promise<EmailResult> {
+  const configError = validateConfig();
+  if (configError) return configError;
+
+  const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL || "http://localhost:3000";
+  const resetUrl = `${baseUrl}/auth/reset-password?token=${token}`;
+
+  const transporter = createTransporter();
+
+  const mailOptions = {
+    from: `"VAPA" <${SMTP_USER}>`,
+    to: email,
+    subject: "Reset your VAPA password",
+    text: `
+Hi ${name},
+
+We received a request to reset your password for your VAPA account.
+
+Please click the link below to set a new password:
+
+${resetUrl}
+
+This link will expire in 1 hour.
+
+If you did not request a password reset, you can safely ignore this email.
+
+— VAPA Team
+    `.trim(),
+    html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: #142840; color: #DCBA60; padding: 20px; text-align: center; }
+    .content { padding: 30px 20px; background: #f9f9f9; }
+    .btn { display: inline-block; padding: 14px 28px; background: #DCBA60; color: #142840; text-decoration: none; font-weight: bold; border-radius: 6px; }
+    .footer { padding: 15px; text-align: center; font-size: 12px; color: #999; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>Reset Your Password</h2>
+    </div>
+    <div class="content">
+      <p>Hi ${name},</p>
+      <p>We received a request to reset your password for your VAPA account. Click the button below to set a new password:</p>
+      <p style="text-align: center; margin: 30px 0;">
+        <a href="${resetUrl}" class="btn">Reset Password</a>
+      </p>
+      <p style="font-size: 13px; color: #666;">This link will expire in 1 hour. If the button doesn't work, copy and paste this URL into your browser:</p>
+      <p style="font-size: 12px; word-break: break-all; color: #888;">${resetUrl}</p>
+    </div>
+    <div class="footer">
+      If you did not request a password reset, you can safely ignore this email.
+    </div>
+  </div>
+</body>
+</html>
+    `.trim(),
+  };
+
+  try {
+    const sendPromise = transporter.sendMail(mailOptions);
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error("TIMEOUT")), SMTP_TIMEOUT);
+    });
+
+    await Promise.race([sendPromise, timeoutPromise]);
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending password reset email:", error);
+    if (error instanceof Error && error.message === "TIMEOUT") {
+      return { success: false, error: "Email server timeout.", errorCode: "TIMEOUT" };
+    }
+    return { success: false, error: "Failed to send password reset email.", errorCode: "SMTP" };
+  } finally {
+    transporter.close();
+  }
+}
+
+/**
  * Send contact form email with timeout handling
  */
 export async function sendContactEmail(data: ContactFormData): Promise<EmailResult> {

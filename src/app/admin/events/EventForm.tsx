@@ -2,12 +2,15 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import useSWRMutation from "swr/mutation";
 import { format, parse } from "date-fns";
 import { Upload, CalendarIcon, X, ImageIcon } from "lucide-react";
 import { createEvent, updateEvent } from "@/lib/actions/events";
 import { EVENT_TYPES, type Event, type EventType } from "@/lib/database.types";
+import { eventSchema, type EventFormValues } from "@/lib/schemas";
 import { ImageSearchPopover } from "@/components/molecules";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -55,6 +58,9 @@ interface EventFormProps {
 const inputClass =
   "bg-surface border-border-accent text-white placeholder:text-foreground-faint focus-visible:border-accent focus-visible:ring-accent/20";
 
+const errorInputClass =
+  "bg-surface border-red-500 text-white placeholder:text-foreground-faint focus-visible:border-red-500 focus-visible:ring-red-500/20";
+
 export function EventForm({ event }: EventFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -65,21 +71,35 @@ export function EventForm({ event }: EventFormProps) {
     uploadImage
   );
 
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<EventFormValues>({
+    resolver: zodResolver(eventSchema),
+    defaultValues: {
+      name: event?.name ?? "",
+      img: event?.img ?? "",
+      date: event?.date ?? "",
+      type: event?.type ?? "webinar",
+      time: event?.time ?? "",
+      presenters: event?.presenters?.join(", ") ?? "",
+      links: event?.links?.join(", ") ?? "",
+      description: event?.description ?? "",
+    },
+  });
+
+  const imgValue = watch("img");
+  const dateValue = watch("date");
+  const nameValue = watch("name");
+
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [isDragging, setIsDragging] = useState(false);
   const [dateOpen, setDateOpen] = useState(false);
-
-  const [formData, setFormData] = useState({
-    name: event?.name ?? "",
-    img: event?.img ?? "",
-    date: event?.date ?? "",
-    type: event?.type ?? ("webinar" as EventType),
-    time: event?.time ?? "",
-    presenters: event?.presenters?.join(", ") ?? "",
-    links: event?.links?.join(", ") ?? "",
-    description: event?.description ?? "",
-  });
 
   // Clean up object URLs
   useEffect(() => {
@@ -90,24 +110,26 @@ export function EventForm({ event }: EventFormProps) {
     };
   }, [previewUrl]);
 
-  const validateAndSetFile = useCallback((file: File) => {
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      toast.error("Invalid file type. Allowed: JPEG, PNG, WebP, GIF");
-      return;
-    }
-    if (file.size > MAX_SIZE) {
-      toast.error("File too large. Maximum size is 5MB");
-      return;
-    }
+  const validateAndSetFile = useCallback(
+    (file: File) => {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        toast.error("Invalid file type. Allowed: JPEG, PNG, WebP, GIF");
+        return;
+      }
+      if (file.size > MAX_SIZE) {
+        toast.error("File too large. Maximum size is 5MB");
+        return;
+      }
 
-    // Revoke previous preview
-    setPreviewUrl((prev) => {
-      if (prev.startsWith("blob:")) URL.revokeObjectURL(prev);
-      return URL.createObjectURL(file);
-    });
-    setPendingFile(file);
-    setFormData((prev) => ({ ...prev, img: "__pending__" }));
-  }, []);
+      setPreviewUrl((prev) => {
+        if (prev.startsWith("blob:")) URL.revokeObjectURL(prev);
+        return URL.createObjectURL(file);
+      });
+      setPendingFile(file);
+      setValue("img", "__pending__", { shouldValidate: true });
+    },
+    [setValue]
+  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -145,33 +167,24 @@ export function EventForm({ event }: EventFormProps) {
     if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     setPreviewUrl("");
     setPendingFile(null);
-    setFormData((prev) => ({ ...prev, img: "" }));
+    setValue("img", "", { shouldValidate: true });
   };
 
   const handleUnsplashSelect = (url: string) => {
     if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     setPreviewUrl("");
     setPendingFile(null);
-    setFormData((prev) => ({ ...prev, img: url }));
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setValue("img", url, { shouldValidate: true });
   };
 
   // Parse date string to Date for Calendar
-  const selectedDate = formData.date
-    ? parse(formData.date, "yyyy-MM-dd", new Date())
+  const selectedDate = dateValue
+    ? parse(dateValue, "yyyy-MM-dd", new Date())
     : undefined;
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const onSubmit = (data: EventFormValues) => {
     startTransition(async () => {
-      let imgUrl = formData.img;
+      let imgUrl = data.img;
 
       // Upload pending file first
       if (pendingFile) {
@@ -179,7 +192,9 @@ export function EventForm({ event }: EventFormProps) {
           const result = await uploadFile(pendingFile);
           imgUrl = result.url;
         } catch (err) {
-          toast.error(err instanceof Error ? err.message : "Image upload failed");
+          toast.error(
+            err instanceof Error ? err.message : "Image upload failed"
+          );
           return;
         }
       }
@@ -190,14 +205,14 @@ export function EventForm({ event }: EventFormProps) {
       }
 
       const fd = new FormData();
-      fd.set("name", formData.name);
+      fd.set("name", data.name);
       fd.set("img", imgUrl);
-      fd.set("date", formData.date);
-      fd.set("type", formData.type);
-      fd.set("time", formData.time);
-      fd.set("presenters", formData.presenters);
-      fd.set("links", formData.links);
-      fd.set("description", formData.description);
+      fd.set("date", data.date);
+      fd.set("type", data.type);
+      fd.set("time", data.time);
+      fd.set("presenters", data.presenters);
+      fd.set("links", data.links);
+      fd.set("description", data.description);
 
       const result = isEdit
         ? await updateEvent(event!.id, fd)
@@ -212,11 +227,15 @@ export function EventForm({ event }: EventFormProps) {
     });
   };
 
-  const hasImage = pendingFile || (formData.img && formData.img !== "__pending__");
-  const displayImageUrl = pendingFile ? previewUrl : formData.img;
+  const hasImage =
+    pendingFile || (imgValue && imgValue !== "__pending__");
+  const displayImageUrl = pendingFile ? previewUrl : imgValue;
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-8 max-w-2xl">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-8 max-w-2xl"
+    >
       {/* Basic Info */}
       <fieldset className="flex flex-col gap-5">
         <legend className="text-xs font-semibold text-accent tracking-[2px] uppercase mb-1">
@@ -229,36 +248,46 @@ export function EventForm({ event }: EventFormProps) {
           </Label>
           <Input
             id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
+            {...register("name")}
             placeholder="e.g. VAPA Webinar: Energy Transition"
-            className={inputClass}
+            className={errors.name ? errorInputClass : inputClass}
           />
+          {errors.name && (
+            <span className="text-xs text-red-400">{errors.name.message}</span>
+          )}
         </div>
 
         <div className="flex flex-col gap-2">
           <Label htmlFor="type" className="text-foreground-muted">
             Type *
           </Label>
-          <Select
-            value={formData.type}
-            onValueChange={(value) =>
-              setFormData((prev) => ({ ...prev, type: value as EventType }))
-            }
-          >
-            <SelectTrigger className={inputClass}>
-              <SelectValue placeholder="Select event type" />
-            </SelectTrigger>
-            <SelectContent className="bg-surface-section border-border-accent-light">
-              {EVENT_TYPES.map((t) => (
-                <SelectItem key={t.value} value={t.value} className="text-white">
-                  {t.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Controller
+            name="type"
+            control={control}
+            render={({ field }) => (
+              <Select value={field.value} onValueChange={field.onChange}>
+                <SelectTrigger
+                  className={errors.type ? errorInputClass : inputClass}
+                >
+                  <SelectValue placeholder="Select event type" />
+                </SelectTrigger>
+                <SelectContent className="bg-surface-section border-border-accent-light">
+                  {EVENT_TYPES.map((t) => (
+                    <SelectItem
+                      key={t.value}
+                      value={t.value}
+                      className="text-white"
+                    >
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
+          />
+          {errors.type && (
+            <span className="text-xs text-red-400">{errors.type.message}</span>
+          )}
         </div>
       </fieldset>
 
@@ -270,53 +299,64 @@ export function EventForm({ event }: EventFormProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2">
-            <Label className="text-foreground-muted">
-              Date *
-            </Label>
-            <Popover open={dateOpen} onOpenChange={setDateOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className={`w-full justify-start text-left font-normal ${inputClass} ${!formData.date ? "text-foreground-faint" : ""}`}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4 text-foreground-subtle" />
-                  {formData.date
-                    ? format(selectedDate!, "MMM d, yyyy")
-                    : "Select date"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent
-                className="w-auto p-0 bg-surface-section border-border-accent-light"
-                align="start"
-              >
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={(day) => {
-                    if (day) {
-                      setFormData((prev) => ({
-                        ...prev,
-                        date: format(day, "yyyy-MM-dd"),
-                      }));
-                    }
-                    setDateOpen(false);
-                  }}
-                  defaultMonth={selectedDate}
-                />
-              </PopoverContent>
-            </Popover>
+            <Label className="text-foreground-muted">Date *</Label>
+            <Controller
+              name="date"
+              control={control}
+              render={({ field }) => (
+                <Popover open={dateOpen} onOpenChange={setDateOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className={`w-full justify-start text-left font-normal ${errors.date ? errorInputClass : inputClass} ${!field.value ? "text-foreground-faint" : ""}`}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4 text-foreground-subtle" />
+                      {field.value
+                        ? format(
+                            parse(field.value, "yyyy-MM-dd", new Date()),
+                            "MMM d, yyyy"
+                          )
+                        : "Select date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    className="w-auto p-0 bg-surface-section border-border-accent-light"
+                    align="start"
+                  >
+                    <Calendar
+                      mode="single"
+                      selected={selectedDate}
+                      onSelect={(day) => {
+                        if (day) {
+                          field.onChange(format(day, "yyyy-MM-dd"));
+                        }
+                        setDateOpen(false);
+                      }}
+                      defaultMonth={selectedDate}
+                    />
+                  </PopoverContent>
+                </Popover>
+              )}
+            />
+            {errors.date && (
+              <span className="text-xs text-red-400">
+                {errors.date.message}
+              </span>
+            )}
           </div>
           <div className="flex flex-col gap-2">
-            <Label className="text-foreground-muted">
-              Time
-            </Label>
-            <TimePicker
-              value={formData.time}
-              onChange={(time) =>
-                setFormData((prev) => ({ ...prev, time }))
-              }
-              className={`w-full ${inputClass}`}
+            <Label className="text-foreground-muted">Time</Label>
+            <Controller
+              name="time"
+              control={control}
+              render={({ field }) => (
+                <TimePicker
+                  value={field.value}
+                  onChange={field.onChange}
+                  className={`w-full ${inputClass}`}
+                />
+              )}
             />
           </div>
         </div>
@@ -330,12 +370,10 @@ export function EventForm({ event }: EventFormProps) {
 
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <Label className="text-foreground-muted">
-              Image *
-            </Label>
+            <Label className="text-foreground-muted">Image *</Label>
             <ImageSearchPopover
               onSelectImage={handleUnsplashSelect}
-              eventName={formData.name}
+              eventName={nameValue}
             />
           </div>
 
@@ -348,7 +386,6 @@ export function EventForm({ event }: EventFormProps) {
           />
 
           {hasImage ? (
-            /* Preview state */
             <div className="flex flex-col gap-3">
               <div
                 className="relative w-full h-48 rounded-lg overflow-hidden bg-surface-sunken group"
@@ -393,7 +430,6 @@ export function EventForm({ event }: EventFormProps) {
               </div>
             </div>
           ) : (
-            /* Empty drop zone */
             <div className="flex flex-col gap-3">
               <div
                 role="button"
@@ -412,7 +448,9 @@ export function EventForm({ event }: EventFormProps) {
                 className={`flex flex-col items-center justify-center gap-3 w-full h-48 rounded-lg border-2 border-dashed transition-colors cursor-pointer ${
                   isDragging
                     ? "border-accent bg-accent/10"
-                    : "border-border-accent hover:border-accent hover:bg-accent-10"
+                    : errors.img
+                      ? "border-red-500 hover:border-red-400"
+                      : "border-border-accent hover:border-accent hover:bg-accent-10"
                 }`}
               >
                 <div className="p-3 rounded-full bg-accent-10">
@@ -427,6 +465,11 @@ export function EventForm({ event }: EventFormProps) {
                   </p>
                 </div>
               </div>
+              {errors.img && (
+                <span className="text-xs text-red-400">
+                  {errors.img.message}
+                </span>
+              )}
             </div>
           )}
         </div>
@@ -437,9 +480,7 @@ export function EventForm({ event }: EventFormProps) {
           </Label>
           <Input
             id="links"
-            name="links"
-            value={formData.links}
-            onChange={handleChange}
+            {...register("links")}
             placeholder="https://youtube.com/... (comma-separated)"
             className={inputClass}
           />
@@ -458,9 +499,7 @@ export function EventForm({ event }: EventFormProps) {
           </Label>
           <Input
             id="presenters"
-            name="presenters"
-            value={formData.presenters}
-            onChange={handleChange}
+            {...register("presenters")}
             placeholder="John Doe, Jane Smith (comma-separated)"
             className={inputClass}
           />
@@ -472,9 +511,7 @@ export function EventForm({ event }: EventFormProps) {
           </Label>
           <Textarea
             id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
+            {...register("description")}
             placeholder="Optional event description..."
             rows={4}
             className={inputClass}

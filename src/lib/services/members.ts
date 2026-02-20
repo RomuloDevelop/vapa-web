@@ -205,3 +205,88 @@ export async function setPasswordFromInvitation(
 
   if (error) throw error;
 }
+
+// ─── Reset token operations ────────────────────────────────────────────────
+
+/**
+ * Generate a random reset token, store it in the DB (1h expiry)
+ */
+export async function generateResetToken(userId: string): Promise<string> {
+  const token = crypto.randomBytes(32).toString("hex");
+  const expires = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
+
+  const supabase = createServerClient();
+  const { error } = await supabase
+    .from("users")
+    .update({ reset_token: token, reset_expires: expires })
+    .eq("id", userId);
+
+  if (error) throw error;
+  return token;
+}
+
+/**
+ * Validate a reset token — returns the user if valid and not expired
+ */
+export async function validateResetToken(
+  token: string
+): Promise<User | null> {
+  const supabase = createServerClient();
+  const { data, error } = await supabase
+    .from("users")
+    .select(
+      "id, email, name, role, membership_tier, is_active, invitation_token, invitation_expires, reset_token, reset_expires, created_at"
+    )
+    .eq("reset_token", token)
+    .single();
+
+  if (error || !data) return null;
+
+  // Check expiry
+  if (data.reset_expires && new Date(data.reset_expires) < new Date()) {
+    return null;
+  }
+
+  return data as User;
+}
+
+/**
+ * Set password from reset token, then clear the token
+ */
+export async function setPasswordFromResetToken(
+  token: string,
+  passwordHash: string
+): Promise<void> {
+  const supabase = createServerClient();
+  const { error } = await supabase
+    .from("users")
+    .update({
+      password_hash: passwordHash,
+      reset_token: null,
+      reset_expires: null,
+    })
+    .eq("reset_token", token);
+
+  if (error) throw error;
+}
+
+/**
+ * Get an active user by email who has a password set (eligible for reset)
+ */
+export async function getUserByEmailForReset(
+  email: string
+): Promise<User | null> {
+  const supabase = createServerClient();
+  const { data, error } = await supabase
+    .from("users")
+    .select(
+      "id, email, name, role, membership_tier, is_active, invitation_token, invitation_expires, reset_token, reset_expires, created_at"
+    )
+    .eq("email", email.toLowerCase())
+    .eq("is_active", true)
+    .not("password_hash", "is", null)
+    .single();
+
+  if (error || !data) return null;
+  return data as User;
+}

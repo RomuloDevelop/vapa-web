@@ -2,12 +2,22 @@
 
 import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import { Lock } from "lucide-react";
+import Link from "next/link";
+import { loginSchema, type LoginFormValues } from "@/lib/schemas";
 
 const ERROR_MESSAGES: Record<string, string> = {
   unauthorized: "You do not have permission to access that page.",
 };
+
+const inputClass =
+  "w-full px-4 py-3 rounded-lg bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-border-accent-light focus:border-accent";
+
+const errorInputClass =
+  "w-full px-4 py-3 rounded-lg bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-red-500 focus:border-red-500";
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -15,26 +25,35 @@ function LoginForm() {
   const callbackUrl = searchParams.get("callbackUrl");
   const errorParam = searchParams.get("error");
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(
+  const [serverError, setServerError] = useState<string | null>(
     errorParam ? ERROR_MESSAGES[errorParam] || null : null
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (data: LoginFormValues) => {
     setLoading(true);
-    setError(null);
+    setServerError(null);
 
     const result = await signIn("credentials", {
-      email,
-      password,
+      email: data.email,
+      password: data.password,
       redirect: false,
     });
 
     if (result?.error) {
-      setError("Invalid email or password.");
+      setServerError("Invalid email or password.");
       setLoading(false);
       return;
     }
@@ -59,7 +78,7 @@ function LoginForm() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <div className="flex flex-col gap-2">
           <label
             htmlFor="email"
@@ -70,13 +89,14 @@ function LoginForm() {
           <input
             id="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email")}
             placeholder="your.email@example.com"
-            required
             autoComplete="email"
-            className="w-full px-4 py-3 rounded-lg bg-surface border border-border-accent-light text-white placeholder:text-foreground-faint text-sm focus:outline-none focus:border-accent transition-colors"
+            className={errors.email ? errorInputClass : inputClass}
           />
+          {errors.email && (
+            <span className="text-xs text-red-400">{errors.email.message}</span>
+          )}
         </div>
 
         <div className="flex flex-col gap-2">
@@ -89,18 +109,25 @@ function LoginForm() {
           <input
             id="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            {...register("password")}
             placeholder="Enter your password"
-            required
             autoComplete="current-password"
-            className="w-full px-4 py-3 rounded-lg bg-surface border border-border-accent-light text-white placeholder:text-foreground-faint text-sm focus:outline-none focus:border-accent transition-colors"
+            className={errors.password ? errorInputClass : inputClass}
           />
+          {errors.password && (
+            <span className="text-xs text-red-400">{errors.password.message}</span>
+          )}
+          <Link
+            href="/auth/forgot-password"
+            className="text-xs text-accent hover:underline self-end mt-1"
+          >
+            Forgot password?
+          </Link>
         </div>
 
-        {error && (
+        {serverError && (
           <p className="text-sm text-red-400 bg-red-400/10 px-4 py-3 rounded-lg">
-            {error}
+            {serverError}
           </p>
         )}
 

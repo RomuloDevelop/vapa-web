@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -20,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { MEMBERSHIP_TIERS } from "@/lib/database.types";
 import { addMember } from "@/lib/actions/members";
+import { addMemberSchema, type AddMemberFormValues } from "@/lib/schemas";
 
 interface AddMemberDialogProps {
   open: boolean;
@@ -27,46 +30,57 @@ interface AddMemberDialogProps {
   onSuccess: () => void;
 }
 
+const inputClass =
+  "w-full px-3 py-2 rounded-md bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-border-accent-light focus:border-accent";
+
+const errorInputClass =
+  "w-full px-3 py-2 rounded-md bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-red-500 focus:border-red-500";
+
 export function AddMemberDialog({
   open,
   onOpenChange,
   onSuccess,
 }: AddMemberDialogProps) {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [tier, setTier] = useState("active");
-  const [role, setRole] = useState("member");
   const [isPending, startTransition] = useTransition();
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const resetForm = () => {
-    setEmail("");
-    setName("");
-    setTier("active");
-    setRole("member");
-    setFieldErrors({});
-  };
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    setError,
+    formState: { errors },
+  } = useForm<AddMemberFormValues>({
+    resolver: zodResolver(addMemberSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      role: "member",
+      membership_tier: "active",
+    },
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFieldErrors({});
-
+  const onSubmit = (data: AddMemberFormValues) => {
     startTransition(async () => {
       const formData = new FormData();
-      formData.set("email", email);
-      formData.set("name", name);
-      formData.set("membership_tier", tier);
-      formData.set("role", role);
+      formData.set("email", data.email);
+      formData.set("name", data.name);
+      formData.set("membership_tier", data.membership_tier);
+      formData.set("role", data.role);
 
       const result = await addMember(formData);
 
       if (result.success) {
         toast.success("User added — invitation email sent");
-        resetForm();
+        reset();
         onSuccess();
       } else {
         if (result.error.fields) {
-          setFieldErrors(result.error.fields);
+          for (const [field, message] of Object.entries(result.error.fields)) {
+            if (field in addMemberSchema.shape) {
+              setError(field as keyof AddMemberFormValues, { message });
+            }
+          }
         }
         toast.error(result.error.message);
       }
@@ -77,7 +91,7 @@ export function AddMemberDialog({
     <Dialog
       open={open}
       onOpenChange={(isOpen) => {
-        if (!isOpen) setFieldErrors({});
+        if (!isOpen) reset();
         onOpenChange(isOpen);
       }}
     >
@@ -90,7 +104,7 @@ export function AddMemberDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <label
               htmlFor="member-name"
@@ -101,26 +115,12 @@ export function AddMemberDialog({
             <input
               id="member-name"
               type="text"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                if (fieldErrors.name) {
-                  setFieldErrors((prev) => {
-                    const { name: _, ...rest } = prev;
-                    return rest;
-                  });
-                }
-              }}
+              {...register("name")}
               placeholder="Full name"
-              required
-              className={`w-full px-3 py-2 rounded-md bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors ${
-                fieldErrors.name
-                  ? "border-red-500 focus:border-red-500"
-                  : "border-border-accent-light focus:border-accent"
-              }`}
+              className={errors.name ? errorInputClass : inputClass}
             />
-            {fieldErrors.name && (
-              <span className="text-xs text-red-400">{fieldErrors.name}</span>
+            {errors.name && (
+              <span className="text-xs text-red-400">{errors.name.message}</span>
             )}
           </div>
 
@@ -134,26 +134,12 @@ export function AddMemberDialog({
             <input
               id="member-email"
               type="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                if (fieldErrors.email) {
-                  setFieldErrors((prev) => {
-                    const { email: _, ...rest } = prev;
-                    return rest;
-                  });
-                }
-              }}
+              {...register("email")}
               placeholder="user@example.com"
-              required
-              className={`w-full px-3 py-2 rounded-md bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors ${
-                fieldErrors.email
-                  ? "border-red-500 focus:border-red-500"
-                  : "border-border-accent-light focus:border-accent"
-              }`}
+              className={errors.email ? errorInputClass : inputClass}
             />
-            {fieldErrors.email && (
-              <span className="text-xs text-red-400">{fieldErrors.email}</span>
+            {errors.email && (
+              <span className="text-xs text-red-400">{errors.email.message}</span>
             )}
           </div>
 
@@ -161,47 +147,64 @@ export function AddMemberDialog({
             <label className="text-sm font-medium text-foreground-muted">
               Role
             </label>
-            <Select value={role} onValueChange={setRole}>
-              <SelectTrigger className="bg-surface border-border-accent-light text-white">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-surface-section border-border-accent-light">
-                <SelectItem
-                  value="member"
-                  className="text-foreground-muted focus:bg-accent-20 focus:text-white"
-                >
-                  Member
-                </SelectItem>
-                <SelectItem
-                  value="admin"
-                  className="text-foreground-muted focus:bg-accent-20 focus:text-white"
-                >
-                  Admin
-                </SelectItem>
-              </SelectContent>
-            </Select>
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="bg-surface border-border-accent-light text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-surface-section border-border-accent-light">
+                    <SelectItem
+                      value="member"
+                      className="text-foreground-muted focus:bg-accent-20 focus:text-white"
+                    >
+                      Member
+                    </SelectItem>
+                    <SelectItem
+                      value="admin"
+                      className="text-foreground-muted focus:bg-accent-20 focus:text-white"
+                    >
+                      Admin
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </div>
 
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-foreground-muted">
               Membership Tier
             </label>
-            <Select value={tier} onValueChange={setTier}>
-              <SelectTrigger className="bg-surface border-border-accent-light text-white">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-surface-section border-border-accent-light">
-                {MEMBERSHIP_TIERS.map((t) => (
-                  <SelectItem
-                    key={t.value}
-                    value={t.value}
-                    className="text-foreground-muted focus:bg-accent-20 focus:text-white"
-                  >
-                    {t.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Controller
+              name="membership_tier"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className="bg-surface border-border-accent-light text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-surface-section border-border-accent-light">
+                    {MEMBERSHIP_TIERS.map((t) => (
+                      <SelectItem
+                        key={t.value}
+                        value={t.value}
+                        className="text-foreground-muted focus:bg-accent-20 focus:text-white"
+                      >
+                        {t.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.membership_tier && (
+              <span className="text-xs text-red-400">
+                {errors.membership_tier.message}
+              </span>
+            )}
           </div>
 
           <DialogFooter className="gap-2 sm:gap-0 mt-2">
