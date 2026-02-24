@@ -72,3 +72,18 @@
 .swiper-pagination-bullet {
   transition: width 0.3s ease, opacity 0.3s ease;
 }
+
+/* --- Instagram Feed Grid --- */
+
+.instagram-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 150px);
+  overflow: hidden;
+}
+
+@media (min-height: 455px) {
+  .instagram-grid {
+    grid-template-columns: repeat(4, 33vh);
+  }
+}
+

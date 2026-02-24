@@ -1,14 +1,19 @@
 "use client";
 
 import { motion } from "motion/react";
-import Script from "next/script";
+import { InstagramFeed } from "../molecules/InstagramFeed";
+import type { InstagramPost } from "@/lib/services/instagram";
 import {
   fadeInRight,
   defaultViewport,
   slowTransition,
 } from "../utils/animations";
 
-export function AboutSection() {
+interface AboutSectionProps {
+  posts?: InstagramPost[];
+}
+
+export function AboutSection({ posts = [] }: AboutSectionProps) {
   return (
     <section className="flex flex-col gap-10 md:gap-16 lg:gap-20 px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface-section">
       {/* Header */}
@@ -57,9 +62,7 @@ export function AboutSection() {
         transition={{ ...slowTransition, delay: 0.3 }}
         className="w-full"
       >
-        <Script src="https://elfsightcdn.com/platform.js" strategy="lazyOnload" />
-        <script src="" async></script>
-        <div className="elfsight-app-9fc3f7cd-f330-469a-9c5e-7a11f696d706" data-elfsight-app-lazy></div>
+        <InstagramFeed posts={posts} />
       </motion.div>
     </section>
   );
