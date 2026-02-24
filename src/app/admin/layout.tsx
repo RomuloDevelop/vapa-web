@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { LayoutDashboard, Calendar, Users, LogOut, Menu, ExternalLink, Presentation } from "lucide-react";
+import { useAuthGuard } from "@/hooks/useAuthGuard";
+import { Loader } from "@/components/atoms";
 
 const navItems = [
   { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
@@ -21,16 +23,18 @@ export default function AdminLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { data: session } = useSession();
+  const { session, isLoading, isAuthorized } = useAuthGuard("/login");
 
   // Skip layout for login page
   if (pathname === "/admin/login" || pathname.startsWith("/admin/auth")) {
     return <>{children}</>;
   }
 
+  if (!isAuthorized) return isLoading ? <Loader /> : null;
+
   const handleLogout = async () => {
     await signOut({ redirect: false });
-    router.push("/login");
+    router.replace("/");
   };
 
   return (

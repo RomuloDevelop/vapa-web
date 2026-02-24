@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
-import { Lock } from "lucide-react";
+import { Lock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { loginSchema, type LoginFormValues } from "@/lib/schemas";
 
@@ -139,6 +139,16 @@ function LoginForm() {
           {loading ? "Signing in..." : "Sign In"}
         </button>
       </form>
+
+      <div className="flex justify-center">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-sm text-foreground-muted hover:text-accent transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Return to site
+        </Link>
+      </div>
     </div>
   );
 }

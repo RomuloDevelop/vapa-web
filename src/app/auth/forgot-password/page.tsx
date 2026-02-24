@@ -58,13 +58,22 @@ export default function ForgotPasswordPage() {
               If an account exists with that email address, we&apos;ve sent a
               link to reset your password. The link will expire in 1 hour.
             </p>
-            <Link
-              href="/login"
-              className="flex items-center gap-2 text-sm text-accent hover:underline mt-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Sign In
-            </Link>
+            <div className="flex items-center gap-4 mt-2">
+              <Link
+                href="/login"
+                className="flex items-center gap-2 text-sm text-accent hover:underline"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to Sign In
+              </Link>
+              <span className="text-foreground-faint">|</span>
+              <Link
+                href="/"
+                className="text-sm text-foreground-muted hover:text-accent transition-colors"
+              >
+                Return to site
+              </Link>
+            </div>
           </div>
         ) : (
           <>
@@ -116,13 +125,20 @@ export default function ForgotPasswordPage() {
               </button>
             </form>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-4">
               <Link
                 href="/login"
                 className="flex items-center gap-2 text-sm text-foreground-muted hover:text-accent transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back to Sign In
+              </Link>
+              <span className="text-foreground-faint">|</span>
+              <Link
+                href="/"
+                className="text-sm text-foreground-muted hover:text-accent transition-colors"
+              >
+                Return to site
               </Link>
             </div>
           </>

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
-import { Lock, AlertCircle, CheckCircle } from "lucide-react";
+import { Lock, AlertCircle, CheckCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import {
   resetPasswordSchema,
@@ -98,12 +98,21 @@ function ResetPasswordForm() {
             This password reset link is invalid or has expired. Please request a
             new one.
           </p>
-          <Link
-            href="/auth/forgot-password"
-            className="text-sm text-accent hover:underline mt-1"
-          >
-            Request a new reset link
-          </Link>
+          <div className="flex items-center gap-4 mt-1">
+            <Link
+              href="/auth/forgot-password"
+              className="text-sm text-accent hover:underline"
+            >
+              Request a new reset link
+            </Link>
+            <span className="text-foreground-faint">|</span>
+            <Link
+              href="/"
+              className="text-sm text-foreground-muted hover:text-accent transition-colors"
+            >
+              Return to site
+            </Link>
+          </div>
         </div>
       )}
 
@@ -197,6 +206,16 @@ function ResetPasswordForm() {
               {isMutating ? "Resetting Password..." : "Reset Password"}
             </button>
           </form>
+
+          <div className="flex justify-center">
+            <Link
+              href="/"
+              className="flex items-center gap-2 text-sm text-foreground-muted hover:text-accent transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Return to site
+            </Link>
+          </div>
         </>
       )}
     </div>
