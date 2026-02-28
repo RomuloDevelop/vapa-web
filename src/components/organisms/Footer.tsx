@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Linkedin, Instagram, Youtube, MapPin, Mail } from "lucide-react";
 import { AccordionSection, ContactForm } from "../molecules";
 import { socialLinks } from "@/config/navigation";
@@ -61,8 +62,8 @@ export function Footer() {
         {/* Brand Section */}
         <div className="flex flex-col gap-5 md:gap-6 w-full lg:w-[340px]">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 md:w-10 md:h-10 rounded-md bg-gradient-accent" />
+          <div className="flex items-center">
+            <Image src="/vapa-icon.png" alt="VAPA logo" width={40} height={40} className="w-9 h-9 md:w-10 md:h-10 object-contain shrink-0" />
             <span className="text-xl md:text-2xl font-bold text-white">VAPA</span>
           </div>
 

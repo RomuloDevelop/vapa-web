@@ -525,7 +525,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
       >
         <div className="flex items-center justify-between px-5 py-4 md:px-10 lg:px-20 md:py-6">
           {/* Logo */}
-          <Link href="/" className="flex items-end">
+          <Link href="/" className="flex items-center">
             <Image src="/vapa-icon.png" alt="VAPA logo" width={40} height={40} className="w-10 h-10 md:w-12 md:h-12 shrink-0" />
             <span className="text-2xl md:text-[28px] font-bold text-white">VAPA</span>
           </Link>
