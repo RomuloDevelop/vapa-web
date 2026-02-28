@@ -33,6 +33,14 @@ const heroSlides = [
     src: "/images/heroes/hero-3.jpg",
     alt: "Aerial view of an oil refinery complex with storage tanks",
   },
+  {
+    src: "/images/heroes/hero-4.jpg",
+    alt: "Oil and gas field operations with drilling rig and seismic survey",
+  },
+  {
+    src: "/images/heroes/hero-5.jpg",
+    alt: "Drilling rigs with subsurface seismic cross-section visualization",
+  },
 ];
 
 export function HeroSection() {

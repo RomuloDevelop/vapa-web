@@ -22,13 +22,16 @@ export function InstagramFeed({ posts }: InstagramFeedProps) {
   const hasMore = posts.length > POSTS_PER_PAGE && !expanded;
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-center gap-2 text-foreground-muted">
-        <Instagram className="w-5 h-5 text-accent" />
-        <span className="text-sm md:text-base font-semibold tracking-wide uppercase">
-          Follow Our Journey
-        </span>
-      </div>
+    <div className="flex flex-col items-center gap-4">
+      <a
+        href="https://www.instagram.com/vapa.us"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 px-6 py-3 bg-accent text-surface text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity"
+      >
+        <Instagram className="w-5 h-5" />
+        Follow us on Instagram
+      </a>
       <div className="instagram-grid gap-2 md:gap-3 mx-auto">
         {visiblePosts.map((post, index) => (
           <motion.a
@@ -87,15 +90,6 @@ export function InstagramFeed({ posts }: InstagramFeedProps) {
             <ChevronDown className="w-5 h-5" />
           </button>
         )}
-        <a
-          href="https://www.instagram.com/vapa.us"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 px-6 py-3 bg-accent text-surface text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity"
-        >
-          <Instagram className="w-5 h-5" />
-          Follow us on Instagram
-        </a>
       </div>
       </div>
   );
