@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { captureError } from "@/lib/error-tracking";
 
 // Email configuration from environment variables
 const SMTP_HOST = process.env.SMTP_HOST;
@@ -192,6 +193,7 @@ If you did not expect this invitation, you can safely ignore this email.
     return { success: true };
   } catch (error) {
     console.error("Error sending invitation email:", error);
+    captureError(error, { tags: { area: "email", type: "invitation" } });
     if (error instanceof Error && error.message === "TIMEOUT") {
       return { success: false, error: "Email server timeout.", errorCode: "TIMEOUT" };
     }
@@ -284,6 +286,7 @@ If you did not request a password reset, you can safely ignore this email.
     return { success: true };
   } catch (error) {
     console.error("Error sending password reset email:", error);
+    captureError(error, { tags: { area: "email", type: "password-reset" } });
     if (error instanceof Error && error.message === "TIMEOUT") {
       return { success: false, error: "Email server timeout.", errorCode: "TIMEOUT" };
     }
@@ -458,6 +461,7 @@ Venezuelan American Petroleum Association (VAPA)
     return { success: true };
   } catch (error) {
     console.error("Error sending donation receipt email:", error);
+    captureError(error, { tags: { area: "email", type: "donation-receipt" } });
     if (error instanceof Error && error.message === "TIMEOUT") {
       return {
         success: false,
@@ -566,6 +570,7 @@ This email was sent from the VAPA website contact form.
 
     return { success: true };
   } catch (error) {
+    captureError(error, { tags: { area: "email", type: "contact" } });
     // Detailed error logging for debugging
     console.error("=== Email Send Error ===");
     console.error("Error type:", error instanceof Error ? error.constructor.name : typeof error);

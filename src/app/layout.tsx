@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
 import { ScrollToTop } from "@/components";
+import { PostHogProvider } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,7 +25,9 @@ export default function RootLayout({
       </head>
       <body className="h-full font-primary antialiased">
         <SessionProvider>
-        {children}
+          <PostHogProvider>
+            {children}
+          </PostHogProvider>
         </SessionProvider>
         <ScrollToTop threshold={50} />
         <Toaster

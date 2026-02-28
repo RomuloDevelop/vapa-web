@@ -1,4 +1,5 @@
 import { auth } from "@/lib/auth";
+import { captureError } from "@/lib/error-tracking";
 import { ActionError } from "./action-result";
 import type { ActionResult } from "./action-result";
 
@@ -50,6 +51,7 @@ export function safeAction<TArgs extends unknown[], TData = void>(
       }
 
       console.error("[safeAction] Unexpected error:", error);
+      captureError(error, { tags: { area: "server-action" } });
       return {
         success: false,
         error: {

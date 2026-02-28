@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { captureError } from "@/lib/error-tracking";
 
 interface UnsplashPhoto {
   id: string;
@@ -106,7 +107,8 @@ export async function GET(request: NextRequest) {
     }));
 
     return NextResponse.json({ results, query: refinedQuery });
-  } catch {
+  } catch (error) {
+    captureError(error, { tags: { area: "image-search" } });
     return NextResponse.json(
       { error: "Failed to fetch images" },
       { status: 500 }

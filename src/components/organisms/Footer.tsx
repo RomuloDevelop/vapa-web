@@ -16,6 +16,7 @@ const footerLinks = {
   organization: {
     title: "ABOUT US",
     links: [
+      { label: "Our History", href: "/about/history" },
       { label: "Board of Directors", href: "/about/directors" },
       { label: "Advisory Board", href: "/about/advisory" },
       { label: "VAPALink", href: "#" },

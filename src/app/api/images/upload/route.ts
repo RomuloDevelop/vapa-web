@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase-server";
+import { captureError } from "@/lib/error-tracking";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
@@ -53,7 +54,8 @@ export async function POST(request: NextRequest) {
       .getPublicUrl(filePath);
 
     return NextResponse.json({ url: urlData.publicUrl });
-  } catch {
+  } catch (error) {
+    captureError(error, { tags: { area: "image-upload" } });
     return NextResponse.json(
       { error: "Failed to process upload" },
       { status: 500 }

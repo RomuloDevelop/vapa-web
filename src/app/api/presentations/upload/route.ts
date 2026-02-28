@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase-server";
+import { captureError } from "@/lib/error-tracking";
 
 const ALLOWED_TYPES = [
   "application/pdf",
@@ -62,7 +63,8 @@ export async function POST(request: NextRequest) {
       filePath: fileName,
       originalName: file.name,
     });
-  } catch {
+  } catch (error) {
+    captureError(error, { tags: { area: "presentation-upload" } });
     return NextResponse.json(
       { error: "Failed to process upload" },
       { status: 500 }

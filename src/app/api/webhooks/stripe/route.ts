@@ -6,6 +6,7 @@ import {
   markReceiptSent,
 } from "@/lib/services/donations";
 import { sendDonationReceiptEmail } from "@/lib/services/email";
+import { captureError } from "@/lib/error-tracking";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -28,6 +29,7 @@ export async function POST(request: NextRequest) {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err) {
     console.error("[Stripe Webhook] Signature verification failed:", err);
+    captureError(err, { tags: { area: "stripe-webhook", type: "signature" } });
     return NextResponse.json(
       { error: "Webhook signature verification failed" },
       { status: 400 }
@@ -44,6 +46,10 @@ export async function POST(request: NextRequest) {
         "[Stripe Webhook] Error processing checkout.session.completed:",
         error
       );
+      captureError(error, {
+        tags: { area: "stripe-webhook", type: "checkout" },
+        extra: { sessionId: session.id },
+      });
       // Return 500 so Stripe retries
       return NextResponse.json(
         { error: "Webhook processing failed" },

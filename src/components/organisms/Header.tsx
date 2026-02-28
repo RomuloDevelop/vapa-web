@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut as memberSignOut } from "next-auth/react";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import { navigationConfig, MEMBERSHIP_URL, socialLinks, type NavItem, type NavSubItem } from "@/config/navigation";
 
 const socialIconMap = {
@@ -24,6 +25,7 @@ const SCROLL_THRESHOLD = 500; // px before hide/show kicks in
 
 export function Header({ variant = "solid", activeNav = "Home", showJoinButton = true }: HeaderProps) {
   const { data: memberSession } = useSession();
+  const analytics = useAnalytics();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpandedItem, setMobileExpandedItem] = useState<string | null>(null);
@@ -160,7 +162,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
 
     // Item with children (mega menu dropdown)
     if (hasChildren) {
-      const columns = splitIntoColumns(item.children!, 2);
+      const desktopChildren = item.children!.filter((child) => !child.mobileOnly);
+      const columns = splitIntoColumns(desktopChildren, 2);
 
       return (
         <div
@@ -578,7 +581,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                   </span>
                 </div>
                 <button
-                  onClick={() => memberSignOut({ callbackUrl: "/" })}
+                  onClick={() => { analytics.reset(); memberSignOut({ callbackUrl: "/" }); }}
                   className="flex items-center gap-1 text-xs text-foreground-faint hover:text-accent transition-colors"
                   aria-label="Log out"
                 >
@@ -702,6 +705,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                         <button
                           onClick={() => {
                             setIsMenuOpen(false);
+                            analytics.reset();
                             memberSignOut({ callbackUrl: "/" });
                           }}
                           className="text-xs text-foreground-faint hover:text-accent transition-colors"

@@ -3,6 +3,7 @@ export interface NavSubItem {
   href: string;
   description?: string;
   external?: boolean;
+  mobileOnly?: boolean;
 }
 
 export interface NavItem {
@@ -20,8 +21,14 @@ export const navigationConfig: NavItem[] = [
   },
   {
     label: "About",
-    href: "",
+    href: "/about/history",
     children: [
+      {
+        label: "Our History",
+        href: "/about/history",
+        description: "Learn about VAPA's mission, history, and vision.",
+        mobileOnly: true,
+      },
       {
         label: "Board of Directors",
         href: "/about/directors",
