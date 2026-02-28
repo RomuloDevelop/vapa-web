@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { captureError } from "@/lib/error-tracking";
 import { ActionError } from "./action-result";
 import type { ActionResult } from "./action-result";
@@ -10,7 +10,7 @@ export type { ActionResult, ActionErrorData, ErrorCode } from "./action-result";
 // ─── Auth Check ──────────────────────────────────────────────────────────────
 
 export async function requireAuth(): Promise<void> {
-  const session = await auth();
+  const session = await getSession();
 
   if (!session?.user) {
     throw new ActionError("UNAUTHORIZED", "Not authenticated");
@@ -18,13 +18,13 @@ export async function requireAuth(): Promise<void> {
 }
 
 export async function requireAdmin(): Promise<void> {
-  const session = await auth();
+  const session = await getSession();
 
   if (!session?.user) {
     throw new ActionError("UNAUTHORIZED", "Not authenticated");
   }
 
-  if (session.user.role !== "admin") {
+  if ((session.user as Record<string, unknown>).role !== "admin") {
     throw new ActionError("UNAUTHORIZED", "Unauthorized");
   }
 }

@@ -2,7 +2,7 @@
 
 import posthog from "posthog-js";
 import { PostHogProvider as PHProvider, usePostHog } from "posthog-js/react";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/lib/auth-client";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, Suspense } from "react";
 import { setErrorUser } from "@/lib/error-tracking";
@@ -37,19 +37,20 @@ function PostHogPageView() {
 }
 
 function UserIdentifier() {
-  const { data: session } = useSession();
+  const { data } = useSession();
   const posthogClient = usePostHog();
 
   useEffect(() => {
-    const userId = session?.user?.id ?? session?.user?.email;
-    if (session?.user && userId) {
+    const user = data?.user;
+    const userId = user?.id ?? user?.email;
+    if (user && userId) {
       posthogClient.identify(userId, {
-        email: session.user.email,
-        name: session.user.name,
+        email: user.email,
+        name: user.name,
       });
-      setErrorUser({ id: userId, email: session.user.email ?? undefined });
+      setErrorUser({ id: userId, email: user.email ?? undefined });
     }
-  }, [session, posthogClient]);
+  }, [data, posthogClient]);
 
   return null;
 }

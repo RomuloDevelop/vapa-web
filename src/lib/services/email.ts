@@ -122,7 +122,7 @@ export async function sendInvitationEmail(
   if (configError) return configError;
 
   const baseUrl =
-    process.env.NEXTAUTH_URL ||
+    process.env.BETTER_AUTH_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
   const setPasswordUrl = `${baseUrl}/auth/set-password?token=${token}`;
 
@@ -215,7 +215,7 @@ export async function sendPasswordResetEmail(
   if (configError) return configError;
 
   const baseUrl =
-    process.env.NEXTAUTH_URL ||
+    process.env.BETTER_AUTH_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
   const resetUrl = `${baseUrl}/auth/reset-password?token=${token}`;
 
@@ -333,7 +333,7 @@ export async function sendDonationReceiptEmail(
     addressParts.length > 0 ? addressParts.join("<br>") : "Not provided";
 
   const baseUrl =
-    process.env.NEXTAUTH_URL ||
+    process.env.BETTER_AUTH_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
   const logoUrl = `${baseUrl}/vapa-email.png`;
 

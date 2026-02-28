@@ -1,23 +1,20 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { getSessionCookie } from "better-auth/cookies";
 
 const LOGIN_URL = "/login";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = await getToken({ req: request, secret: process.env.AUTH_SECRET });
+
+  // Cookie-based check (fast, no DB call).
+  // Actual session + role validation happens in server components/actions.
+  const sessionCookie = getSessionCookie(request);
 
   // ── ADMIN ROUTES ─────────────────────────────────────
   if (pathname.startsWith("/admin")) {
-    if (!token) {
+    if (!sessionCookie) {
       const loginUrl = new URL(LOGIN_URL, request.url);
       loginUrl.searchParams.set("callbackUrl", request.url);
-      return NextResponse.redirect(loginUrl);
-    }
-
-    if (token.role !== "admin") {
-      const loginUrl = new URL(LOGIN_URL, request.url);
-      loginUrl.searchParams.set("error", "unauthorized");
       return NextResponse.redirect(loginUrl);
     }
 
@@ -29,7 +26,7 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/digital-library/presentations") ||
     pathname.startsWith("/digital-library/references")
   ) {
-    if (!token) {
+    if (!sessionCookie) {
       const loginUrl = new URL(LOGIN_URL, request.url);
       loginUrl.searchParams.set("callbackUrl", request.url);
       return NextResponse.redirect(loginUrl);

@@ -150,7 +150,10 @@ export type Database = {
           invitation_expires: string | null;
           reset_token: string | null;
           reset_expires: string | null;
+          email_verified: boolean;
+          image: string | null;
           created_at: string;
+          updated_at: string;
         };
         Insert: {
           id?: string;
@@ -164,7 +167,10 @@ export type Database = {
           invitation_expires?: string | null;
           reset_token?: string | null;
           reset_expires?: string | null;
+          email_verified?: boolean;
+          image?: string | null;
           created_at?: string;
+          updated_at?: string;
         };
         Update: {
           id?: string;
@@ -178,7 +184,118 @@ export type Database = {
           invitation_expires?: string | null;
           reset_token?: string | null;
           reset_expires?: string | null;
+          email_verified?: boolean;
+          image?: string | null;
           created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      session: {
+        Row: {
+          id: string;
+          user_id: string;
+          token: string;
+          expires_at: string;
+          ip_address: string | null;
+          user_agent: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id: string;
+          user_id: string;
+          token: string;
+          expires_at: string;
+          ip_address?: string | null;
+          user_agent?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          token?: string;
+          expires_at?: string;
+          ip_address?: string | null;
+          user_agent?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      account: {
+        Row: {
+          id: string;
+          user_id: string;
+          account_id: string;
+          provider_id: string;
+          access_token: string | null;
+          refresh_token: string | null;
+          access_token_expires_at: string | null;
+          refresh_token_expires_at: string | null;
+          scope: string | null;
+          id_token: string | null;
+          password: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id: string;
+          user_id: string;
+          account_id: string;
+          provider_id: string;
+          access_token?: string | null;
+          refresh_token?: string | null;
+          access_token_expires_at?: string | null;
+          refresh_token_expires_at?: string | null;
+          scope?: string | null;
+          id_token?: string | null;
+          password?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          account_id?: string;
+          provider_id?: string;
+          access_token?: string | null;
+          refresh_token?: string | null;
+          access_token_expires_at?: string | null;
+          refresh_token_expires_at?: string | null;
+          scope?: string | null;
+          id_token?: string | null;
+          password?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      verification: {
+        Row: {
+          id: string;
+          identifier: string;
+          value: string;
+          expires_at: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id: string;
+          identifier: string;
+          value: string;
+          expires_at: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          identifier?: string;
+          value?: string;
+          expires_at?: string;
+          created_at?: string;
+          updated_at?: string;
         };
         Relationships: [];
       };

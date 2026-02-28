@@ -5,7 +5,7 @@ import { Menu, X, ChevronDown, Linkedin, Instagram, Youtube, LogOut, User, Shiel
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSession, signOut as memberSignOut } from "next-auth/react";
+import { useSession, signOut as memberSignOut } from "@/lib/auth-client";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { navigationConfig, MEMBERSHIP_URL, socialLinks, type NavItem, type NavSubItem } from "@/config/navigation";
 
@@ -24,7 +24,8 @@ interface HeaderProps {
 const SCROLL_THRESHOLD = 500; // px before hide/show kicks in
 
 export function Header({ variant = "solid", activeNav = "Home", showJoinButton = true }: HeaderProps) {
-  const { data: memberSession } = useSession();
+  const { data: sessionData } = useSession();
+  const memberSession = sessionData ? { user: { ...sessionData.user, role: (sessionData.user as Record<string, unknown>).role as string } } : null;
   const analytics = useAnalytics();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -581,7 +582,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                   </span>
                 </div>
                 <button
-                  onClick={() => { analytics.reset(); memberSignOut({ callbackUrl: "/" }); }}
+                  onClick={() => { analytics.reset(); memberSignOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } }); }}
                   className="flex items-center gap-1 text-xs text-foreground-faint hover:text-accent transition-colors"
                   aria-label="Log out"
                 >
@@ -706,7 +707,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                           onClick={() => {
                             setIsMenuOpen(false);
                             analytics.reset();
-                            memberSignOut({ callbackUrl: "/" });
+                            memberSignOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } });
                           }}
                           className="text-xs text-foreground-faint hover:text-accent transition-colors"
                         >

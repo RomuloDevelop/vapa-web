@@ -1,7 +1,7 @@
 "use server";
 
-import { signIn, signOut, auth } from "@/lib/auth";
-import { AuthError } from "next-auth";
+import { auth, getSession } from "@/lib/auth";
+import { headers } from "next/headers";
 import bcrypt from "bcryptjs";
 import {
   validateInvitationToken,
@@ -15,26 +15,29 @@ import { sendPasswordResetEmail } from "@/lib/services/email";
 
 export async function loginWithCredentials(email: string, password: string) {
   try {
-    await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
+    await auth.api.signInEmail({
+      body: { email, password },
+      headers: await headers(),
     });
     return { success: true };
   } catch (error) {
-    if (error instanceof AuthError) {
-      return { success: false, error: "Invalid email or password." };
-    }
-    throw error;
+    console.error(error)
+    return { success: false, error: "Invalid email or password." };
   }
 }
 
 export async function logout() {
-  await signOut({ redirect: false });
+  try {
+    await auth.api.signOut({
+      headers: await headers(),
+    });
+  } catch {
+    // Ignore errors on sign out
+  }
 }
 
 export async function getAuthUser() {
-  const session = await auth();
+  const session = await getSession();
   return session?.user ?? null;
 }
 
@@ -64,6 +67,7 @@ export async function setPassword(token: string, password: string) {
 
   const passwordHash = await bcrypt.hash(password, 12);
   await setPasswordFromInvitation(token, passwordHash);
+  await upsertCredentialAccount(user.id, passwordHash);
 
   return { success: true };
 }
@@ -116,6 +120,39 @@ export async function resetPassword(token: string, password: string) {
 
   const passwordHash = await bcrypt.hash(password, 12);
   await setPasswordFromResetToken(token, passwordHash);
+  await upsertCredentialAccount(user.id, passwordHash);
 
   return { success: true };
+}
+
+// ── Helper: sync password to Better Auth account table ──────────────
+
+async function upsertCredentialAccount(userId: string, passwordHash: string) {
+  const { createServerClient } = await import("@/lib/supabase-server");
+  const supabase = createServerClient();
+
+  const { data: existing } = await supabase
+    .from("account")
+    .select("id")
+    .eq("user_id", userId)
+    .eq("provider_id", "credential")
+    .single();
+
+  if (existing) {
+    await supabase
+      .from("account")
+      .update({ password: passwordHash, updated_at: new Date().toISOString() })
+      .eq("id", existing.id);
+  } else {
+    const crypto = await import("crypto");
+    await supabase.from("account").insert({
+      id: crypto.randomUUID(),
+      user_id: userId,
+      account_id: userId,
+      provider_id: "credential",
+      password: passwordHash,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    });
+  }
 }

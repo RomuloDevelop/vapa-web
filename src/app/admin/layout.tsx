@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut } from "@/lib/auth-client";
 import { LayoutDashboard, Calendar, Users, LogOut, Menu, ExternalLink, Presentation } from "lucide-react";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
 import { useAnalytics } from "@/hooks/useAnalytics";
@@ -37,8 +37,7 @@ export default function AdminLayout({
 
   const handleLogout = async () => {
     analytics.reset();
-    await signOut({ redirect: false });
-    router.replace("/");
+    await signOut({ fetchOptions: { onSuccess: () => router.replace("/") } });
   };
 
   return (

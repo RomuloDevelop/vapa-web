@@ -1,73 +1,119 @@
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import { betterAuth } from "better-auth";
+import { nextCookies } from "better-auth/next-js";
+import { Pool } from "pg";
 import bcrypt from "bcryptjs";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { createServerClient } from "@/lib/supabase-server";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  providers: [
-    Credentials({
-      credentials: {
-        email: { type: "email" },
-        password: { type: "password" },
-      },
-      async authorize(credentials) {
-        const email = (credentials.email as string)?.toLowerCase().trim();
-        const password = credentials.password as string;
-        if (!email || !password) return null;
+export const auth = betterAuth({
+  database: new Pool({
+    connectionString: process.env.DATABASE_URL,
+  }),
 
-        const supabase = createServerClient();
-        const { data: user } = await supabase
-          .from("users")
-          .select("*")
-          .eq("email", email)
-          .eq("is_active", true)
-          .single();
-
-        if (!user || !user.password_hash) return null;
-
-        const valid = await bcrypt.compare(password, user.password_hash);
-        if (!valid) return null;
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          membershipTier: user.membership_tier,
-        };
-      },
-    }),
-  ],
-  session: { strategy: "jwt", maxAge: 24 * 60 * 60 },
-  pages: {
-    signIn: "/login",
-    error: "/login",
-  },
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) {
-        token.role = user.role;
-        token.membershipTier = user.membershipTier;
-        token.userId = user.id;
-      }
-      return token;
+  // Map Better Auth's "user" model to our existing "users" table
+  user: {
+    modelName: "users",
+    fields: {
+      emailVerified: "email_verified",
+      createdAt: "created_at",
+      updatedAt: "updated_at",
     },
-    session({ session, token }) {
-      session.user.id = token.userId as string;
-      session.user.role = token.role as "admin" | "member";
-      session.user.membershipTier = token.membershipTier as string;
-      return session;
+    additionalFields: {
+      role: {
+        type: "string",
+        required: false,
+        defaultValue: "member",
+        input: false,
+      },
+      membershipTier: {
+        type: "string",
+        fieldName: "membership_tier",
+        required: false,
+        defaultValue: "active",
+        input: false,
+      },
+      isActive: {
+        type: "boolean",
+        fieldName: "is_active",
+        required: false,
+        defaultValue: true,
+        input: false,
+      },
     },
   },
+
+  session: {
+    modelName: "session",
+    fields: {
+      userId: "user_id",
+      expiresAt: "expires_at",
+      ipAddress: "ip_address",
+      userAgent: "user_agent",
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
+    expiresIn: 24 * 60 * 60, // 24 hours
+    updateAge: 60 * 60, // Refresh if older than 1 hour
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60, // 5 min cache to avoid DB lookups in middleware
+    },
+  },
+
+  account: {
+    modelName: "account",
+    fields: {
+      userId: "user_id",
+      accountId: "account_id",
+      providerId: "provider_id",
+      accessToken: "access_token",
+      refreshToken: "refresh_token",
+      accessTokenExpiresAt: "access_token_expires_at",
+      refreshTokenExpiresAt: "refresh_token_expires_at",
+      idToken: "id_token",
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
+  },
+
+  verification: {
+    modelName: "verification",
+    fields: {
+      expiresAt: "expires_at",
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+    },
+  },
+
+  emailAndPassword: {
+    enabled: true,
+    password: {
+      hash: async (password: string) => {
+        return bcrypt.hash(password, 12);
+      },
+      verify: async (data: { password: string; hash: string }) => {
+        return bcrypt.compare(data.password, data.hash);
+      },
+    },
+  },
+
+  plugins: [nextCookies()],
 });
+
+// ── Helper: get session in server components / actions ──────────────
+
+export async function getSession() {
+  return auth.api.getSession({
+    headers: await headers(),
+  });
+}
 
 /**
  * Require any authenticated user in a server component.
  * Redirects to login if no valid session exists.
  */
 export async function requireMemberAuth() {
-  const session = await auth();
+  const session = await getSession();
   if (!session?.user) {
     redirect("/login");
   }
@@ -79,8 +125,8 @@ export async function requireMemberAuth() {
  * Redirects to login if not an admin.
  */
 export async function requireAdminAuth() {
-  const session = await auth();
-  if (!session?.user || session.user.role !== "admin") {
+  const session = await getSession();
+  if (!session?.user || (session.user as Record<string, unknown>).role !== "admin") {
     redirect("/login");
   }
   return session;

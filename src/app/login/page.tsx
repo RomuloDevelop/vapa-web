@@ -4,10 +4,10 @@ import { Suspense, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
 import { Lock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { loginSchema, type LoginFormValues } from "@/lib/schemas";
+import { signIn } from "@/lib/auth-client";
 
 const ERROR_MESSAGES: Record<string, string> = {
   unauthorized: "You do not have permission to access that page.",
@@ -46,24 +46,18 @@ function LoginForm() {
     setLoading(true);
     setServerError(null);
 
-    const result = await signIn("credentials", {
+    const result = await signIn.email({
       email: data.email,
       password: data.password,
-      redirect: false,
     });
 
-    if (result?.error) {
+    if (result.error) {
       setServerError("Invalid email or password.");
       setLoading(false);
       return;
     }
 
-    if (callbackUrl) {
-      router.push(callbackUrl);
-    } else {
-      router.push("/");
-      router.refresh();
-    }
+    router.push(callbackUrl || "/");
   };
 
   return (

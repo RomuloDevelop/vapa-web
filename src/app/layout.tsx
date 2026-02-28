@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { SessionProvider } from "next-auth/react";
 import { Toaster } from "sonner";
 import { ScrollToTop } from "@/components";
 import { PostHogProvider } from "./providers";
@@ -24,11 +23,9 @@ export default function RootLayout({
         />
       </head>
       <body className="h-full font-primary antialiased">
-        <SessionProvider>
-          <PostHogProvider>
-            {children}
-          </PostHogProvider>
-        </SessionProvider>
+        <PostHogProvider>
+          {children}
+        </PostHogProvider>
         <ScrollToTop threshold={50} />
         <Toaster
           position="bottom-right"
