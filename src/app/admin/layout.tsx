@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { LayoutDashboard, Calendar, Users, LogOut, Menu, ExternalLink, Presentation } from "lucide-react";
@@ -54,9 +55,10 @@ export default function AdminLayout({
         }`}
       >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-6 py-5 border-b border-border-accent-light">
-          <div className="w-8 h-8 rounded-lg bg-gradient-accent" />
-          <span className="text-lg font-bold text-white">VAPA Admin</span>
+        <div className="flex items-end px-6 py-5 border-b border-border-accent-light">
+          <Image src="/vapa-icon.png" alt="VAPA logo" width={24} height={24} className="w-8 h-8 shrink-0" />
+
+          <span className="text-xl font-bold text-white">VAPA Admin</span>
         </div>
 
         {/* Nav */}
