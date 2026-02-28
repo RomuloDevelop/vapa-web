@@ -20,7 +20,7 @@ export function VisionSection() {
     >
       <div className="relative h-[250px] md:h-[300px] lg:h-auto lg:w-[500px] flex-shrink-0">
         <Image
-          src="https://images.unsplash.com/photo-1644567103258-6da3857faab4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk3MzgyNjV8&ixlib=rb-4.1.0&q=80&w=1080"
+          src="/images/sections/history-vision.jpg"
           alt="Power transmission lines"
           fill
           className="object-cover"

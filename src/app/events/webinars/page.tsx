@@ -11,7 +11,7 @@ export default async function WebinarsPage() {
     <main className="flex flex-col min-h-screen bg-surface">
       <Header variant="gradient" activeNav="Events" />
       <PageHero
-        image="https://images.unsplash.com/photo-1540575467063-178a50c2df87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+        image="/images/heroes/webinars.jpg"
         imageAlt="Webinar presentation"
         label="EVENTS"
         title="Webinars"

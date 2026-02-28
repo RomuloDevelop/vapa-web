@@ -20,17 +20,17 @@ const EDGE_ZONE = 120; // px from edge to trigger arrow
 
 const heroSlides = [
   {
-    src: "https://images.unsplash.com/photo-1726111265336-6bf825e549ce?ixlib=rb-4.1.0&q=80&w=1920&fit=crop",
+    src: "/images/heroes/hero-1.jpg",
     alt: "Oil refinery at dusk",
     className: "object-cover -scale-x-100",
     objectPosition: "right 100%",
   },
   {
-    src: "https://images.unsplash.com/photo-1624771002998-4aadfd43e7c4?ixlib=rb-4.1.0&q=80&w=1920&fit=crop",
+    src: "/images/heroes/hero-2.jpg",
     alt: "Oil pumpjack in the field",
   },
   {
-    src: "https://images.unsplash.com/photo-1641112690965-090b86da6b3f?ixlib=rb-4.1.0&q=80&w=1920&fit=crop",
+    src: "/images/heroes/hero-3.jpg",
     alt: "Aerial view of an oil refinery complex with storage tanks",
   },
 ];

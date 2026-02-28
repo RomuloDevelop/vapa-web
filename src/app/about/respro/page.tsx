@@ -8,7 +8,7 @@ export default function VapaResProPage() {
     <main className="flex flex-col min-h-screen bg-surface">
       <Header variant="gradient" activeNav="About" />
       <PageHero
-        image="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixlib=rb-4.1.0&q=80&w=1080"
+        image="/images/heroes/respro.jpg"
         imageAlt="Professional responsibility and ethics"
         label="PROGRAM"
         title="VAPA ResPro"

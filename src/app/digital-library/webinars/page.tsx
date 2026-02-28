@@ -14,7 +14,7 @@ export default async function WebinarsPage() {
     <main className="flex flex-col min-h-screen bg-surface">
       <Header variant="gradient" activeNav="Digital Library" />
       <PageHero
-        image="https://images.unsplash.com/photo-1632684140995-27b3244734af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+        image="/images/heroes/digital-library.jpg"
         imageAlt="Digital library concept"
         label="KNOWLEDGE CENTER"
         title="Webinars"

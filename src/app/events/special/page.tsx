@@ -11,7 +11,7 @@ export default async function SpecialEventsPage() {
     <main className="flex flex-col min-h-screen bg-surface">
       <Header variant="gradient" activeNav="Events" />
       <PageHero
-        image="https://images.unsplash.com/photo-1511578314322-379afb476865?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
+        image="/images/heroes/special-events.jpg"
         imageAlt="Special event venue"
         label="EVENTS"
         title="Special Events"

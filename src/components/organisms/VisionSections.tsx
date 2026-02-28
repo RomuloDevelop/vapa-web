@@ -30,8 +30,7 @@ const visionItems: VisionItem[] = [
     title: "Envision the Future",
     description:
       "Develop and share strategic scenarios for the rehabilitation of Venezuela's energy sector through collaborative planning and foresight initiatives",
-    imageSrc:
-      "https://images.unsplash.com/photo-1678984239456-a63d28c947ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzA0NzIwNDZ8&ixlib=rb-4.1.0&q=80&w=1080",
+    imageSrc: "/images/sections/vision-1.jpg",
     imageAlt: "Energy sector planning",
   },
   {
@@ -39,8 +38,7 @@ const visionItems: VisionItem[] = [
     title: "Empower Talent",
     description:
       "Connect experts and young professionals through mentorship, training, and knowledge-sharing to build the skills needed for tomorrow's energy landscape",
-    imageSrc:
-      "https://images.unsplash.com/photo-1596496357130-e24a50408378?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzA0NzIwNTV8&ixlib=rb-4.1.0&q=80&w=1080",
+    imageSrc: "/images/sections/vision-2.jpg",
     imageAlt: "Professional mentorship and training",
   },
   {
@@ -48,8 +46,7 @@ const visionItems: VisionItem[] = [
     title: "Innovate with Purpose",
     description:
       "Promote ideas and integrate technology, economics, and environmental sustainability to address Venezuela's unique challenges",
-    imageSrc:
-      "https://images.unsplash.com/photo-1759536588260-e708d399a2ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzA0NzIxMDN8&ixlib=rb-4.1.0&q=80&w=1080",
+    imageSrc: "/images/sections/vision-3.jpg",
     imageAlt: "Innovation in energy technology",
   },
   {
@@ -57,8 +54,7 @@ const visionItems: VisionItem[] = [
     title: "Build Global Bridges",
     description:
       "Facilitate international alliances for technology transfer, investment, and best practices exchange among energy professionals",
-    imageSrc:
-      "https://images.unsplash.com/photo-1665072204431-b3ba11bd6d06?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzA0NzIxMDR8&ixlib=rb-4.1.0&q=80&w=1080",
+    imageSrc: "/images/sections/vision-4.jpg",
     imageAlt: "Global professional collaboration",
   },
   {
@@ -66,8 +62,7 @@ const visionItems: VisionItem[] = [
     title: "Preserve and Evolve the Legacy",
     description:
       "Protect Venezuela's oil & gas heritage while opening pathways to new energies and innovative business models that ensure long-term prosperity",
-    imageSrc:
-      "https://images.unsplash.com/photo-1700325332000-e6f5dae044f9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NzA0NzIxMjh8&ixlib=rb-4.1.0&q=80&w=1080",
+    imageSrc: "/images/sections/vision-5.jpg",
     imageAlt: "Energy industry heritage",
   },
 ];

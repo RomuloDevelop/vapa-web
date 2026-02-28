@@ -32,7 +32,7 @@ export function MissionSection({ viewport = defaultViewport }: MissionSectionPro
         className="flex flex-col gap-6 md:gap-8 flex-1"
       >
         <span className="inline-flex px-4 py-2 rounded-full bg-accent-20 text-xs md:text-sm font-semibold text-accent tracking-[1.5px] w-fit">
-          OUR MISSION
+          Opportunities
         </span>
         <h2 className="text-2xl md:text-3xl lg:text-[32px] font-bold text-white leading-[1.2]">
           Connecting Venezuelan Talent with Global Opportunities

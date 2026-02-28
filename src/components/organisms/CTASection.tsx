@@ -23,7 +23,7 @@ export function CTASection() {
       <section className="relative min-h-[450px] md:min-h-[500px] w-full overflow-hidden">
         {/* Background Image */}
         <Image
-          src="https://images.unsplash.com/photo-1768564206500-5cddb1fea679?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4NDM0ODN8MHwxfHJhbmRvbXx8fHx8fHx8fDE3Njk3MzYxMjB8&ixlib=rb-4.1.0&q=80&w=1080"
+          src="/images/sections/cta.jpg"
           alt="Professional meeting"
           fill
           className="object-cover"

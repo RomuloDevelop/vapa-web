@@ -10,7 +10,7 @@ const directors = [
     linkedin: "https://www.linkedin.com/in/oman-oquendo-3a719424/",
   },
   {
-    name: "Tomás Marta",
+    name: "Tomás Mata",
     title: "Vice President",
     image: "/members/Tomas Marta.png",
     linkedin: "https://www.linkedin.com/in/tomasjmata/",

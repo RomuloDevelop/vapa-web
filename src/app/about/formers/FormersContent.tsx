@@ -12,22 +12,22 @@ const formerBoard = [
   {
     name: "Pedro Martínez",
     title: "President",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop",
+    image: "/images/people/former-1.jpg",
   },
   {
     name: "Elena Gutiérrez",
     title: "Vice-President",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
+    image: "/images/people/former-2.jpg",
   },
   {
     name: "Ricardo Flores",
     title: "Secretary",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
+    image: "/images/people/former-3.jpg",
   },
   {
     name: "Diana Castro",
     title: "Director",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=400&fit=crop",
+    image: "/images/people/former-4.jpg",
   },
 ];
 
@@ -35,22 +35,22 @@ const formerAdvisory = [
   {
     name: "Manuel Reyes",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+    image: "/images/people/former-5.jpg",
   },
   {
     name: "Sandra Núñez",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1598550874175-4d0ef436c909?w=400&h=400&fit=crop",
+    image: "/images/people/former-6.jpg",
   },
   {
     name: "José Medina",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop",
+    image: "/images/people/former-7.jpg",
   },
   {
     name: "Rosa Delgado",
     title: "Advisor",
-    image: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=400&fit=crop",
+    image: "/images/people/former-8.jpg",
   },
 ];
 
@@ -58,17 +58,17 @@ const electoralCouncil = [
   {
     name: "Alberto García",
     title: "President",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
+    image: "/images/people/former-9.jpg",
   },
   {
     name: "Lucia Herrera",
     title: "Secretary",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop",
+    image: "/images/people/former-10.jpg",
   },
   {
     name: "Felipe Ortiz",
     title: "Member",
-    image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop",
+    image: "/images/people/former-11.jpg",
   },
 ];
 
@@ -76,17 +76,17 @@ const vapaNextGen = [
   {
     name: "Alejandro Paredes",
     title: "Coordinator",
-    image: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&h=400&fit=crop",
+    image: "/images/people/former-12.jpg",
   },
   {
     name: "Valentina Rojas",
     title: "Member",
-    image: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=400&fit=crop",
+    image: "/images/people/former-13.jpg",
   },
   {
     name: "Daniel Vega",
     title: "Member",
-    image: "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=400&h=400&fit=crop",
+    image: "/images/people/former-14.jpg",
   },
 ];
 
