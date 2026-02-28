@@ -13,12 +13,12 @@ const socialIconMap = {
 
 const footerLinks = {
   organization: {
-    title: "ORGANIZATION",
+    title: "ABOUT US",
     links: [
-      { label: "About VAPA", href: "/about/history" },
+      { label: "Board of Directors", href: "/about/directors" },
+      { label: "Advisory Board", href: "/about/advisory" },
       { label: "VAPALink", href: "#" },
-      { label: "Anniversary", href: "#" },
-      { label: "Digital Library", href: "/digital-library" },
+      { label: "VAPAResPro", href: "#" },
     ],
   },
   events: {
@@ -27,7 +27,6 @@ const footerLinks = {
       { label: "Weekly Webinars", href: "/events/webinars" },
       { label: "Special Events", href: "/events/special" },
       { label: "Digital Library", href: "/digital-library" },
-      { label: "Mentoring Program", href: "#" },
     ],
   },
   getInvolved: {
@@ -35,8 +34,6 @@ const footerLinks = {
     links: [
       { label: "Membership", href: "/membership" },
       { label: "Donations", href: "/donations" },
-      { label: "Volunteer", href: "#" },
-      { label: "Contact Us", href: "#contact-form" },
     ],
   },
 };

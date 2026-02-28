@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Heart, HandHelping, Award, Trophy, Star } from "lucide-react";
+import { Heart, HandHelping, Award, Trophy, Star, Mail } from "lucide-react";
 import {
   fadeInUp,
   defaultViewport,
+  defaultTransition,
   staggerDelay,
 } from "@/components/utils/animations";
 import { SectionHeader } from "@/components/molecules";
@@ -16,7 +17,7 @@ const donationTiers = [
     id: "friend",
     icon: Heart,
     name: "Friend",
-    amount: "$250+",
+    amount: "$5 – $250+",
     stripeAmount: 25000,
     popular: false,
     height: "h-[280px]",
@@ -76,7 +77,7 @@ function TierCard({
       whileInView="visible"
       viewport={defaultViewport}
       transition={staggerDelay(index)}
-      className={`flex flex-col items-center justify-end gap-4 p-7 rounded-t-xl ${tier.height} ${
+      className={`flex flex-col items-center justify-end gap-4 p-7 rounded-t-xl rounded-b-xl sm:rounded-b-none ${tier.height} ${
         tier.popular
           ? "bg-surface border-2 border-accent"
           : index % 2 === 1
@@ -144,7 +145,28 @@ export function DonationTiersSection() {
         align="center"
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-0 items-end w-full max-w-[1280px]">
+      <motion.div
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={defaultViewport}
+        transition={{ ...defaultTransition, delay: 0.3 }}
+        className="flex flex-col sm:flex-row items-center justify-center gap-5 py-4 px-5 sm:px-8 rounded-xl bg-accent-20 w-full sm:w-auto"
+      >
+        <Mail className="w-6 h-6 text-accent" />
+        <p className="text-base text-foreground font-bold text-center sm:text-left">
+          For donation certificates, please email your legal name and amount
+          to{" "}
+          <a
+            href="mailto:donations@vapa-us.org"
+            className="text-accent hover:underline"
+          >
+            donations@vapa-us.org
+          </a>
+        </p>
+      </motion.div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-0 items-end w-full max-w-[1280px]">
         {donationTiers.map((tier, index) => (
           <TierCard
             key={tier.id}

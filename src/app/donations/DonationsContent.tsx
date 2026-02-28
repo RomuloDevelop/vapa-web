@@ -4,7 +4,6 @@ import {
   TaxBadge,
   DonationTiersSection,
   ImpactSection,
-  PaymentMethodsSection,
 } from "./organisms";
 
 export function DonationsContent() {
@@ -13,7 +12,6 @@ export function DonationsContent() {
       <TaxBadge />
       <DonationTiersSection />
       <ImpactSection />
-      <PaymentMethodsSection />
     </>
   );
 }
