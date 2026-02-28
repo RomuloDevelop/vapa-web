@@ -80,6 +80,63 @@ export type Database = {
         };
         Relationships: [];
       };
+      donations: {
+        Row: {
+          id: string;
+          stripe_session_id: string;
+          stripe_payment_intent: string | null;
+          donor_name: string;
+          donor_email: string;
+          amount_cents: number;
+          currency: string;
+          billing_address_line1: string | null;
+          billing_address_line2: string | null;
+          billing_city: string | null;
+          billing_state: string | null;
+          billing_postal_code: string | null;
+          billing_country: string | null;
+          receipt_email_sent: boolean;
+          donation_date: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          stripe_session_id: string;
+          stripe_payment_intent?: string | null;
+          donor_name: string;
+          donor_email: string;
+          amount_cents: number;
+          currency?: string;
+          billing_address_line1?: string | null;
+          billing_address_line2?: string | null;
+          billing_city?: string | null;
+          billing_state?: string | null;
+          billing_postal_code?: string | null;
+          billing_country?: string | null;
+          receipt_email_sent?: boolean;
+          donation_date?: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          stripe_session_id?: string;
+          stripe_payment_intent?: string | null;
+          donor_name?: string;
+          donor_email?: string;
+          amount_cents?: number;
+          currency?: string;
+          billing_address_line1?: string | null;
+          billing_address_line2?: string | null;
+          billing_city?: string | null;
+          billing_state?: string | null;
+          billing_postal_code?: string | null;
+          billing_country?: string | null;
+          receipt_email_sent?: boolean;
+          donation_date?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
       users: {
         Row: {
           id: string;
@@ -153,6 +210,11 @@ export type PresentationInsert =
   Database["public"]["Tables"]["presentations"]["Insert"];
 export type PresentationUpdate =
   Database["public"]["Tables"]["presentations"]["Update"];
+
+// Convenience type for the donations table
+export type Donation = Database["public"]["Tables"]["donations"]["Row"];
+export type DonationInsert =
+  Database["public"]["Tables"]["donations"]["Insert"];
 
 // Member types
 export type MembershipTier = "student" | "active" | "in_transition";
