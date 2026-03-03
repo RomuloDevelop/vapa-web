@@ -10,8 +10,6 @@ import {
 } from "@/components/utils/animations";
 import { SectionHeader } from "@/components/molecules";
 
-const STRIPE_BASE_URL = "https://donate.stripe.com/test_dRm4gy9ak8UGgQN0Ma77O00";
-
 const donationTiers = [
   {
     id: "friend",
@@ -68,7 +66,7 @@ function TierCard({
   index: number;
 }) {
   const Icon = tier.icon;
-  const stripeUrl = `${STRIPE_BASE_URL}?__prefilled_amount=${tier.stripeAmount}`;
+  const stripeUrl = `${process.env.NEXT_PUBLIC_STRIPE_BASE_URL!}?__prefilled_amount=${tier.stripeAmount}`;
 
   return (
     <motion.div

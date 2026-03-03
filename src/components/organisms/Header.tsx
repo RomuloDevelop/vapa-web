@@ -32,7 +32,6 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
   const [mobileExpandedItem, setMobileExpandedItem] = useState<string | null>(null);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [hasScrolled, setHasScrolled] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScrollY = useRef(0);
 
@@ -78,7 +77,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      const target = event.target as HTMLElement;
+      if (!target.closest("[data-dropdown-container]")) {
         setOpenDropdown(null);
       }
     }
@@ -170,7 +170,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
         <div
           key={item.label}
           className="relative"
-          ref={dropdownRef}
+          data-dropdown-container
           onMouseEnter={() => {
             if (closeTimeoutRef.current) {
               clearTimeout(closeTimeoutRef.current);
@@ -530,7 +530,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
         <div className="flex items-center justify-between px-5 py-4 md:px-10 lg:px-20 md:py-6">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <Image src="/vapa-icon.png" alt="VAPA logo" width={40} height={40} className="w-10 h-10 md:w-12 md:h-12 shrink-0" />
+            <Image src="/vapa-icon.png" alt="VAPA logo" width={40} height={40} priority className="w-10 h-10 md:w-12 md:h-12 shrink-0" />
             <span className="text-2xl md:text-[28px] font-bold text-white">VAPA</span>
           </Link>
 
@@ -653,7 +653,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
               <div className="flex flex-col min-h-full">
                 {/* Menu Header */}
                 <div className="flex items-center gap-3 px-6 py-5 border-b border-border-accent-light">
-                  <Image src="/vapa-icon.png" alt="VAPA logo" width={40} height={40} className="w-10 h-10 object-contain shrink-0" />
+                  <Image src="/vapa-icon.png" alt="VAPA logo" width={40} height={40} priority className="w-10 h-10 object-contain shrink-0" />
                   <span className="text-2xl font-bold text-white">VAPA</span>
                 </div>
 

@@ -7,7 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Lock, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { loginSchema, type LoginFormValues } from "@/lib/schemas";
-import { signIn } from "@/lib/auth-client";
+import { signIn, signOut } from "@/lib/auth-client";
+import { getAuthUser } from "@/lib/actions/auth";
 
 const ERROR_MESSAGES: Record<string, string> = {
   unauthorized: "You do not have permission to access that page.",
@@ -53,6 +54,17 @@ function LoginForm() {
 
     if (result.error) {
       setServerError("Invalid email or password.");
+      setLoading(false);
+      return;
+    }
+
+    // Check if user is approved (is_active)
+    const user = await getAuthUser();
+    if (user && (user as Record<string, unknown>).isActive === false) {
+      await signOut();
+      setServerError(
+        "Your account is pending approval. You\u2019ll receive an email once an admin approves your registration."
+      );
       setLoading(false);
       return;
     }
@@ -134,7 +146,13 @@ function LoginForm() {
         </button>
       </form>
 
-      <div className="flex justify-center">
+      <div className="flex flex-col items-center gap-3">
+        <p className="text-sm text-foreground-muted">
+          Don&apos;t have an account?{" "}
+          <Link href="/register" className="text-accent hover:underline">
+            Register
+          </Link>
+        </p>
         <Link
           href="/"
           className="flex items-center gap-2 text-sm text-foreground-muted hover:text-accent transition-colors"

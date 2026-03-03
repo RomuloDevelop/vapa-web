@@ -15,6 +15,10 @@ export async function requireAuth(): Promise<void> {
   if (!session?.user) {
     throw new ActionError("UNAUTHORIZED", "Not authenticated");
   }
+
+  if ((session.user as Record<string, unknown>).isActive === false) {
+    throw new ActionError("UNAUTHORIZED", "Your account is pending approval");
+  }
 }
 
 export async function requireAdmin(): Promise<void> {
@@ -24,7 +28,13 @@ export async function requireAdmin(): Promise<void> {
     throw new ActionError("UNAUTHORIZED", "Not authenticated");
   }
 
-  if ((session.user as Record<string, unknown>).role !== "admin") {
+  const user = session.user as Record<string, unknown>;
+
+  if (user.isActive === false) {
+    throw new ActionError("UNAUTHORIZED", "Your account is pending approval");
+  }
+
+  if (user.role !== "admin") {
     throw new ActionError("UNAUTHORIZED", "Unauthorized");
   }
 }

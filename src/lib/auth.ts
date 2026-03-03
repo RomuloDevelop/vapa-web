@@ -117,6 +117,9 @@ export async function requireMemberAuth() {
   if (!session?.user) {
     redirect("/login");
   }
+  if ((session.user as Record<string, unknown>).isActive === false) {
+    redirect("/login");
+  }
   return session;
 }
 

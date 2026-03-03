@@ -297,6 +297,96 @@ If you did not request a password reset, you can safely ignore this email.
 }
 
 /**
+ * Send account approval email to a member
+ */
+export async function sendApprovalEmail(
+  email: string,
+  name: string
+): Promise<EmailResult> {
+  const configError = validateConfig();
+  if (configError) return configError;
+
+  const baseUrl =
+    process.env.BETTER_AUTH_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
+  const loginUrl = `${baseUrl}/login`;
+
+  const transporter = createTransporter();
+
+  const mailOptions = {
+    from: `"VAPA" <${SMTP_USER}>`,
+    to: email,
+    subject: "Your VAPA account has been approved!",
+    text: `
+Hi ${name},
+
+Great news! Your VAPA membership account has been approved.
+
+You can now sign in and access the members area:
+
+${loginUrl}
+
+If you have any questions, don't hesitate to reach out.
+
+— VAPA Team
+    `.trim(),
+    html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .header { background: #142840; color: #DCBA60; padding: 20px; text-align: center; }
+    .content { padding: 30px 20px; background: #f9f9f9; }
+    .btn { display: inline-block; padding: 14px 28px; background: #DCBA60; color: #142840; text-decoration: none; font-weight: bold; border-radius: 6px; }
+    .footer { padding: 15px; text-align: center; font-size: 12px; color: #999; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>Account Approved!</h2>
+    </div>
+    <div class="content">
+      <p>Hi ${name},</p>
+      <p>Great news! Your VAPA membership account has been approved. You can now sign in and access the members area.</p>
+      <p style="text-align: center; margin: 30px 0;">
+        <a href="${loginUrl}" class="btn">Sign In to VAPA</a>
+      </p>
+      <p style="font-size: 13px; color: #666;">If the button doesn't work, copy and paste this URL into your browser:</p>
+      <p style="font-size: 12px; word-break: break-all; color: #888;">${loginUrl}</p>
+    </div>
+    <div class="footer">
+      If you have any questions, don't hesitate to reach out.
+    </div>
+  </div>
+</body>
+</html>
+    `.trim(),
+  };
+
+  try {
+    const sendPromise = transporter.sendMail(mailOptions);
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error("TIMEOUT")), SMTP_TIMEOUT);
+    });
+
+    await Promise.race([sendPromise, timeoutPromise]);
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending approval email:", error);
+    captureError(error, { tags: { area: "email", type: "approval" } });
+    if (error instanceof Error && error.message === "TIMEOUT") {
+      return { success: false, error: "Email server timeout.", errorCode: "TIMEOUT" };
+    }
+    return { success: false, error: "Failed to send approval email.", errorCode: "SMTP" };
+  } finally {
+    transporter.close();
+  }
+}
+
+/**
  * Send donation acknowledgment and receipt email
  */
 export async function sendDonationReceiptEmail(

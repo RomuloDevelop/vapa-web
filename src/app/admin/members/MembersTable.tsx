@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import useSWR from "swr";
-import { Plus, Trash2, UserCheck, UserX, Send } from "lucide-react";
+import { Plus, Trash2, UserCheck, UserX, Send, CheckCircle, Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { getMembershipTierLabel } from "@/lib/database.types";
@@ -12,10 +12,13 @@ import {
   deleteMember,
   toggleMemberActive,
   resendInvitation,
+  approveMember,
+  updateMemberRole,
 } from "@/lib/actions/members";
 import { unwrap } from "@/lib/actions/action-result";
 import { AddMemberDialog } from "./AddMemberDialog";
 import { DeleteMemberDialog } from "./DeleteMemberDialog";
+import { EditMemberDialog } from "./EditMemberDialog";
 
 interface MembersTableProps {
   initialMembers: UserWithStatus[];
@@ -31,6 +34,7 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
   const [isPending, startTransition] = useTransition();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<UserWithStatus | null>(null);
+  const [editTarget, setEditTarget] = useState<UserWithStatus | null>(null);
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
@@ -72,12 +76,44 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
     });
   };
 
+  const handleApprove = (member: UserWithStatus) => {
+    startTransition(async () => {
+      const result = await approveMember(member.id);
+      if (result.success) {
+        toast.success("Member approved — email sent");
+        mutate();
+      } else {
+        toast.error(result.error.message);
+      }
+    });
+  };
+
+  const handleRoleChange = (member: UserWithStatus, role: "admin" | "member") => {
+    if (role === member.role) return;
+    startTransition(async () => {
+      const result = await updateMemberRole(member.id, role);
+      if (result.success) {
+        toast.success(`Role changed to ${role}`);
+        mutate();
+      } else {
+        toast.error(result.error.message);
+      }
+    });
+  };
+
   const handleMemberAdded = () => {
     mutate();
     setAddDialogOpen(false);
   };
 
+  const handleMemberEdited = () => {
+    mutate();
+    setEditTarget(null);
+  };
+
   const needsInvitation = (member: UserWithStatus) => !member.has_password;
+  const isPendingApproval = (member: UserWithStatus) =>
+    member.has_password && !member.is_active;
 
   return (
     <>
@@ -134,15 +170,24 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
                     {member.email}
                   </td>
                   <td className="px-4 py-3">
-                    <span
-                      className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
-                        member.role === "admin"
-                          ? "bg-accent-20 text-accent"
-                          : "bg-white/5 text-foreground-muted"
-                      }`}
+                    <select
+                      value={member.role}
+                      onChange={(e) =>
+                        handleRoleChange(
+                          member,
+                          e.target.value as "admin" | "member"
+                        )
+                      }
+                      disabled={isPending}
+                      className="bg-transparent text-xs font-medium rounded px-1.5 py-0.5 border border-transparent hover:border-border-accent-light focus:border-accent focus:outline-none cursor-pointer text-foreground-muted"
                     >
-                      {member.role === "admin" ? "Admin" : "Member"}
-                    </span>
+                      <option value="member" className="bg-surface-sunken">
+                        Member
+                      </option>
+                      <option value="admin" className="bg-surface-sunken">
+                        Admin
+                      </option>
+                    </select>
                   </td>
                   <td className="px-4 py-3 text-sm text-foreground-muted">
                     {getMembershipTierLabel(member.membership_tier)}
@@ -151,7 +196,12 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
                     {needsInvitation(member) ? (
                       <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-500/15 text-yellow-400">
                         <span className="w-1.5 h-1.5 rounded-full bg-yellow-400" />
-                        Pending
+                        Invite Pending
+                      </span>
+                    ) : isPendingApproval(member) ? (
+                      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-orange-500/15 text-orange-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                        Pending Approval
                       </span>
                     ) : (
                       <span
@@ -187,24 +237,48 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
                           <Send className="w-3.5 h-3.5" />
                         </Button>
                       )}
+                      {isPendingApproval(member) && (
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          onClick={() => handleApprove(member)}
+                          disabled={isPending}
+                          title="Approve member"
+                          className="text-foreground-subtle hover:text-green-400"
+                        >
+                          <CheckCircle className="w-3.5 h-3.5" />
+                        </Button>
+                      )}
                       <Button
                         variant="ghost"
                         size="icon-xs"
-                        onClick={() => handleToggleActive(member)}
+                        onClick={() => setEditTarget(member)}
                         disabled={isPending}
-                        title={
-                          member.is_active
-                            ? "Deactivate user"
-                            : "Activate user"
-                        }
-                        className="text-foreground-subtle hover:text-white"
+                        title="Edit user"
+                        className="text-foreground-subtle hover:text-accent"
                       >
-                        {member.is_active ? (
-                          <UserX className="w-3.5 h-3.5" />
-                        ) : (
-                          <UserCheck className="w-3.5 h-3.5" />
-                        )}
+                        <Pencil className="w-3.5 h-3.5" />
                       </Button>
+                      {!isPendingApproval(member) && (
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          onClick={() => handleToggleActive(member)}
+                          disabled={isPending}
+                          title={
+                            member.is_active
+                              ? "Deactivate user"
+                              : "Activate user"
+                          }
+                          className="text-foreground-subtle hover:text-white"
+                        >
+                          {member.is_active ? (
+                            <UserX className="w-3.5 h-3.5" />
+                          ) : (
+                            <UserCheck className="w-3.5 h-3.5" />
+                          )}
+                        </Button>
+                      )}
                       <Button
                         variant="ghost"
                         size="icon-xs"
@@ -263,7 +337,11 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
                 </div>
                 {needsInvitation(member) ? (
                   <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-500/15 text-yellow-400">
-                    Pending
+                    Invite Pending
+                  </span>
+                ) : isPendingApproval(member) ? (
+                  <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-orange-500/15 text-orange-400">
+                    Pending Approval
                   </span>
                 ) : (
                   <span
@@ -296,19 +374,41 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
                       <Send className="w-3.5 h-3.5" />
                     </Button>
                   )}
+                  {isPendingApproval(member) && (
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      onClick={() => handleApprove(member)}
+                      disabled={isPending}
+                      className="text-foreground-subtle hover:text-green-400"
+                    >
+                      <CheckCircle className="w-3.5 h-3.5" />
+                    </Button>
+                  )}
                   <Button
                     variant="ghost"
                     size="icon-xs"
-                    onClick={() => handleToggleActive(member)}
+                    onClick={() => setEditTarget(member)}
                     disabled={isPending}
-                    className="text-foreground-subtle hover:text-white"
+                    className="text-foreground-subtle hover:text-accent"
                   >
-                    {member.is_active ? (
-                      <UserX className="w-3.5 h-3.5" />
-                    ) : (
-                      <UserCheck className="w-3.5 h-3.5" />
-                    )}
+                    <Pencil className="w-3.5 h-3.5" />
                   </Button>
+                  {!isPendingApproval(member) && (
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      onClick={() => handleToggleActive(member)}
+                      disabled={isPending}
+                      className="text-foreground-subtle hover:text-white"
+                    >
+                      {member.is_active ? (
+                        <UserX className="w-3.5 h-3.5" />
+                      ) : (
+                        <UserCheck className="w-3.5 h-3.5" />
+                      )}
+                    </Button>
+                  )}
                   <Button
                     variant="ghost"
                     size="icon-xs"
@@ -344,6 +444,15 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
         onConfirm={handleDelete}
         memberName={deleteTarget?.name ?? ""}
         isPending={isPending}
+      />
+
+      <EditMemberDialog
+        open={!!editTarget}
+        onOpenChange={(open) => {
+          if (!open) setEditTarget(null);
+        }}
+        member={editTarget}
+        onSuccess={handleMemberEdited}
       />
     </>
   );

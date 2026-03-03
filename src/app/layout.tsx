@@ -35,6 +35,9 @@ export default function RootLayout({
               border: "1px solid var(--color-border-gold-light)",
               color: "white",
             },
+            classNames: {
+              success: "!border-green-500/40 [&>[data-icon]]:text-green-400",
+            },
           }}
         />
       </body>

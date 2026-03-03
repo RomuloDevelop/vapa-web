@@ -124,6 +124,23 @@ export async function deleteUser(id: string): Promise<void> {
 }
 
 /**
+ * Get a single user by ID
+ */
+export async function getUserById(id: string): Promise<User | null> {
+  const supabase = createServerClient();
+  const { data, error } = await supabase
+    .from("users")
+    .select(
+      "id, email, password_hash, name, role, membership_tier, is_active, invitation_token, invitation_expires, reset_token, reset_expires, created_at"
+    )
+    .eq("id", id)
+    .single();
+
+  if (error || !data) return null;
+  return data as User;
+}
+
+/**
  * Update a user's active status
  */
 export async function updateUserActive(
@@ -134,6 +151,43 @@ export async function updateUserActive(
   const { error } = await supabase
     .from("users")
     .update({ is_active: isActive })
+    .eq("id", id);
+
+  if (error) throw error;
+}
+
+/**
+ * Update a user's role
+ */
+export async function updateUserRole(
+  id: string,
+  role: "admin" | "member"
+): Promise<void> {
+  const supabase = createServerClient();
+  const { error } = await supabase
+    .from("users")
+    .update({ role })
+    .eq("id", id);
+
+  if (error) throw error;
+}
+
+/**
+ * Update a user's editable fields
+ */
+export async function updateUser(
+  id: string,
+  data: {
+    name?: string;
+    role?: "admin" | "member";
+    membership_tier?: string;
+    is_active?: boolean;
+  }
+): Promise<void> {
+  const supabase = createServerClient();
+  const { error } = await supabase
+    .from("users")
+    .update(data)
     .eq("id", id);
 
   if (error) throw error;

@@ -3,12 +3,15 @@
 import { revalidatePath } from "next/cache";
 import {
   getUsers,
+  getUserById,
   insertUser,
   deleteUser,
   updateUserActive,
+  updateUserRole,
+  updateUser,
   generateInvitationToken,
 } from "@/lib/services/members";
-import { sendInvitationEmail } from "@/lib/services/email";
+import { sendInvitationEmail, sendApprovalEmail } from "@/lib/services/email";
 import { adminAction, ActionError } from "./safe-action";
 import type { User } from "@/lib/database.types";
 
@@ -111,6 +114,54 @@ export const deleteMember = adminAction(async (id: string) => {
 export const toggleMemberActive = adminAction(
   async (id: string, isActive: boolean) => {
     await updateUserActive(id, isActive);
+    revalidatePath("/admin/members");
+  }
+);
+
+/**
+ * Approve a pending member (set is_active = true) and send approval email
+ */
+export const approveMember = adminAction(async (id: string) => {
+  const user = await getUserById(id);
+  if (!user) {
+    throw new ActionError("NOT_FOUND", "User not found");
+  }
+
+  await updateUserActive(id, true);
+
+  const emailResult = await sendApprovalEmail(user.email, user.name);
+  if (!emailResult.success) {
+    console.error("Failed to send approval email:", emailResult.error);
+    // User was approved but email failed — don't throw
+  }
+
+  revalidatePath("/admin/members");
+});
+
+/**
+ * Update a member's role (inline dropdown)
+ */
+export const updateMemberRole = adminAction(
+  async (id: string, role: "admin" | "member") => {
+    await updateUserRole(id, role);
+    revalidatePath("/admin/members");
+  }
+);
+
+/**
+ * Update a member's editable fields (edit dialog)
+ */
+export const updateMemberDetails = adminAction(
+  async (
+    id: string,
+    data: {
+      name?: string;
+      role?: "admin" | "member";
+      membership_tier?: string;
+      is_active?: boolean;
+    }
+  ) => {
+    await updateUser(id, data);
     revalidatePath("/admin/members");
   }
 );

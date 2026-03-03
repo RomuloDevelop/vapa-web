@@ -12,6 +12,61 @@ import {
   setPasswordFromResetToken,
 } from "@/lib/services/members";
 import { sendPasswordResetEmail } from "@/lib/services/email";
+import { registerSchema } from "@/lib/schemas";
+
+// ─── Public registration ────────────────────────────────────────────────────
+
+export async function registerUser(input: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}) {
+  const parsed = registerSchema.safeParse(input);
+  if (!parsed.success) {
+    const firstError = parsed.error.issues[0]?.message ?? "Invalid input.";
+    return { success: false, error: firstError };
+  }
+
+  const { firstName, lastName, email, password } = parsed.data;
+
+  try {
+    const { createServerClient } = await import("@/lib/supabase-server");
+    const supabase = createServerClient();
+
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    const { data: user, error } = await supabase
+      .from("users")
+      .insert({
+        email: email.toLowerCase().trim(),
+        name: `${firstName} ${lastName}`,
+        role: "member",
+        membership_tier: "active",
+        is_active: false,
+        password_hash: passwordHash,
+      })
+      .select("id")
+      .single();
+
+    if (error) {
+      if (error.code === "23505") {
+        return { success: false, error: "An account with this email already exists." };
+      }
+      throw error;
+    }
+
+    await upsertCredentialAccount(user!.id, passwordHash);
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error in registerUser:", error);
+    return { success: false, error: "Something went wrong. Please try again." };
+  }
+}
+
+// ─── Login ──────────────────────────────────────────────────────────────────
 
 export async function loginWithCredentials(email: string, password: string) {
   try {
