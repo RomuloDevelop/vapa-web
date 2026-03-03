@@ -1,6 +1,13 @@
 "use client";
 
+import { Inter } from "next/font/google";
 import { useState } from "react";
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -41,7 +48,7 @@ export default function AdminLayout({
   };
 
   return (
-    <div className="flex min-h-screen bg-surface">
+    <div className={`${inter.className} flex min-h-screen bg-surface`}>
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
