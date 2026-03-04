@@ -9,8 +9,8 @@ const SMTP_USER = process.env.SMTP_USER;
 const SMTP_PASS = process.env.SMTP_PASS;
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL; // Where to receive contact form emails
 
-// Timeout for SMTP operations (8 seconds to stay under Vercel's 10s limit)
-const SMTP_TIMEOUT = 8000;
+// Timeout for SMTP operations (25 seconds — safe for background tasks via after())
+const SMTP_TIMEOUT = 25000;
 
 export interface DonationReceiptData {
   donorName: string;
