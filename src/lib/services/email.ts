@@ -9,8 +9,10 @@ const SMTP_USER = process.env.SMTP_USER;
 const SMTP_PASS = process.env.SMTP_PASS;
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL; // Where to receive contact form emails
 
-// Timeout for SMTP operations (25 seconds — safe for background tasks via after())
-const SMTP_TIMEOUT = 25000;
+// Timeout per SMTP attempt (15s) — with retries, total max is ~45s
+const SMTP_TIMEOUT = 15000;
+const MAX_RETRIES = 2;
+const RETRY_DELAY_MS = 2000;
 
 export interface DonationReceiptData {
   donorName: string;
@@ -111,6 +113,41 @@ function createTransporter() {
 }
 
 /**
+ * Send an email with retry logic. Creates a fresh transporter on each attempt.
+ */
+async function sendWithRetry(
+  mailOptions: nodemailer.SendMailOptions
+): Promise<void> {
+  let lastError: Error | undefined;
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    const transporter = createTransporter();
+    try {
+      const sendPromise = transporter.sendMail(mailOptions);
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new Error("TIMEOUT")), SMTP_TIMEOUT);
+      });
+      await Promise.race([sendPromise, timeoutPromise]);
+      return; // success
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      console.warn(
+        `[Email] Attempt ${attempt + 1}/${MAX_RETRIES + 1} failed: ${lastError.message}`
+      );
+    } finally {
+      transporter.close();
+    }
+
+    // Wait before retrying (skip delay after last attempt)
+    if (attempt < MAX_RETRIES) {
+      await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
+    }
+  }
+
+  throw lastError!;
+}
+
+/**
  * Send invitation email with link to set password
  */
 export async function sendInvitationEmail(
@@ -125,8 +162,6 @@ export async function sendInvitationEmail(
     process.env.BETTER_AUTH_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
   const setPasswordUrl = `${baseUrl}/auth/set-password?token=${token}`;
-
-  const transporter = createTransporter();
 
   const mailOptions = {
     from: `"VAPA" <${SMTP_USER}>`,
@@ -184,12 +219,7 @@ If you did not expect this invitation, you can safely ignore this email.
   };
 
   try {
-    const sendPromise = transporter.sendMail(mailOptions);
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error("TIMEOUT")), SMTP_TIMEOUT);
-    });
-
-    await Promise.race([sendPromise, timeoutPromise]);
+    await sendWithRetry(mailOptions);
     return { success: true };
   } catch (error) {
     console.error("Error sending invitation email:", error);
@@ -198,8 +228,6 @@ If you did not expect this invitation, you can safely ignore this email.
       return { success: false, error: "Email server timeout.", errorCode: "TIMEOUT" };
     }
     return { success: false, error: "Failed to send invitation email.", errorCode: "SMTP" };
-  } finally {
-    transporter.close();
   }
 }
 
@@ -218,8 +246,6 @@ export async function sendPasswordResetEmail(
     process.env.BETTER_AUTH_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
   const resetUrl = `${baseUrl}/auth/reset-password?token=${token}`;
-
-  const transporter = createTransporter();
 
   const mailOptions = {
     from: `"VAPA" <${SMTP_USER}>`,
@@ -277,12 +303,7 @@ If you did not request a password reset, you can safely ignore this email.
   };
 
   try {
-    const sendPromise = transporter.sendMail(mailOptions);
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error("TIMEOUT")), SMTP_TIMEOUT);
-    });
-
-    await Promise.race([sendPromise, timeoutPromise]);
+    await sendWithRetry(mailOptions);
     return { success: true };
   } catch (error) {
     console.error("Error sending password reset email:", error);
@@ -291,8 +312,6 @@ If you did not request a password reset, you can safely ignore this email.
       return { success: false, error: "Email server timeout.", errorCode: "TIMEOUT" };
     }
     return { success: false, error: "Failed to send password reset email.", errorCode: "SMTP" };
-  } finally {
-    transporter.close();
   }
 }
 
@@ -310,8 +329,6 @@ export async function sendApprovalEmail(
     process.env.BETTER_AUTH_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
   const loginUrl = `${baseUrl}/login`;
-
-  const transporter = createTransporter();
 
   const mailOptions = {
     from: `"VAPA" <${SMTP_USER}>`,
@@ -367,12 +384,7 @@ If you have any questions, don't hesitate to reach out.
   };
 
   try {
-    const sendPromise = transporter.sendMail(mailOptions);
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error("TIMEOUT")), SMTP_TIMEOUT);
-    });
-
-    await Promise.race([sendPromise, timeoutPromise]);
+    await sendWithRetry(mailOptions);
     return { success: true };
   } catch (error) {
     console.error("Error sending approval email:", error);
@@ -381,8 +393,6 @@ If you have any questions, don't hesitate to reach out.
       return { success: false, error: "Email server timeout.", errorCode: "TIMEOUT" };
     }
     return { success: false, error: "Failed to send approval email.", errorCode: "SMTP" };
-  } finally {
-    transporter.close();
   }
 }
 
@@ -426,8 +436,6 @@ export async function sendDonationReceiptEmail(
     process.env.BETTER_AUTH_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "");
   const logoUrl = `${baseUrl}/vapa-email.png`;
-
-  const transporter = createTransporter();
 
   const mailOptions = {
     from: `"VAPA" <${SMTP_USER}>`,
@@ -542,12 +550,7 @@ Venezuelan American Petroleum Association (VAPA)
   };
 
   try {
-    const sendPromise = transporter.sendMail(mailOptions);
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error("TIMEOUT")), SMTP_TIMEOUT);
-    });
-
-    await Promise.race([sendPromise, timeoutPromise]);
+    await sendWithRetry(mailOptions);
     return { success: true };
   } catch (error) {
     console.error("Error sending donation receipt email:", error);
@@ -564,8 +567,6 @@ Venezuelan American Petroleum Association (VAPA)
       error: "Failed to send donation receipt email.",
       errorCode: "SMTP",
     };
-  } finally {
-    transporter.close();
   }
 }
 
@@ -581,9 +582,6 @@ export async function sendContactEmail(data: ContactFormData): Promise<EmailResu
   const validationError = validateFormData(data);
   if (validationError) return validationError;
 
-  const transporter = createTransporter();
-
-  // Create email content
   const mailOptions = {
     from: `"VAPA Contact Form" <${SMTP_USER}>`,
     to: CONTACT_EMAIL,
@@ -645,94 +643,23 @@ This email was sent from the VAPA website contact form.
     `.trim(),
   };
 
-  // Send with timeout wrapper
   try {
-    const sendPromise = transporter.sendMail(mailOptions);
-
-    // Race between send and timeout
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => {
-        reject(new Error("TIMEOUT"));
-      }, SMTP_TIMEOUT);
-    });
-
-    await Promise.race([sendPromise, timeoutPromise]);
-
+    await sendWithRetry(mailOptions);
     return { success: true };
   } catch (error) {
+    console.error("Error sending contact email:", error);
     captureError(error, { tags: { area: "email", type: "contact" } });
-    // Detailed error logging for debugging
-    console.error("=== Email Send Error ===");
-    console.error("Error type:", error instanceof Error ? error.constructor.name : typeof error);
-    console.error("Error message:", error instanceof Error ? error.message : String(error));
-    if (error instanceof Error && "code" in error) {
-      console.error("Error code:", (error as NodeJS.ErrnoException).code);
+    if (error instanceof Error && error.message === "TIMEOUT") {
+      return {
+        success: false,
+        error: "The email server is taking too long to respond. Please try again later.",
+        errorCode: "TIMEOUT",
+      };
     }
-    console.error("Full error:", error);
-    console.error("========================");
-
-    // Handle specific error types
-    if (error instanceof Error) {
-      const errMsg = error.message.toLowerCase();
-      const errCode = "code" in error ? (error as NodeJS.ErrnoException).code : "";
-
-      if (error.message === "TIMEOUT") {
-        return {
-          success: false,
-          error: "The email server is taking too long to respond. Please try again later.",
-          errorCode: "TIMEOUT",
-        };
-      }
-
-      // SMTP authentication errors
-      if (errMsg.includes("auth") || errMsg.includes("535") || errMsg.includes("invalid login")) {
-        return {
-          success: false,
-          error: "Email authentication failed. Please contact the administrator.",
-          errorCode: "SMTP",
-        };
-      }
-
-      // Connection errors
-      if (
-        errMsg.includes("econnrefused") ||
-        errMsg.includes("enotfound") ||
-        errMsg.includes("connect") ||
-        errMsg.includes("etimedout") ||
-        errCode === "ECONNREFUSED" ||
-        errCode === "ENOTFOUND" ||
-        errCode === "ETIMEDOUT"
-      ) {
-        return {
-          success: false,
-          error: "Could not connect to the email server. Please try again later.",
-          errorCode: "SMTP",
-        };
-      }
-
-      // SSL/TLS errors
-      if (
-        errMsg.includes("ssl") ||
-        errMsg.includes("tls") ||
-        errMsg.includes("certificate") ||
-        errMsg.includes("wrong version") ||
-        errCode === "ESOCKET"
-      ) {
-        return {
-          success: false,
-          error: "Email server security error. Try changing SMTP_PORT to 587 and SMTP_SECURE to false.",
-          errorCode: "SMTP",
-        };
-      }
-    }
-
     return {
       success: false,
       error: "Failed to send your message. Please try again or contact us directly.",
-      errorCode: "UNKNOWN",
+      errorCode: "SMTP",
     };
-  } finally {
-    // Close the transporter
-    transporter.close();
   }
 }
