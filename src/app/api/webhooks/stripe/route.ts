@@ -1,3 +1,4 @@
+import { after } from "next/server";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import {
@@ -40,7 +41,26 @@ export async function POST(request: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session;
 
     try {
-      await handleCheckoutCompleted(session);
+      const receiptData = await handleCheckoutCompleted(session);
+
+      // Send receipt email in the background after responding to Stripe
+      if (receiptData) {
+        after(async () => {
+          const emailResult = await sendDonationReceiptEmail(receiptData.emailData);
+
+          if (emailResult.success) {
+            await markReceiptSent(receiptData.donationId);
+            console.log(
+              `[Stripe Webhook] Receipt email sent for session ${session.id}`
+            );
+          } else {
+            console.error(
+              `[Stripe Webhook] Failed to send receipt for session ${session.id}:`,
+              emailResult.error
+            );
+          }
+        });
+      }
     } catch (error) {
       console.error(
         "[Stripe Webhook] Error processing checkout.session.completed:",
@@ -70,7 +90,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     console.log(
       `[Stripe Webhook] Session ${sessionId} already processed, skipping.`
     );
-    return;
+    return null;
   }
 
   const customerDetails = session.customer_details;
@@ -115,34 +135,25 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     billing_country: billingAddress?.country || null,
   });
 
-  // Send receipt email (best-effort — don't fail the webhook if email fails)
-  const emailResult = await sendDonationReceiptEmail({
-    donorName,
-    donorEmail,
-    amountCents: amountTotal,
-    currency,
-    donationDate: new Date().toISOString(),
-    billingAddress: billingAddress
-      ? {
-          line1: billingAddress.line1,
-          line2: billingAddress.line2,
-          city: billingAddress.city,
-          state: billingAddress.state,
-          postalCode: billingAddress.postal_code,
-          country: billingAddress.country,
-        }
-      : undefined,
-  });
-
-  if (emailResult.success) {
-    await markReceiptSent(donationId);
-    console.log(
-      `[Stripe Webhook] Receipt email sent for session ${sessionId}`
-    );
-  } else {
-    console.error(
-      `[Stripe Webhook] Failed to send receipt for session ${sessionId}:`,
-      emailResult.error
-    );
-  }
+  // Return data needed for the background email task
+  return {
+    donationId,
+    emailData: {
+      donorName,
+      donorEmail,
+      amountCents: amountTotal,
+      currency,
+      donationDate: new Date().toISOString(),
+      billingAddress: billingAddress
+        ? {
+            line1: billingAddress.line1,
+            line2: billingAddress.line2,
+            city: billingAddress.city,
+            state: billingAddress.state,
+            postalCode: billingAddress.postal_code,
+            country: billingAddress.country,
+          }
+        : undefined,
+    },
+  };
 }
