@@ -6,6 +6,9 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const auth = betterAuth({
+  baseURL: process.env.BETTER_AUTH_URL,
+  trustedOrigins: [process.env.BETTER_AUTH_URL!],
+
   database: new Pool({
     connectionString: process.env.DATABASE_URL,
   }),
