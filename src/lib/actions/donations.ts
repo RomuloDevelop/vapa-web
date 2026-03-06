@@ -5,6 +5,7 @@ import {
   getDonationsCount,
   type DonationsFilter,
 } from "../services/donations";
+import { adminAction } from "./safe-action";
 import type { Donation } from "../database.types";
 
 const PAGE_SIZE = 10;
@@ -21,29 +22,29 @@ export interface FilteredDonationsResult {
   totalCount: number;
 }
 
-export async function fetchFilteredDonations(
-  params: DonationsFilterParams
-): Promise<FilteredDonationsResult> {
-  const { search, dateFrom, dateTo, page = 1 } = params;
-  const offset = (page - 1) * PAGE_SIZE;
+export const fetchFilteredDonations = adminAction(
+  async (params: DonationsFilterParams): Promise<FilteredDonationsResult> => {
+    const { search, dateFrom, dateTo, page = 1 } = params;
+    const offset = (page - 1) * PAGE_SIZE;
 
-  const filters: DonationsFilter = {
-    search,
-    dateFrom,
-    dateTo,
-    limit: PAGE_SIZE,
-    offset,
-  };
-  const countFilters: Omit<DonationsFilter, "limit" | "offset"> = {
-    search,
-    dateFrom,
-    dateTo,
-  };
+    const filters: DonationsFilter = {
+      search,
+      dateFrom,
+      dateTo,
+      limit: PAGE_SIZE,
+      offset,
+    };
+    const countFilters: Omit<DonationsFilter, "limit" | "offset"> = {
+      search,
+      dateFrom,
+      dateTo,
+    };
 
-  const [donations, totalCount] = await Promise.all([
-    getDonations(filters),
-    getDonationsCount(countFilters),
-  ]);
+    const [donations, totalCount] = await Promise.all([
+      getDonations(filters),
+      getDonationsCount(countFilters),
+    ]);
 
-  return { donations, totalCount };
-}
+    return { donations, totalCount };
+  }
+);

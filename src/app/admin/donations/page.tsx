@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { getDonations, getDonationsCount } from "@/lib/services/donations";
 import { DonationsTable } from "./DonationsTable";
 
@@ -22,12 +21,10 @@ export default async function AdminDonationsPage() {
           </p>
         </div>
       </div>
-      <Suspense>
-        <DonationsTable
-          initialDonations={donations}
-          initialTotalCount={totalCount}
-        />
-      </Suspense>
+      <DonationsTable
+        initialDonations={donations}
+        initialTotalCount={totalCount}
+      />
     </div>
   );
 }

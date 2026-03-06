@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
-import { Pencil, Trash2, ChevronLeft, ChevronRight, Loader2, CalendarIcon } from "lucide-react";
+import { Pencil, Trash2, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,10 +13,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { DeleteEventDialog } from "./DeleteEventDialog";
 import { deleteEvent, fetchFilteredEvents, type EventsFilterParams, type FilteredEventsResult } from "@/lib/actions/events";
+import { unwrap } from "@/lib/actions/action-result";
 import type { DateRange } from "react-day-picker";
 import { EVENT_TYPES, getEventTypeLabel, type Event, type EventType } from "@/lib/database.types";
 
@@ -28,13 +28,6 @@ function formatDate(dateString: string): string {
     month: "short",
     day: "numeric",
     year: "numeric",
-  });
-}
-
-function formatShortDate(date: Date): string {
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
   });
 }
 
@@ -58,8 +51,6 @@ export function EventsTable({
   const [year, setYear] = useState<string>("");
   const [typeFilter, setTypeFilter] = useState<EventType | "">(initialType);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
-  const [pendingRange, setPendingRange] = useState<DateRange | undefined>();
-  const [popoverOpen, setPopoverOpen] = useState(false);
   const [page, setPage] = useState(1);
 
   const [deleteTarget, setDeleteTarget] = useState<Event | null>(null);
@@ -86,7 +77,7 @@ export function EventsTable({
 
   const { data, mutate, isLoading } = useSWR<FilteredEventsResult>(
     ["admin-events", filterParams],
-    () => fetchFilteredEvents(filterParams),
+    () => unwrap(fetchFilteredEvents(filterParams)),
     {
       fallbackData: isInitialState
         ? { events: initialEvents, totalCount: initialTotalCount }
@@ -105,32 +96,7 @@ export function EventsTable({
     setYear("");
     setTypeFilter("");
     setDateRange(undefined);
-    setPendingRange(undefined);
     setPage(1);
-  };
-
-  const handlePopoverOpen = (open: boolean) => {
-    if (open) {
-      setPendingRange(dateRange);
-    }
-    setPopoverOpen(open);
-  };
-
-  const handleCalendarSelect = (range: DateRange | undefined) => {
-    setPendingRange(range);
-  };
-
-  const handleAcceptRange = () => {
-    if (pendingRange?.from && pendingRange?.to) {
-      setDateRange(pendingRange);
-      setPage(1);
-    }
-    setPopoverOpen(false);
-  };
-
-  const handleCancelRange = () => {
-    setPendingRange(dateRange);
-    setPopoverOpen(false);
   };
 
   const handleDelete = async () => {
@@ -219,58 +185,13 @@ export function EventsTable({
           </Select>
 
           {/* Date Range Picker */}
-          <Popover open={popoverOpen} onOpenChange={handlePopoverOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className="w-[220px] justify-start text-left font-normal bg-surface border-border-accent-light text-white hover:bg-accent-10 hover:text-white"
-              >
-                <CalendarIcon className="mr-2 h-4 w-4 text-foreground-subtle" />
-                {dateRange?.from ? (
-                  dateRange.to ? (
-                    <span>
-                      {formatShortDate(dateRange.from)} –{" "}
-                      {formatShortDate(dateRange.to)}
-                    </span>
-                  ) : (
-                    formatShortDate(dateRange.from)
-                  )
-                ) : (
-                  <span className="text-foreground-faint">Date range</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent
-              className="w-auto p-0 bg-surface-section border-border-accent-light"
-              align="start"
-            >
-              <Calendar
-                mode="range"
-                selected={pendingRange}
-                onSelect={handleCalendarSelect}
-                defaultMonth={pendingRange?.from || dateRange?.from}
-                numberOfMonths={2}
-              />
-              <div className="flex items-center justify-end gap-2 px-5 pb-4">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleCancelRange}
-                  className="text-foreground-muted hover:bg-accent-10 hover:text-white"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={handleAcceptRange}
-                  disabled={!pendingRange?.from || !pendingRange?.to}
-                  className="bg-accent text-surface font-semibold hover:bg-accent-hover disabled:opacity-40"
-                >
-                  Apply
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
+          <DateRangePicker
+            value={dateRange}
+            onChange={(range) => {
+              setDateRange(range);
+              setPage(1);
+            }}
+          />
 
           {/* Reset all */}
           {hasActiveFilters && (

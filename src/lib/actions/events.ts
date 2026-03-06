@@ -21,25 +21,22 @@ export interface FilteredEventsResult {
   totalCount: number;
 }
 
-/**
- * Fetch filtered events (read action — not wrapped, SWR handles errors)
- */
-export async function fetchFilteredEvents(
-  params: EventsFilterParams
-): Promise<FilteredEventsResult> {
-  const { year, type, dateFrom, dateTo, page = 1 } = params;
-  const offset = (page - 1) * PAGE_SIZE;
+export const fetchFilteredEvents = adminAction(
+  async (params: EventsFilterParams): Promise<FilteredEventsResult> => {
+    const { year, type, dateFrom, dateTo, page = 1 } = params;
+    const offset = (page - 1) * PAGE_SIZE;
 
-  const filters = { year, type, dateFrom, dateTo, limit: PAGE_SIZE, offset };
-  const countFilters = { year, type, dateFrom, dateTo };
+    const filters = { year, type, dateFrom, dateTo, limit: PAGE_SIZE, offset };
+    const countFilters = { year, type, dateFrom, dateTo };
 
-  const [events, totalCount] = await Promise.all([
-    getEvents(filters),
-    getEventsCount(countFilters),
-  ]);
+    const [events, totalCount] = await Promise.all([
+      getEvents(filters),
+      getEventsCount(countFilters),
+    ]);
 
-  return { events, totalCount };
-}
+    return { events, totalCount };
+  }
+);
 
 function parseArrayField(value: string): string[] {
   return value

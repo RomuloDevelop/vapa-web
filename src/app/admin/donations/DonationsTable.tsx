@@ -7,7 +7,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Loader2,
-  CalendarIcon,
   Search,
   X,
   Mail,
@@ -31,15 +30,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
 import {
   fetchFilteredDonations,
   type DonationsFilterParams,
   type FilteredDonationsResult,
 } from "@/lib/actions/donations";
+import { unwrap } from "@/lib/actions/action-result";
 import type { Donation } from "@/lib/database.types";
 import type { DateRange } from "react-day-picker";
+
 
 const PAGE_SIZE = 10;
 
@@ -49,10 +49,6 @@ function formatDate(dateString: string): string {
     day: "numeric",
     year: "numeric",
   });
-}
-
-function formatShortDate(date: Date): string {
-  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
 function formatAmount(cents: number, currency: string): string {
@@ -77,8 +73,6 @@ export function DonationsTable({
   const [searchInput, setSearchInput] = useState(urlEmail);
   const [search, setSearch] = useState(urlEmail);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
-  const [pendingRange, setPendingRange] = useState<DateRange | undefined>();
-  const [popoverOpen, setPopoverOpen] = useState(false);
   const [page, setPage] = useState(1);
 
   const dateFrom = dateRange?.from
@@ -101,7 +95,7 @@ export function DonationsTable({
 
   const { data, isLoading } = useSWR<FilteredDonationsResult>(
     ["admin-donations", filterParams],
-    () => fetchFilteredDonations(filterParams),
+    () => unwrap(fetchFilteredDonations(filterParams)),
     {
       fallbackData: isInitialState
         ? { donations: initialDonations, totalCount: initialTotalCount }
@@ -125,26 +119,7 @@ export function DonationsTable({
     setSearchInput("");
     setSearch("");
     setDateRange(undefined);
-    setPendingRange(undefined);
     setPage(1);
-  };
-
-  const handlePopoverOpen = (open: boolean) => {
-    if (open) setPendingRange(dateRange);
-    setPopoverOpen(open);
-  };
-
-  const handleAcceptRange = () => {
-    if (pendingRange?.from && pendingRange?.to) {
-      setDateRange(pendingRange);
-      setPage(1);
-    }
-    setPopoverOpen(false);
-  };
-
-  const handleCancelRange = () => {
-    setPendingRange(dateRange);
-    setPopoverOpen(false);
   };
 
   const pageNumbers = (() => {
@@ -170,59 +145,13 @@ export function DonationsTable({
       <div className="flex flex-col gap-4">
         {/* Filters */}
         <div className="flex flex-wrap items-center gap-3">
-          {/* Date Range Picker */}
-          <Popover open={popoverOpen} onOpenChange={handlePopoverOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="outline"
-                className="w-[220px] justify-start text-left font-normal bg-surface border-border-accent-light text-white hover:bg-accent-10 hover:text-white"
-              >
-                <CalendarIcon className="mr-2 h-4 w-4 text-foreground-subtle" />
-                {dateRange?.from ? (
-                  dateRange.to ? (
-                    <span>
-                      {formatShortDate(dateRange.from)} –{" "}
-                      {formatShortDate(dateRange.to)}
-                    </span>
-                  ) : (
-                    formatShortDate(dateRange.from)
-                  )
-                ) : (
-                  <span className="text-foreground-faint">Date range</span>
-                )}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent
-              className="w-auto p-0 bg-surface-section border-border-accent-light"
-              align="start"
-            >
-              <Calendar
-                mode="range"
-                selected={pendingRange}
-                onSelect={setPendingRange}
-                defaultMonth={pendingRange?.from || dateRange?.from}
-                numberOfMonths={2}
-              />
-              <div className="flex items-center justify-end gap-2 px-5 pb-4">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleCancelRange}
-                  className="text-foreground-muted hover:bg-accent-10 hover:text-white"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={handleAcceptRange}
-                  disabled={!pendingRange?.from || !pendingRange?.to}
-                  className="bg-accent text-surface font-semibold hover:bg-accent-hover disabled:opacity-40"
-                >
-                  Apply
-                </Button>
-              </div>
-            </PopoverContent>
-          </Popover>
+          <DateRangePicker
+            value={dateRange}
+            onChange={(range) => {
+              setDateRange(range);
+              setPage(1);
+            }}
+          />
 
           {/* Search */}
           <div className="relative">
