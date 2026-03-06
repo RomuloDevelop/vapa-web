@@ -2,7 +2,8 @@
 
 import { useState, useTransition } from "react";
 import useSWR from "swr";
-import { Plus, Trash2, UserCheck, UserX, Send, CheckCircle, Pencil } from "lucide-react";
+import Link from "next/link";
+import { Plus, Trash2, UserCheck, UserX, Send, CheckCircle, Pencil, Heart } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { getMembershipTierLabel } from "@/lib/database.types";
@@ -252,6 +253,17 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
                       <Button
                         variant="ghost"
                         size="icon-xs"
+                        asChild
+                        title="View donations"
+                        className="text-foreground-subtle hover:text-accent"
+                      >
+                        <Link href={`/admin/donations?email=${encodeURIComponent(member.email)}`}>
+                          <Heart className="w-3.5 h-3.5" />
+                        </Link>
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon-xs"
                         onClick={() => setEditTarget(member)}
                         disabled={isPending}
                         title="Edit user"
@@ -385,6 +397,16 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
                       <CheckCircle className="w-3.5 h-3.5" />
                     </Button>
                   )}
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    asChild
+                    className="text-foreground-subtle hover:text-accent"
+                  >
+                    <Link href={`/admin/donations?email=${encodeURIComponent(member.email)}`}>
+                      <Heart className="w-3.5 h-3.5" />
+                    </Link>
+                  </Button>
                   <Button
                     variant="ghost"
                     size="icon-xs"

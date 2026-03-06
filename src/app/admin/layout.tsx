@@ -12,7 +12,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "@/lib/auth-client";
-import { LayoutDashboard, Calendar, Users, LogOut, Menu, ExternalLink, Presentation } from "lucide-react";
+import { LayoutDashboard, Calendar, Users, LogOut, Menu, ExternalLink, Presentation, Heart } from "lucide-react";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { Loader } from "@/components/atoms";
@@ -22,6 +22,7 @@ const navItems = [
   { label: "Events", href: "/admin/events", icon: Calendar },
   { label: "Presentations", href: "/admin/presentations", icon: Presentation },
   { label: "Members", href: "/admin/members", icon: Users },
+  { label: "Donations", href: "/admin/donations", icon: Heart },
 ];
 
 export default function AdminLayout({
