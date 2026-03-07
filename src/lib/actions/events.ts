@@ -45,7 +45,14 @@ function parseArrayField(value: string): string[] {
     .filter(Boolean);
 }
 
-const EVENT_REVALIDATION_PATHS = ["/", "/digital-library", "/admin/events"];
+const EVENT_REVALIDATION_PATHS = [
+  "/",
+  "/events/webinars",
+  "/digital-library",
+  "/digital-library/webinars",
+  "/admin",
+  "/admin/events",
+];
 
 function revalidateEventPaths() {
   EVENT_REVALIDATION_PATHS.forEach((path) => revalidatePath(path));

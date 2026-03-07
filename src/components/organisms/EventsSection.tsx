@@ -146,6 +146,11 @@ function EventCardInternal({
             </button>
           )}
         </div>
+        {event.description && (
+          <p className="text-sm text-foreground-muted line-clamp-2">
+            {event.description}
+          </p>
+        )}
         {event.time && (
           <div className="flex items-center gap-2">
             <Clock className="w-3.5 h-3.5 text-foreground-muted" />
@@ -153,11 +158,6 @@ function EventCardInternal({
               {event.time}
             </span>
           </div>
-        )}
-        {event.description && (
-          <p className="text-sm text-foreground-muted line-clamp-2">
-            {event.description}
-          </p>
         )}
         {eventLink && (
           <div className="flex justify-end mt-auto pt-2">

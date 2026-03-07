@@ -68,7 +68,7 @@ export default function AdminLayout({
         <div className="flex items-end px-6 py-5 border-b border-border-accent-light">
           <Image src="/vapa-icon.png" alt="VAPA logo" width={24} height={24} className="w-8 h-8 shrink-0" />
 
-          <span className="text-xl font-bold text-white">VAPA Admin</span>
+          <span className="text-xl font-bold text-white">VAPA</span>
         </div>
 
         {/* Nav */}

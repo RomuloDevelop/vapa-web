@@ -100,6 +100,13 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
           {event.name}
         </h3>
 
+        {/* Description */}
+        {event.description && (
+          <p className="text-sm md:text-base text-foreground-muted line-clamp-2">
+            {event.description}
+          </p>
+        )}
+
         {/* Presenters */}
         {event.presenters.length > 0 && event.presenters.some((p) => p.trim()) && (
           <p className="text-sm md:text-base text-foreground-subtle">
@@ -107,13 +114,6 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
             {event.presenters
               .filter((p) => p.trim() && !p.startsWith("Presentador:"))
               .join(", ")}
-          </p>
-        )}
-
-        {/* Description */}
-        {event.description && (
-          <p className="text-sm md:text-base text-foreground-muted line-clamp-2">
-            {event.description}
           </p>
         )}
 
