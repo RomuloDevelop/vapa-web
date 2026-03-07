@@ -1,9 +1,10 @@
 // Utility functions for Digital Library
 
+import { parseLocalDate } from "@/lib/utils";
+
 // Format date from ISO string to readable format
 export function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
+  return parseLocalDate(dateString).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
@@ -12,7 +13,7 @@ export function formatDate(dateString: string): string {
 
 // Get year from ISO date string
 export function getYear(dateString: string): string {
-  return new Date(dateString).getFullYear().toString();
+  return parseLocalDate(dateString).getFullYear().toString();
 }
 
 // Get video URL (first link that looks like a video)

@@ -1,5 +1,6 @@
 import { createPublicServerClient } from "../supabase-server";
 import type { Event, EventType } from "../database.types";
+import { parseLocalDate } from "../utils";
 
 export interface EventFilters {
   year?: number;
@@ -88,7 +89,7 @@ export async function getEventYears(): Promise<number[]> {
     return [];
   }
 
-  const years = new Set(data.map((e: { date: string }) => new Date(e.date).getFullYear()));
+  const years = new Set(data.map((e: { date: string }) => parseLocalDate(e.date).getFullYear()));
   return Array.from(years).sort((a, b) => b - a);
 }
 

@@ -19,12 +19,12 @@ import { deleteEvent, fetchFilteredEvents, type EventsFilterParams, type Filtere
 import { unwrap } from "@/lib/actions/action-result";
 import type { DateRange } from "react-day-picker";
 import { EVENT_TYPES, getEventTypeLabel, type Event, type EventType } from "@/lib/database.types";
+import { parseLocalDate } from "@/lib/utils";
 
 const PAGE_SIZE = 10;
 
 function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
+  return parseLocalDate(dateString).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",

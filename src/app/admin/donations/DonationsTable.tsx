@@ -38,13 +38,14 @@ import {
 } from "@/lib/actions/donations";
 import { unwrap } from "@/lib/actions/action-result";
 import type { Donation } from "@/lib/database.types";
+import { parseLocalDate } from "@/lib/utils";
 import type { DateRange } from "react-day-picker";
 
 
 const PAGE_SIZE = 10;
 
 function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-US", {
+  return parseLocalDate(dateString).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",

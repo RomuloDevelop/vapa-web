@@ -19,6 +19,7 @@ import {
   staggerDelay,
 } from "../utils/animations";
 import type { Event } from "@/lib/database.types";
+import { parseLocalDate } from "@/lib/utils";
 
 interface EventsSectionProps {
   events: Event[];
@@ -26,8 +27,7 @@ interface EventsSectionProps {
 }
 
 function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
+  return parseLocalDate(dateString).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",

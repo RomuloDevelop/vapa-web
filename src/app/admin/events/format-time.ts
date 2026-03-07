@@ -46,7 +46,7 @@ export function formatEventTime(dateStr: string, timeStr: string): string {
   const [year, month, day] = dateStr.split("-").map(Number);
 
   // Create date in Central Time (Houston) — TZDate handles DST automatically
-  const ctDate = new TZDate(year, month - 1, day, hours, minutes, 0, "America/Chicago");
+  const ctDate = new TZDate(year, month - 1, day, hours, minutes, 0, 0, "America/Chicago");
 
   // Convert to other timezones by creating TZDate from the same instant
   const etDate = new TZDate(ctDate.getTime(), "America/New_York");

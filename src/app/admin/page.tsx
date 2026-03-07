@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { format } from "date-fns";
+import { parseLocalDate } from "@/lib/utils";
 import { Calendar, Plus, Star, Video, ArrowRight } from "lucide-react";
 import {
   getEventsCount,
@@ -27,7 +28,7 @@ function EventRow({ event }: { event: Event }) {
           {event.name}
         </p>
         <p className="text-xs text-foreground-subtle">
-          {format(new Date(event.date), "MMM d, yyyy")}
+          {format(parseLocalDate(event.date), "MMM d, yyyy")}
         </p>
       </div>
       <ArrowRight className="w-4 h-4 text-foreground-faint group-hover:text-accent transition-colors shrink-0" />

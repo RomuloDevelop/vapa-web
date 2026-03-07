@@ -41,6 +41,7 @@ import {
 } from "@/lib/actions/presentations";
 import { unwrap } from "@/lib/actions/action-result";
 import type { Presentation } from "@/lib/database.types";
+import { parseLocalDate } from "@/lib/utils";
 
 const PAGE_SIZE = 10;
 
@@ -49,7 +50,7 @@ function getFileExtension(filePath: string): string {
 }
 
 function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-US", {
+  return parseLocalDate(dateString).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
