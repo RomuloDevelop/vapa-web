@@ -135,7 +135,7 @@ function TierCard({
 
 export function DonationTiersSection() {
   return (
-    <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface-elevated">
+    <section id="donate" className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface-elevated">
       <SectionHeader
         label="GIVING LEVELS"
         title="Select Your Impact Level"

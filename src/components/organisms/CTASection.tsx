@@ -1,25 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import dynamic from "next/dynamic";
+import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
 import { fadeInUp, defaultViewport, slowTransition } from "../utils/animations";
 
-const DonationModal = dynamic(
-  () => import("../molecules/DonationModal").then((mod) => mod.DonationModal),
-  { ssr: false }
-);
-
 const MEMBERSHIP_URL =
   "https://www.memberplanet.com/Groups/GroupJoinLoginNew.aspx?ISPUB=true&invitee=p7vh47274p43y&mid";
 
 export function CTASection() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
-    <>
       <section className="relative min-h-[450px] md:min-h-[500px] w-full overflow-hidden">
         {/* Background Image */}
         <Image
@@ -92,20 +83,14 @@ export function CTASection() {
               Register Now
               <ArrowRight className="w-4 h-4 md:w-[18px] md:h-[18px]" />
             </a>
-            <button
-              onClick={() => setIsModalOpen(true)}
+            <Link
+              href="/donations#donate"
               className="px-8 md:px-12 py-4 md:py-5 text-white text-sm md:text-base font-medium rounded border border-white bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors text-center"
             >
               Make a Donation
-            </button>
+            </Link>
           </motion.div>
         </div>
       </section>
-
-      <DonationModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-      />
-    </>
   );
 }
