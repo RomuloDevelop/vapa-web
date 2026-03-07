@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import useSWRMutation from "swr/mutation";
 import { format, parse } from "date-fns";
 import { Upload, CalendarIcon, X, ImageIcon } from "lucide-react";
+import { formatEventTime, parseEventTime } from "./format-time";
 import { createEvent, updateEvent } from "@/lib/actions/events";
 import { EVENT_TYPES, type Event, type EventType } from "@/lib/database.types";
 import { eventSchema, type EventFormValues } from "@/lib/schemas";
@@ -85,7 +86,7 @@ export function EventForm({ event }: EventFormProps) {
       img: event?.img ?? "",
       date: event?.date ?? "",
       type: event?.type ?? "webinar",
-      time: event?.time ?? "",
+      time: event?.time ? parseEventTime(event.time) : "",
       presenters: event?.presenters?.join(", ") ?? "",
       links: event?.links?.join(", ") ?? "",
       description: event?.description ?? "",
@@ -209,7 +210,7 @@ export function EventForm({ event }: EventFormProps) {
       fd.set("img", imgUrl);
       fd.set("date", data.date);
       fd.set("type", data.type);
-      fd.set("time", data.time);
+      fd.set("time", data.time ? formatEventTime(data.date, data.time) : "");
       fd.set("presenters", data.presenters);
       fd.set("links", data.links);
       fd.set("description", data.description);
@@ -346,7 +347,7 @@ export function EventForm({ event }: EventFormProps) {
             )}
           </div>
           <div className="flex flex-col gap-2">
-            <Label className="text-foreground-muted">Time</Label>
+            <Label className="text-foreground-muted">Time (CT — Houston)</Label>
             <Controller
               name="time"
               control={control}
@@ -358,6 +359,9 @@ export function EventForm({ event }: EventFormProps) {
                 />
               )}
             />
+            <span className="text-xs text-foreground-faint">
+              ET and Venezuela times will be calculated automatically
+            </span>
           </div>
         </div>
       </fieldset>
