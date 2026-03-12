@@ -21,27 +21,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // ── MEMBER-PROTECTED ROUTES ──────────────────────────
-  if (
-    pathname.startsWith("/digital-library/presentations") ||
-    pathname.startsWith("/digital-library/references")
-  ) {
-    if (!sessionCookie) {
-      const loginUrl = new URL(LOGIN_URL, request.url);
-      loginUrl.searchParams.set("callbackUrl", request.url);
-      return NextResponse.redirect(loginUrl);
-    }
-
-    return NextResponse.next();
-  }
-
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
     "/admin/:path*",
-    "/digital-library/presentations/:path*",
-    "/digital-library/references/:path*",
   ],
 };

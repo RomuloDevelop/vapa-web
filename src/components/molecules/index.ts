@@ -10,3 +10,4 @@ export { MobileSelect, type SelectOption } from "./MobileSelect";
 export { SlideEmbed } from "./SlideEmbed";
 export { ImageSearchPopover } from "./ImageSearchPopover";
 export { InstagramFeed } from "./InstagramFeed";
+export { MemberAccessGate } from "./MemberAccessGate";

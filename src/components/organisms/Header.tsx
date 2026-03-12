@@ -560,42 +560,35 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
               })}
             </div>
 
-            {/* Divider */}
-            <div className="w-px h-6 bg-border-accent-light" />
-
-            {/* Member Login/Status */}
-            {memberSession?.user ? (
-              <div className="flex items-center gap-3">
-                {memberSession.user.role === "admin" && (
-                  <Link
-                    href="/admin"
-                    className="flex items-center gap-1 text-xs text-accent hover:text-accent-hover transition-colors"
+            {/* Member Status (only shown when logged in) */}
+            {!!memberSession?.user && (
+              <>
+                <div className="w-px h-6 bg-border-accent-light" />
+                <div className="flex items-center gap-3">
+                  {memberSession.user.role === "admin" && (
+                    <Link
+                      href="/admin"
+                      className="flex items-center gap-1 text-xs text-accent hover:text-accent-hover transition-colors"
+                    >
+                      <Shield className="w-3.5 h-3.5" />
+                      Admin
+                    </Link>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <User className="w-4 h-4 text-accent" />
+                    <span className="text-xs text-foreground-subtle max-w-[120px] truncate">
+                      {memberSession.user.name || memberSession.user.email}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => { analytics.reset(); memberSignOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } }); }}
+                    className="flex items-center gap-1 text-xs text-foreground-faint hover:text-accent transition-colors"
+                    aria-label="Log out"
                   >
-                    <Shield className="w-3.5 h-3.5" />
-                    Admin
-                  </Link>
-                )}
-                <div className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-accent" />
-                  <span className="text-xs text-foreground-subtle max-w-[120px] truncate">
-                    {memberSession.user.name || memberSession.user.email}
-                  </span>
+                    <LogOut className="w-3.5 h-3.5" />
+                  </button>
                 </div>
-                <button
-                  onClick={() => { analytics.reset(); memberSignOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } }); }}
-                  className="flex items-center gap-1 text-xs text-foreground-faint hover:text-accent transition-colors"
-                  aria-label="Log out"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ) : (
-              <Link
-                href="/login"
-                className="text-sm text-foreground-muted hover:text-accent transition-colors"
-              >
-                Login
-              </Link>
+              </>
             )}
 
             {/* Divider */}
@@ -683,8 +676,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                     })}
                   </div>
 
-                  {/* Member Login/Status (Mobile) */}
-                  {memberSession?.user ? (
+                  {/* Member Status (Mobile) - only shown when logged in */}
+                  {!!memberSession?.user && (
                     <div className="flex flex-col gap-2">
                       {memberSession.user.role === "admin" && (
                         <Link
@@ -715,14 +708,6 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                         </button>
                       </div>
                     </div>
-                  ) : (
-                    <Link
-                      href="/login"
-                      className="block w-full py-3.5 text-center text-sm font-medium text-foreground-muted border border-border-accent-light rounded hover:text-accent hover:border-accent transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Login
-                    </Link>
                   )}
 
                   <a
