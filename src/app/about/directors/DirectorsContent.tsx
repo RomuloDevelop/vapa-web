@@ -6,7 +6,7 @@ const directors = [
   {
     name: "Oman Oquendo",
     title: "President",
-    image: "/members/Oman Oquendo.png",
+    image: "/members/Oman Oquendo.jpeg",
     linkedin: "https://www.linkedin.com/in/oman-oquendo-3a719424/",
   },
   {

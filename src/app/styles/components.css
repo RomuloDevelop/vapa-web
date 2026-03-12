@@ -88,3 +88,9 @@
   }
 }
 
+@media (min-width: 768px) {
+  .slide-embed-desktop-height {
+    height: 80vh;
+  }
+}
+

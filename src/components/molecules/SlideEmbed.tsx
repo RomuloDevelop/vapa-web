@@ -27,8 +27,8 @@ export function SlideEmbed({ embedUrl, title }: SlideEmbedProps) {
         ref={containerRef}
         className="w-full rounded-lg overflow-hidden border border-border-accent-light bg-surface-sunken"
       >
-        {/* Mobile: taller 3:4 ratio | Desktop: standard 16:9 */}
-        <div className="relative w-full aspect-[3/4] md:aspect-video">
+        {/* Mobile: taller 3:4 ratio | Desktop: capped at 80vh */}
+        <div className="relative w-full aspect-[3/4] md:aspect-auto slide-embed-desktop-height">
           <iframe
             src={embedUrl}
             title={title}

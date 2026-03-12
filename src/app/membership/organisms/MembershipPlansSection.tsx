@@ -25,7 +25,7 @@ const membershipPlans = [
       "Networking events",
       "Mentorship program access",
     ],
-    buttonText: "Join as Student",
+    buttonText: "Join or Renew as Student",
   },
   {
     id: "active",
@@ -40,7 +40,7 @@ const membershipPlans = [
       "Event participation",
       "Digital library access",
     ],
-    buttonText: "Join as Active Member",
+    buttonText: "Join or Renew as Active Member",
   },
   {
     id: "transition",
@@ -55,7 +55,7 @@ const membershipPlans = [
       "Event participation",
       "Digital library access",
     ],
-    buttonText: "Join In Transition",
+    buttonText: "Join or Renew In Transition",
   },
 ];
 
@@ -126,8 +126,8 @@ export function MembershipPlansSection() {
     <section className="flex flex-col items-center gap-16 px-5 md:px-10 lg:px-20 py-20 md:py-24 lg:py-28 bg-surface-elevated">
       <SectionHeader
         label="MEMBERSHIP PLANS"
-        title="Select Your Annual Membership"
-        subtitle="Join VAPA and gain access to exclusive events, educational resources, and networking opportunities"
+        title="Join or Renew Your Annual Membership"
+        subtitle="Whether you're joining for the first time or renewing your membership, select your plan and gain access to exclusive events, educational resources, and networking opportunities"
         align="center"
       />
 

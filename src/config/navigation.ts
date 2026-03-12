@@ -27,17 +27,6 @@ export const navigationConfig: NavItem[] = [
         label: "Our History",
         href: "/about/history",
         description: "Learn about VAPA's mission, history, and vision.",
-        mobileOnly: true,
-      },
-      {
-        label: "Board of Directors",
-        href: "/about/directors",
-        description: "Meet our leadership team guiding VAPA's strategic vision.",
-      },
-      {
-        label: "Advisory Board",
-        href: "/about/advisory",
-        description: "Industry experts providing guidance and expertise.",
       },
       {
         label: "VAPA Links",
@@ -45,10 +34,20 @@ export const navigationConfig: NavItem[] = [
         description: "Useful resources and partner connections.",
       },
       {
+        label: "Board of Directors",
+        href: "/about/directors",
+        description: "Meet our leadership team guiding VAPA's strategic vision.",
+      },
+      {
         label: "VAPA ResPro",
         href: "/about/respro",
         description: "Our professional responsibility and ethics program.",
       },
+      {
+        label: "Advisory Board",
+        href: "/about/advisory",
+        description: "Industry experts providing guidance and expertise.",
+      }
     ],
   },
   {
