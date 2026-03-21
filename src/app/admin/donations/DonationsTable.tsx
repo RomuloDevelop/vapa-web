@@ -45,7 +45,10 @@ import type { DateRange } from "react-day-picker";
 const PAGE_SIZE = 10;
 
 function formatDate(dateString: string): string {
-  return parseLocalDate(dateString).toLocaleDateString("en-US", {
+  if (!dateString) return "—";
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "—";
+  return date.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -77,10 +80,10 @@ export function DonationsTable({
   const [page, setPage] = useState(1);
 
   const dateFrom = dateRange?.from
-    ? dateRange.from.toISOString().split("T")[0]
+    ? `${dateRange.from.toISOString().split("T")[0]}T00:00:00`
     : undefined;
   const dateTo = dateRange?.to
-    ? dateRange.to.toISOString().split("T")[0]
+    ? `${dateRange.to.toISOString().split("T")[0]}T23:59:59`
     : undefined;
 
   const filterParams: DonationsFilterParams = {
