@@ -122,7 +122,7 @@ export function HeroSection() {
       <button
         onClick={handlePrev}
         aria-label="Previous slide"
-        className="hidden lg:flex absolute left-5 top-1/2 z-30 w-12 h-12 items-center justify-center rounded border border-border-interactive text-white cursor-pointer"
+        className="hidden lg:flex absolute left-5 top-1/2 z-30 w-12 h-12 items-center justify-center rounded border border-border-interactive text-foreground cursor-pointer"
         style={{
           background: "rgba(0, 0, 0, 0.2)",
           backdropFilter: "blur(4px)",
@@ -141,7 +141,7 @@ export function HeroSection() {
       <button
         onClick={handleNext}
         aria-label="Next slide"
-        className="hidden lg:flex absolute right-5 top-1/2 z-30 w-12 h-12 items-center justify-center rounded border border-border-interactive text-white cursor-pointer"
+        className="hidden lg:flex absolute right-5 top-1/2 z-30 w-12 h-12 items-center justify-center rounded border border-border-interactive text-foreground cursor-pointer"
         style={{
           background: "rgba(0, 0, 0, 0.2)",
           backdropFilter: "blur(4px)",
@@ -181,7 +181,7 @@ export function HeroSection() {
           whileInView="visible"
           viewport={defaultViewport}
           transition={{ ...slowTransition, delay: 0.1 }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] xl:text-[72px] 2xl:text-[80px] font-bold text-white leading-[1.1]"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-[64px] xl:text-[72px] 2xl:text-[80px] font-bold text-foreground leading-[1.1]"
         >
           Empowering Venezuelan
           <br />
@@ -195,7 +195,7 @@ export function HeroSection() {
           whileInView="visible"
           viewport={defaultViewport}
           transition={{ ...slowTransition, delay: 0.2 }}
-          className="text-sm sm:text-base md:text-lg xl:text-xl text-white/85 leading-[1.6] max-w-full md:max-w-[500px] lg:max-w-[580px] xl:max-w-[620px] 2xl:max-w-[680px] drop-shadow-text"
+          className="text-sm sm:text-base md:text-lg xl:text-xl text-foreground/85 leading-[1.6] max-w-full md:max-w-[500px] lg:max-w-[580px] xl:max-w-[620px] 2xl:max-w-[680px] drop-shadow-text"
         >
           A non-profit professional organization founded in 2019.
           Restoring Venezuela&apos;s Energy Leadership. Empowering

@@ -51,7 +51,7 @@ export function PageHero({
           initial="hidden"
           animate="visible"
           transition={{ ...slowTransition, delay: 0.1 }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-bold text-white text-center"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] font-bold text-foreground text-center"
         >
           {title}
         </motion.h1>

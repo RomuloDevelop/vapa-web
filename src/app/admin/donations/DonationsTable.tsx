@@ -161,7 +161,7 @@ export function DonationsTable({
               onChange={(e) => setSearchInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               placeholder="Search name or email..."
-              className="w-[240px] bg-surface border-border-accent-light text-white placeholder:text-foreground-faint pr-8"
+              className="w-[240px] bg-surface border-border-accent-light text-foreground placeholder:text-foreground-faint pr-8"
             />
             {searchInput ? (
               <button
@@ -170,7 +170,7 @@ export function DonationsTable({
                   setSearch("");
                   setPage(1);
                 }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-foreground-subtle hover:text-white"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-foreground-subtle hover:text-foreground"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -244,7 +244,7 @@ export function DonationsTable({
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-white truncate">
+                      <p className="text-sm font-medium text-foreground truncate">
                         {donation.donor_name}
                       </p>
                       <p className="text-xs text-foreground-muted truncate mt-0.5">
@@ -383,7 +383,7 @@ export function DonationsTable({
                   className="border-border-accent-light/50 hover:bg-accent-10 transition-colors"
                 >
                   <TableCell className="py-3 px-4">
-                    <span className="text-white font-medium truncate block">
+                    <span className="text-foreground font-medium truncate block">
                       {donation.donor_name}
                     </span>
                   </TableCell>
@@ -449,7 +449,7 @@ export function DonationsTable({
                 size="icon-sm"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page <= 1}
-                className="text-foreground-muted hover:text-white hover:bg-accent-10 disabled:opacity-30"
+                className="text-foreground-muted hover:text-foreground hover:bg-accent-10 disabled:opacity-30"
                 aria-label="Previous page"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -471,7 +471,7 @@ export function DonationsTable({
                     className={
                       page === p
                         ? "bg-accent text-surface hover:bg-accent-hover"
-                        : "text-foreground-muted hover:text-white hover:bg-accent-10"
+                        : "text-foreground-muted hover:text-foreground hover:bg-accent-10"
                     }
                   >
                     {p}
@@ -483,7 +483,7 @@ export function DonationsTable({
                 size="icon-sm"
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page >= totalPages}
-                className="text-foreground-muted hover:text-white hover:bg-accent-10 disabled:opacity-30"
+                className="text-foreground-muted hover:text-foreground hover:bg-accent-10 disabled:opacity-30"
                 aria-label="Next page"
               >
                 <ChevronRight className="h-4 w-4" />

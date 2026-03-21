@@ -147,7 +147,7 @@ export function PresentationsTable({
               value={search}
               onChange={handleSearchChange}
               placeholder="Search presentations..."
-              className="pl-9 bg-surface border-border-accent-light text-white placeholder:text-foreground-faint focus-visible:border-accent focus-visible:ring-accent/20"
+              className="pl-9 bg-surface border-border-accent-light text-foreground placeholder:text-foreground-faint focus-visible:border-accent focus-visible:ring-accent/20"
             />
           </div>
           {search && (
@@ -232,7 +232,7 @@ export function PresentationsTable({
 
                   {/* Content */}
                   <div className="flex-1 min-w-0 flex flex-col gap-1">
-                    <p className="text-sm font-medium text-white line-clamp-2 break-words">
+                    <p className="text-sm font-medium text-foreground line-clamp-2 break-words">
                       {pres.title}
                     </p>
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -400,7 +400,7 @@ export function PresentationsTable({
                     </div>
                   </TableCell>
                   <TableCell className="py-3 px-4 overflow-hidden whitespace-normal">
-                    <span className="text-white font-medium line-clamp-2 break-words">
+                    <span className="text-foreground font-medium line-clamp-2 break-words">
                       {pres.title}
                     </span>
                   </TableCell>
@@ -471,7 +471,7 @@ export function PresentationsTable({
                 size="icon-sm"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page <= 1}
-                className="text-foreground-muted hover:text-white hover:bg-accent-10 disabled:opacity-30"
+                className="text-foreground-muted hover:text-foreground hover:bg-accent-10 disabled:opacity-30"
                 aria-label="Previous page"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -493,7 +493,7 @@ export function PresentationsTable({
                     className={
                       page === p
                         ? "bg-accent text-surface hover:bg-accent-hover"
-                        : "text-foreground-muted hover:text-white hover:bg-accent-10"
+                        : "text-foreground-muted hover:text-foreground hover:bg-accent-10"
                     }
                   >
                     {p}
@@ -505,7 +505,7 @@ export function PresentationsTable({
                 size="icon-sm"
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page >= totalPages}
-                className="text-foreground-muted hover:text-white hover:bg-accent-10 disabled:opacity-30"
+                className="text-foreground-muted hover:text-foreground hover:bg-accent-10 disabled:opacity-30"
                 aria-label="Next page"
               >
                 <ChevronRight className="h-4 w-4" />

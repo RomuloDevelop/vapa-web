@@ -49,7 +49,7 @@ export function IconCard({
       className={`flex flex-col items-center gap-5 p-8 rounded-xl ${variantClasses[variant]} ${className}`}
     >
       <IconWrapper icon={icon} size={iconSize} />
-      <h3 className="text-xl font-semibold text-white text-center">{title}</h3>
+      <h3 className="text-xl font-semibold text-foreground text-center">{title}</h3>
       <p className="text-[15px] text-foreground-muted text-center leading-relaxed">
         {description}
       </p>

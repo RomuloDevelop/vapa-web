@@ -34,7 +34,7 @@ export function AboutSection({ posts = [] }: AboutSectionProps) {
           whileInView="visible"
           viewport={defaultViewport}
           transition={{ ...slowTransition, delay: 0.1 }}
-          className="text-3xl sm:text-4xl md:text-5xl font-bold text-white text-center"
+          className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground text-center"
         >
           United for Energy Excellence
         </motion.h2>

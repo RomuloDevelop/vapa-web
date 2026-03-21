@@ -35,7 +35,7 @@ export function TimelineSection() {
         whileInView="visible"
         viewport={defaultViewport}
         transition={slowTransition}
-        className="text-2xl md:text-3xl lg:text-[32px] font-bold text-white"
+        className="text-2xl md:text-3xl lg:text-[32px] font-bold text-foreground"
       >
         Our Journey
       </motion.h2>
@@ -54,7 +54,7 @@ export function TimelineSection() {
             <span className="text-4xl md:text-5xl lg:text-[48px] font-bold text-accent">
               {item.year}
             </span>
-            <span className="text-base md:text-lg font-semibold text-white">
+            <span className="text-base md:text-lg font-semibold text-foreground">
               {item.title}
             </span>
             <p className="text-sm text-foreground-subtle text-center leading-[1.5] max-w-[220px]">

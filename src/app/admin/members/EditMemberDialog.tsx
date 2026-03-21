@@ -37,7 +37,7 @@ interface EditFormValues {
 }
 
 const inputClass =
-  "w-full px-3 py-2 rounded-md bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-border-accent-light focus:border-accent";
+  "w-full px-3 py-2 rounded-md bg-surface border text-foreground placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-border-accent-light focus:border-accent";
 
 const readOnlyInputClass =
   "w-full px-3 py-2 rounded-md bg-surface-sunken border text-foreground-subtle text-sm border-border-accent-light cursor-not-allowed";
@@ -113,7 +113,7 @@ export function EditMemberDialog({
     >
       <DialogContent className="bg-surface-section border-border-accent-light">
         <DialogHeader>
-          <DialogTitle className="text-white">Edit User</DialogTitle>
+          <DialogTitle className="text-foreground">Edit User</DialogTitle>
           <DialogDescription className="text-foreground-subtle">
             Update user details and permissions.
           </DialogDescription>
@@ -164,19 +164,19 @@ export function EditMemberDialog({
               control={control}
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="bg-surface border-border-accent-light text-white">
+                  <SelectTrigger className="bg-surface border-border-accent-light text-foreground">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-surface-section border-border-accent-light">
                     <SelectItem
                       value="member"
-                      className="text-foreground-muted focus:bg-accent-20 focus:text-white"
+                      className="text-foreground-muted focus:bg-accent-20 focus:text-foreground"
                     >
                       Member
                     </SelectItem>
                     <SelectItem
                       value="admin"
-                      className="text-foreground-muted focus:bg-accent-20 focus:text-white"
+                      className="text-foreground-muted focus:bg-accent-20 focus:text-foreground"
                     >
                       Admin
                     </SelectItem>
@@ -195,7 +195,7 @@ export function EditMemberDialog({
               control={control}
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="bg-surface border-border-accent-light text-white">
+                  <SelectTrigger className="bg-surface border-border-accent-light text-foreground">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-surface-section border-border-accent-light">
@@ -203,7 +203,7 @@ export function EditMemberDialog({
                       <SelectItem
                         key={t.value}
                         value={t.value}
-                        className="text-foreground-muted focus:bg-accent-20 focus:text-white"
+                        className="text-foreground-muted focus:bg-accent-20 focus:text-foreground"
                       >
                         {t.label}
                       </SelectItem>
@@ -251,7 +251,7 @@ export function EditMemberDialog({
               variant="ghost"
               onClick={() => onOpenChange(false)}
               disabled={isPending}
-              className="text-foreground-muted hover:text-white"
+              className="text-foreground-muted hover:text-foreground"
             >
               Cancel
             </Button>

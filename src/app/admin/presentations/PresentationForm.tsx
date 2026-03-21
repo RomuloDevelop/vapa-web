@@ -75,10 +75,10 @@ interface PresentationFormProps {
 }
 
 const inputClass =
-  "bg-surface border-border-accent text-white placeholder:text-foreground-faint focus-visible:border-accent focus-visible:ring-accent/20";
+  "bg-surface border-border-accent text-foreground placeholder:text-foreground-faint focus-visible:border-accent focus-visible:ring-accent/20";
 
 const errorInputClass =
-  "bg-surface border-red-500 text-white placeholder:text-foreground-faint focus-visible:border-red-500 focus-visible:ring-red-500/20";
+  "bg-surface border-red-500 text-foreground placeholder:text-foreground-faint focus-visible:border-red-500 focus-visible:ring-red-500/20";
 
 export function PresentationForm({ presentation }: PresentationFormProps) {
   const router = useRouter();
@@ -419,14 +419,14 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="absolute top-2 right-2 p-1.5 rounded-md bg-black/60 text-white hover:bg-black/80 transition-colors"
+                  className="absolute top-2 right-2 p-1.5 rounded-md bg-black/60 text-foreground hover:bg-black/80 transition-colors"
                   aria-label="Remove image"
                 >
                   <X className="w-4 h-4" />
                 </button>
                 {isImageDragging && (
                   <div className="absolute inset-0 bg-accent/20 border-2 border-dashed border-accent flex items-center justify-center">
-                    <span className="text-white font-medium text-sm bg-black/50 px-3 py-1.5 rounded-md">
+                    <span className="text-foreground font-medium text-sm bg-black/50 px-3 py-1.5 rounded-md">
                       Drop to replace
                     </span>
                   </div>
@@ -438,7 +438,7 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => imageInputRef.current?.click()}
-                  className="border-border-accent text-foreground-muted hover:bg-accent-10 hover:text-white"
+                  className="border-border-accent text-foreground-muted hover:bg-accent-10 hover:text-foreground"
                 >
                   <Upload className="w-3.5 h-3.5 mr-1.5" />
                   Change image
@@ -521,7 +521,7 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
                   <FileText className="w-6 h-6 text-accent" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white truncate">
+                  <p className="text-sm font-medium text-foreground truncate">
                     {displayFileName}
                   </p>
                   <p className="text-xs text-foreground-faint">
@@ -531,14 +531,14 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
                 <button
                   type="button"
                   onClick={handleRemoveDocument}
-                  className="p-1.5 rounded-md text-foreground-muted hover:text-white hover:bg-white/10 transition-colors"
+                  className="p-1.5 rounded-md text-foreground-muted hover:text-foreground hover:bg-white/10 transition-colors"
                   aria-label="Remove file"
                 >
                   <X className="w-4 h-4" />
                 </button>
                 {isFileDragging && (
                   <div className="absolute inset-0 bg-accent/20 border-2 border-dashed border-accent rounded-lg flex items-center justify-center">
-                    <span className="text-white font-medium text-sm bg-black/50 px-3 py-1.5 rounded-md">
+                    <span className="text-foreground font-medium text-sm bg-black/50 px-3 py-1.5 rounded-md">
                       Drop to replace
                     </span>
                   </div>
@@ -550,7 +550,7 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-border-accent text-foreground-muted hover:bg-accent-10 hover:text-white"
+                  className="border-border-accent text-foreground-muted hover:bg-accent-10 hover:text-foreground"
                 >
                   <Upload className="w-3.5 h-3.5 mr-1.5" />
                   Change file
@@ -622,7 +622,7 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
           type="button"
           variant="outline"
           onClick={() => router.push("/admin/presentations")}
-          className="border-border-accent text-foreground-muted hover:bg-accent-10 hover:text-white"
+          className="border-border-accent text-foreground-muted hover:bg-accent-10 hover:text-foreground"
         >
           Cancel
         </Button>

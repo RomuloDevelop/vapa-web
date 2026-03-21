@@ -7,27 +7,27 @@
 /* --- Gradients --- */
 
 .bg-gradient-accent {
-  background: linear-gradient(135deg, #DCBA60 0%, #C49D48 100%);
+  background: var(--gradient-gold);
 }
 
 .bg-gradient-header {
-  background: linear-gradient(180deg, #142840 0%, #142840 40%, transparent 100%);
+  background: var(--gradient-header);
 }
 
 .bg-gradient-hero-overlay {
-  background: linear-gradient(180deg, #142840 0%, rgba(20, 40, 64, 0.5) 40%, rgba(20, 40, 64, 0) 70%);
+  background: var(--gradient-hero-overlay);
 }
 
 .bg-gradient-page-hero {
-  background: linear-gradient(180deg, #142840 0%, #142840CC 50%, #14284080 100%);
+  background: var(--gradient-page-hero);
 }
 
 .bg-gradient-vision {
-  background: linear-gradient(180deg, #142840 0%, #284B6B 100%);
+  background: var(--gradient-vision);
 }
 
 .bg-gradient-cta-overlay {
-  background: linear-gradient(90deg, rgba(20, 40, 64, 0.9) 0%, rgba(27, 52, 85, 0.8) 100%);
+  background: var(--gradient-cta-overlay);
 }
 
 /* --- Shadows & Effects --- */

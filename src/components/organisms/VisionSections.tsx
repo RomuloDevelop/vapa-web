@@ -168,7 +168,7 @@ function VisionRow({
       >
         <div className="flex items-center gap-3">
           <NumberBadge number={item.number} />
-          <h3 className="text-xl lg:text-2xl font-bold text-white leading-tight">
+          <h3 className="text-xl lg:text-2xl font-bold text-foreground leading-tight">
             {item.title}
           </h3>
         </div>
@@ -214,7 +214,7 @@ function MobileVisionRow({
       <div className="flex flex-col gap-1.5 flex-1">
         <div className="flex items-center gap-2">
           <NumberBadge number={item.number} />
-          <h3 className="text-base md:text-lg font-bold text-white leading-tight">
+          <h3 className="text-base md:text-lg font-bold text-foreground leading-tight">
             {item.title}
           </h3>
         </div>
@@ -248,7 +248,7 @@ function DesktopVisionSections() {
       >
         <div className="w-full px-20 xl:px-[5%] 2xl:px-[8%]">
           <div className="flex flex-col gap-8 max-w-5xl mx-auto">
-            <h2 className="text-4xl font-bold text-white text-center">
+            <h2 className="text-4xl font-bold text-foreground text-center">
               Our Objectives
             </h2>
             <div className="flex flex-col gap-6">
@@ -301,7 +301,7 @@ export function VisionSections() {
           whileInView="visible"
           viewport={smallViewport}
           transition={slowTransition}
-          className="text-2xl md:text-3xl font-bold text-white text-center"
+          className="text-2xl md:text-3xl font-bold text-foreground text-center"
         >
           Our Objectives
         </motion.h2>

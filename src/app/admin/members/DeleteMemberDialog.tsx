@@ -29,7 +29,7 @@ export function DeleteMemberDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-surface-section border-border-accent-light">
         <DialogHeader>
-          <DialogTitle className="text-white">Remove Member</DialogTitle>
+          <DialogTitle className="text-foreground">Remove Member</DialogTitle>
           <DialogDescription className="text-foreground-subtle">
             Are you sure you want to remove{" "}
             <span className="font-medium text-foreground-muted">
@@ -43,7 +43,7 @@ export function DeleteMemberDialog({
             variant="ghost"
             onClick={() => onOpenChange(false)}
             disabled={isPending}
-            className="text-foreground-muted hover:text-white"
+            className="text-foreground-muted hover:text-foreground"
           >
             Cancel
           </Button>

@@ -16,7 +16,7 @@ export function AboutIntroSection() {
         whileInView="visible"
         viewport={defaultViewport}
         transition={slowTransition}
-        className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white text-center"
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-foreground text-center"
       >
         The Venezuelan American Petroleum Association
       </motion.h2>

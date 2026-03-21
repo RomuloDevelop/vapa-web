@@ -57,10 +57,10 @@ interface EventFormProps {
 }
 
 const inputClass =
-  "bg-surface border-border-accent text-white placeholder:text-foreground-faint focus-visible:border-accent focus-visible:ring-accent/20";
+  "bg-surface border-border-accent text-foreground placeholder:text-foreground-faint focus-visible:border-accent focus-visible:ring-accent/20";
 
 const errorInputClass =
-  "bg-surface border-red-500 text-white placeholder:text-foreground-faint focus-visible:border-red-500 focus-visible:ring-red-500/20";
+  "bg-surface border-red-500 text-foreground placeholder:text-foreground-faint focus-visible:border-red-500 focus-visible:ring-red-500/20";
 
 export function EventForm({ event }: EventFormProps) {
   const router = useRouter();
@@ -277,7 +277,7 @@ export function EventForm({ event }: EventFormProps) {
                     <SelectItem
                       key={t.value}
                       value={t.value}
-                      className="text-white"
+                      className="text-foreground"
                     >
                       {t.label}
                     </SelectItem>
@@ -407,14 +407,14 @@ export function EventForm({ event }: EventFormProps) {
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="absolute top-2 right-2 p-1.5 rounded-md bg-black/60 text-white hover:bg-black/80 transition-colors"
+                  className="absolute top-2 right-2 p-1.5 rounded-md bg-black/60 text-foreground hover:bg-black/80 transition-colors"
                   aria-label="Remove image"
                 >
                   <X className="w-4 h-4" />
                 </button>
                 {isDragging && (
                   <div className="absolute inset-0 bg-accent/20 border-2 border-dashed border-accent flex items-center justify-center">
-                    <span className="text-white font-medium text-sm bg-black/50 px-3 py-1.5 rounded-md">
+                    <span className="text-foreground font-medium text-sm bg-black/50 px-3 py-1.5 rounded-md">
                       Drop to replace
                     </span>
                   </div>
@@ -426,7 +426,7 @@ export function EventForm({ event }: EventFormProps) {
                   variant="outline"
                   size="sm"
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-border-accent text-foreground-muted hover:bg-accent-10 hover:text-white"
+                  className="border-border-accent text-foreground-muted hover:bg-accent-10 hover:text-foreground"
                 >
                   <Upload className="w-3.5 h-3.5 mr-1.5" />
                   Change image
@@ -542,7 +542,7 @@ export function EventForm({ event }: EventFormProps) {
           type="button"
           variant="outline"
           onClick={() => router.push("/admin/events")}
-          className="border-border-accent text-foreground-muted hover:bg-accent-10 hover:text-white"
+          className="border-border-accent text-foreground-muted hover:bg-accent-10 hover:text-foreground"
         >
           Cancel
         </Button>

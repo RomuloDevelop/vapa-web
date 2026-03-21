@@ -17,7 +17,7 @@ export default async function AdminPresentationsPage() {
     <div className="flex flex-col gap-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Presentations</h1>
+        <h1 className="text-2xl font-bold text-foreground">Presentations</h1>
         <Button
           asChild
           className="bg-accent text-surface font-semibold hover:bg-accent-hover"

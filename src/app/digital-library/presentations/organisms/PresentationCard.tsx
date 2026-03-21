@@ -128,7 +128,7 @@ export function PresentationCard({
         </span>
 
         {/* Title */}
-        <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white leading-[1.2]">
+        <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-foreground leading-[1.2]">
           {presentation.title}
         </h3>
 

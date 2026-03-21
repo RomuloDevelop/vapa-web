@@ -68,7 +68,7 @@ export default function AdminLayout({
         <div className="flex items-end px-6 py-5 border-b border-border-accent-light">
           <Image src="/vapa-icon.png" alt="VAPA logo" width={24} height={24} className="w-8 h-8 shrink-0" />
 
-          <span className="text-xl font-bold text-white">VAPA</span>
+          <span className="text-xl font-bold text-foreground">VAPA</span>
         </div>
 
         {/* Nav */}
@@ -88,7 +88,7 @@ export default function AdminLayout({
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                   isActive
                     ? "bg-accent-20 text-accent"
-                    : "text-foreground-muted hover:text-white hover:bg-white/5"
+                    : "text-foreground-muted hover:text-foreground hover:bg-white/5"
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -102,14 +102,14 @@ export default function AdminLayout({
         <div className="p-3 border-t border-border-accent-light flex flex-col gap-1">
           <Link
             href="/"
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-foreground-muted hover:text-white hover:bg-white/5 transition-colors"
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-foreground-muted hover:text-foreground hover:bg-white/5 transition-colors"
           >
             <ExternalLink className="w-5 h-5" />
             View Site
           </Link>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-foreground-muted hover:text-white hover:bg-white/5 transition-colors"
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-lg text-sm font-medium text-foreground-muted hover:text-foreground hover:bg-white/5 transition-colors"
           >
             <LogOut className="w-5 h-5" />
             Logout
@@ -123,7 +123,7 @@ export default function AdminLayout({
         <header className="flex items-center justify-between px-5 lg:px-8 py-4 border-b border-border-accent-light bg-surface-sunken">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 -ml-2 lg:hidden text-foreground-muted hover:text-white"
+            className="p-2 -ml-2 lg:hidden text-foreground-muted hover:text-foreground"
             aria-label="Open sidebar"
           >
             <Menu className="w-5 h-5" />

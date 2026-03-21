@@ -164,7 +164,7 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
                   key={member.id}
                   className="border-b border-border-accent-light/50 last:border-b-0 hover:bg-white/[0.02] transition-colors"
                 >
-                  <td className="px-4 py-3 text-sm text-white font-medium">
+                  <td className="px-4 py-3 text-sm text-foreground font-medium">
                     {member.name}
                   </td>
                   <td className="px-4 py-3 text-sm text-foreground-muted">
@@ -282,7 +282,7 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
                               ? "Deactivate user"
                               : "Activate user"
                           }
-                          className="text-foreground-subtle hover:text-white"
+                          className="text-foreground-subtle hover:text-foreground"
                         >
                           {member.is_active ? (
                             <UserX className="w-3.5 h-3.5" />
@@ -330,7 +330,7 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-white truncate">
+                    <p className="text-sm font-medium text-foreground truncate">
                       {member.name}
                     </p>
                     <span
@@ -422,7 +422,7 @@ export function MembersTable({ initialMembers }: MembersTableProps) {
                       size="icon-xs"
                       onClick={() => handleToggleActive(member)}
                       disabled={isPending}
-                      className="text-foreground-subtle hover:text-white"
+                      className="text-foreground-subtle hover:text-foreground"
                     >
                       {member.is_active ? (
                         <UserX className="w-3.5 h-3.5" />

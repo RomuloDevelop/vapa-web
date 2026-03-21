@@ -45,7 +45,7 @@ export function SectionHeader({
         whileInView={animate ? "visible" : undefined}
         viewport={animate ? defaultViewport : undefined}
         transition={animate ? { ...defaultTransition, delay: 0.1 } : undefined}
-        className="text-3xl md:text-4xl lg:text-5xl font-bold text-white"
+        className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground"
       >
         {title}
       </motion.h2>

@@ -18,7 +18,7 @@ export default async function AdminEventsPage() {
     <div className="flex flex-col gap-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-white">Events</h1>
+        <h1 className="text-2xl font-bold text-foreground">Events</h1>
         <Button asChild className="bg-accent text-surface font-semibold hover:bg-accent-hover">
           <Link href="/admin/events/new">
             <Plus className="w-4 h-4" />

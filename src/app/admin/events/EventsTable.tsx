@@ -146,7 +146,7 @@ export function EventsTable({
               setPage(1);
             }}
           >
-            <SelectTrigger className="w-[130px] bg-surface border-border-accent-light text-white">
+            <SelectTrigger className="w-[130px] bg-surface border-border-accent-light text-foreground">
               <SelectValue placeholder="All Years" />
             </SelectTrigger>
             <SelectContent className="bg-surface-section border-border-accent-light">
@@ -154,7 +154,7 @@ export function EventsTable({
                 All Years
               </SelectItem>
               {availableYears.map((y) => (
-                <SelectItem key={y} value={String(y)} className="text-white">
+                <SelectItem key={y} value={String(y)} className="text-foreground">
                   {y}
                 </SelectItem>
               ))}
@@ -169,7 +169,7 @@ export function EventsTable({
               setPage(1);
             }}
           >
-            <SelectTrigger className="w-[160px] bg-surface border-border-accent-light text-white">
+            <SelectTrigger className="w-[160px] bg-surface border-border-accent-light text-foreground">
               <SelectValue placeholder="All Types" />
             </SelectTrigger>
             <SelectContent className="bg-surface-section border-border-accent-light">
@@ -177,7 +177,7 @@ export function EventsTable({
                 All Types
               </SelectItem>
               {EVENT_TYPES.map((t) => (
-                <SelectItem key={t.value} value={t.value} className="text-white">
+                <SelectItem key={t.value} value={t.value} className="text-foreground">
                   {t.label}
                 </SelectItem>
               ))}
@@ -257,7 +257,7 @@ export function EventsTable({
 
                   {/* Content */}
                   <div className="flex-1 min-w-0 flex flex-col gap-1">
-                    <p className="text-sm font-medium text-white line-clamp-2 break-words">
+                    <p className="text-sm font-medium text-foreground line-clamp-2 break-words">
                       {event.name}
                     </p>
                     <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -399,7 +399,7 @@ export function EventsTable({
                     </div>
                   </TableCell>
                   <TableCell className="py-3 px-4 overflow-hidden whitespace-normal">
-                    <span className="text-white font-medium line-clamp-2 break-words">
+                    <span className="text-foreground font-medium line-clamp-2 break-words">
                       {event.name}
                     </span>
                   </TableCell>
@@ -468,7 +468,7 @@ export function EventsTable({
                 size="icon-sm"
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page <= 1}
-                className="text-foreground-muted hover:text-white hover:bg-accent-10 disabled:opacity-30"
+                className="text-foreground-muted hover:text-foreground hover:bg-accent-10 disabled:opacity-30"
                 aria-label="Previous page"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -490,7 +490,7 @@ export function EventsTable({
                     className={
                       page === p
                         ? "bg-accent text-surface hover:bg-accent-hover"
-                        : "text-foreground-muted hover:text-white hover:bg-accent-10"
+                        : "text-foreground-muted hover:text-foreground hover:bg-accent-10"
                     }
                   >
                     {p}
@@ -502,7 +502,7 @@ export function EventsTable({
                 size="icon-sm"
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page >= totalPages}
-                className="text-foreground-muted hover:text-white hover:bg-accent-10 disabled:opacity-30"
+                className="text-foreground-muted hover:text-foreground hover:bg-accent-10 disabled:opacity-30"
                 aria-label="Next page"
               >
                 <ChevronRight className="h-4 w-4" />

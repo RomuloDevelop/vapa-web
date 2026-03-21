@@ -123,7 +123,7 @@ function EventCardInternal({
         <div>
           <h3
             ref={titleRef}
-            className="text-lg md:text-base font-semibold text-white"
+            className="text-lg md:text-base font-semibold text-foreground"
             style={
               !expanded
                 ? {
@@ -265,7 +265,7 @@ export function EventsSection({ events, specialEvents = [] }: EventsSectionProps
             whileInView="visible"
             viewport={defaultViewport}
             transition={{ ...slowTransition, delay: 0.1 }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-foreground"
           >
             Programs & Webinars
           </motion.h2>
@@ -298,7 +298,7 @@ export function EventsSection({ events, specialEvents = [] }: EventsSectionProps
             whileInView="visible"
             viewport={smallViewport}
             transition={slowTransition}
-            className="text-lg md:text-xl font-semibold text-white"
+            className="text-lg md:text-xl font-semibold text-foreground"
           >
             Recent Events
           </motion.h3>
@@ -315,7 +315,7 @@ export function EventsSection({ events, specialEvents = [] }: EventsSectionProps
             whileInView="visible"
             viewport={smallViewport}
             transition={slowTransition}
-            className="text-lg md:text-xl font-semibold text-white"
+            className="text-lg md:text-xl font-semibold text-foreground"
           >
             Special Events
           </motion.h3>

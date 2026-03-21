@@ -104,7 +104,7 @@ function MemberSection({ title, members }: SectionProps) {
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6 }}
-        className="text-xl md:text-2xl lg:text-[32px] font-bold text-white"
+        className="text-xl md:text-2xl lg:text-[32px] font-bold text-foreground"
       >
         {title}
       </motion.h2>

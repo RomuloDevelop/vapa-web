@@ -74,7 +74,7 @@ function ImageSearchContent({
     <>
       {/* Header */}
       <div className="shrink-0 flex flex-col gap-3 px-4 pt-4 pb-4 border-b border-border-accent-light">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
           <Sparkles className="w-3.5 h-3.5 text-accent" />
           AI Image Search
         </h3>
@@ -84,7 +84,7 @@ function ImageSearchContent({
             onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Describe the image you need..."
-            className="flex-1 px-3 py-2 rounded-lg bg-surface border border-border-accent-light text-white text-sm placeholder:text-foreground-faint focus:outline-none focus:border-accent transition-colors"
+            className="flex-1 px-3 py-2 rounded-lg bg-surface border border-border-accent-light text-foreground text-sm placeholder:text-foreground-faint focus:outline-none focus:border-accent transition-colors"
           />
           <button
             type="button"
