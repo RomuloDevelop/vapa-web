@@ -118,7 +118,9 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           {/* Email Input */}
           <div className="flex flex-col gap-1">
+            <label htmlFor="contact-email" className="sr-only">Email address</label>
             <input
+              id="contact-email"
               type="email"
               name="email"
               placeholder="Your email"
@@ -126,6 +128,8 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
               onChange={(e) => setEmail(e.target.value)}
               onBlur={handleEmailBlur}
               disabled={isMutating}
+              aria-invalid={errors.email ? "true" : undefined}
+              aria-describedby={errors.email ? "contact-email-error" : undefined}
               className={`w-full px-3.5 py-3 text-[13px] text-white placeholder:text-foreground-faint bg-surface border rounded-md focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.email
                   ? "border-red-500 focus:border-red-500"
@@ -133,12 +137,14 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
               }`}
             />
             {errors.email && (
-              <span className="text-xs text-red-500 font-medium">{errors.email}</span>
+              <span id="contact-email-error" className="text-xs text-red-500 font-medium" role="alert">{errors.email}</span>
             )}
           </div>
 
           {/* Name Input (Optional) */}
+          <label htmlFor="contact-name" className="sr-only">Name (optional)</label>
           <input
+            id="contact-name"
             type="text"
             name="name"
             placeholder="Your name (optional)"
@@ -150,7 +156,9 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
 
           {/* Message Input */}
           <div className="flex flex-col gap-1">
+            <label htmlFor="contact-message" className="sr-only">Message</label>
             <textarea
+              id="contact-message"
               name="message"
               placeholder="Your message..."
               value={message}
@@ -158,6 +166,8 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
               onBlur={handleMessageBlur}
               disabled={isMutating}
               rows={3}
+              aria-invalid={errors.message ? "true" : undefined}
+              aria-describedby={errors.message ? "contact-message-error" : undefined}
               className={`w-full px-3.5 py-3 text-[13px] text-white placeholder:text-foreground-faint bg-surface border rounded-md resize-none focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.message
                   ? "border-red-500 focus:border-red-500"
@@ -165,7 +175,7 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
               }`}
             />
             {errors.message && (
-              <span className="text-xs text-red-500 font-medium">{errors.message}</span>
+              <span id="contact-message-error" className="text-xs text-red-500 font-medium" role="alert">{errors.message}</span>
             )}
           </div>
 

@@ -54,9 +54,9 @@ export function TimelineSection() {
             <span className="text-4xl md:text-5xl lg:text-[48px] font-bold text-accent">
               {item.year}
             </span>
-            <span className="text-base md:text-lg font-semibold text-white">
+            <h3 className="text-base md:text-lg font-semibold text-white">
               {item.title}
-            </span>
+            </h3>
             <p className="text-sm text-foreground-subtle text-center leading-[1.5] max-w-[220px]">
               {item.description}
             </p>

@@ -73,7 +73,7 @@ export function PersonCard({
       className={`flex flex-col overflow-hidden rounded-xl bg-surface ${config.width} ${linkedin ? "cursor-pointer" : ""}`}
     >
       <div className={`relative ${config.imageHeight} w-full`}>
-        <Image src={image} alt={name} fill className="object-cover" priority={priority} />
+        <Image src={image} alt={`${name}, ${title}`} fill className="object-cover" priority={priority} />
       </div>
       <div
         className={`flex flex-col items-center ${config.gap} ${config.padding}`}

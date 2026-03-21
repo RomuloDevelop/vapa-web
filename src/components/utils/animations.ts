@@ -1,5 +1,6 @@
 import type { Variants } from "motion/react";
 
+// All motion variants use opacity-only for reduced-motion users
 export const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0 },
@@ -23,6 +24,12 @@ export const fadeIn: Variants = {
 export const scaleIn: Variants = {
   hidden: { opacity: 0, scale: 0.9 },
   visible: { opacity: 1, scale: 1 },
+};
+
+// Reduced-motion variants (opacity only, no movement)
+export const reducedFadeIn: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
 };
 
 // Common viewport configurations

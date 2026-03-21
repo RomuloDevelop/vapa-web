@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Menu, X, ChevronDown, Linkedin, Instagram, Youtube, LogOut, User, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
@@ -93,6 +93,19 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
     };
   }, []);
 
+  // Keyboard handler for desktop dropdown triggers
+  const handleDropdownKeyDown = useCallback(
+    (e: React.KeyboardEvent, itemLabel: string) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setOpenDropdown((prev) => (prev === itemLabel ? null : itemLabel));
+      } else if (e.key === "Escape") {
+        setOpenDropdown(null);
+      }
+    },
+    []
+  );
+
   const isGradient = variant === "gradient";
 
   const scrollToElement = (e: React.MouseEvent, href: string) => {
@@ -126,7 +139,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
 
     if (isChildDisabled) {
       return (
-        <div className="mega-menu-item">
+        <div className="mega-menu-item" aria-disabled="true">
           <span className="mega-menu-item-title">{child.label}</span>
           {child.description && (
             <span className="mega-menu-item-description">{child.description}</span>
@@ -184,6 +197,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
               closeTimeoutRef.current = null;
             }, 300);
           }}
+          onKeyDown={(e) => { if (e.key === "Escape") { setOpenDropdown(null); e.stopPropagation(); } }}
         >
           {item.href ? (
             <Link
@@ -191,6 +205,9 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
               className={`flex items-center gap-1.5 text-sm xl:text-[15px] font-medium transition-colors hover:text-accent ${
                 isActive || openDropdown === item.label ? "text-accent" : "text-foreground-muted"
               }`}
+              aria-haspopup="true"
+              aria-expanded={openDropdown === item.label}
+              onKeyDown={(e) => handleDropdownKeyDown(e, item.label)}
             >
               {item.label}
               <ChevronDown
@@ -204,6 +221,9 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
               className={`flex items-center gap-1.5 text-sm xl:text-[15px] font-medium transition-colors hover:text-accent ${
                 isActive || openDropdown === item.label ? "text-accent" : "text-foreground-muted"
               }`}
+              aria-haspopup="true"
+              aria-expanded={openDropdown === item.label}
+              onKeyDown={(e) => handleDropdownKeyDown(e, item.label)}
             >
               {item.label}
               <ChevronDown
@@ -286,6 +306,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
         <span
           key={item.label}
           className="text-sm xl:text-[15px] font-medium text-foreground-faint cursor-not-allowed"
+          aria-disabled="true"
         >
           {item.label}
         </span>
@@ -377,7 +398,9 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             <button
               onClick={() => setMobileExpandedItem(isExpanded ? null : item.label)}
               className="p-2 -mr-2 transition-colors hover:text-accent"
-              aria-label={`Expand ${item.label} submenu`}
+              aria-label={isExpanded ? `Collapse ${item.label} submenu` : `Expand ${item.label} submenu`}
+              aria-expanded={isExpanded}
+              aria-controls={`mobile-submenu-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
             >
               <ChevronDown
                 className={`w-5 h-5 transition-transform ${isExpanded ? "rotate-180" : ""}`}
@@ -393,6 +416,9 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 className="overflow-hidden"
+                id={`mobile-submenu-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+                role="region"
+                aria-label={`${item.label} submenu`}
               >
                 <div className="pl-4 py-2 space-y-1">
                   {item.children!.map((child) => {
@@ -402,6 +428,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                         <span
                           key={child.label}
                           className="block py-3 text-base text-foreground-subtle"
+                          aria-disabled="true"
                         >
                           {child.label}
                         </span>
@@ -439,7 +466,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: index * 0.05 + 0.1 }}
         >
-          <span className="block py-4 text-lg font-medium text-foreground-faint border-b border-border-accent-light/30 cursor-not-allowed">
+          <span className="block py-4 text-lg font-medium text-foreground-faint border-b border-border-accent-light/30 cursor-not-allowed" aria-disabled="true">
             {item.label}
           </span>
         </motion.div>
@@ -611,7 +638,9 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           <button
             className="lg:hidden p-2 text-white z-50"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -637,11 +666,15 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
 
             {/* Slide-out Panel */}
             <motion.div
+              id="mobile-menu"
+              role="dialog"
+              aria-label="Navigation menu"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "tween", duration: 0.3, ease: "easeInOut" }}
               className="fixed top-0 left-0 h-full w-[70vw] max-w-[320px] bg-surface z-50 lg:hidden overflow-y-auto"
+              onKeyDown={(e) => { if (e.key === "Escape") setIsMenuOpen(false); }}
             >
               <div className="flex flex-col min-h-full">
                 {/* Menu Header */}

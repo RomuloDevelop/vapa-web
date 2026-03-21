@@ -268,4 +268,22 @@
   button, a {
     cursor: pointer;
   }
+
+  /* Accessible focus indicators (WCAG 2.4.7) */
+  :focus-visible {
+    outline: 3px solid #DCBA60;
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion support (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

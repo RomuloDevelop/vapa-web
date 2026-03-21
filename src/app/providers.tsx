@@ -4,7 +4,7 @@ import posthog from "posthog-js";
 import { PostHogProvider as PHProvider, usePostHog } from "posthog-js/react";
 import { useSession } from "@/lib/auth-client";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, Suspense } from "react";
+import React, { useEffect, Suspense } from "react";
 import { setErrorUser } from "@/lib/error-tracking";
 
 if (typeof window !== "undefined" && process.env.NEXT_PUBLIC_POSTHOG_KEY) {
@@ -53,6 +53,15 @@ function UserIdentifier() {
   }, [data, posthogClient]);
 
   return null;
+}
+
+// axe-core: dev-only runtime accessibility checker (logs to browser console)
+if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+  import("@axe-core/react").then((axe) => {
+    import("react-dom").then((ReactDOM) => {
+      axe.default(React, ReactDOM, 1000);
+    });
+  });
 }
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {

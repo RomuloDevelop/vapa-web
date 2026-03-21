@@ -13,6 +13,7 @@ export default async function WebinarsPage() {
   return (
     <main className="flex flex-col min-h-screen bg-surface">
       <Header variant="gradient" activeNav="Digital Library" />
+      <div id="main-content" tabIndex={-1} />
       <PageHero
         image="/images/heroes/digital-library.jpg"
         imageAlt="Digital library concept"

@@ -5,6 +5,7 @@ export default function DonationsPage() {
   return (
     <main className="flex flex-col min-h-screen bg-surface">
       <Header variant="gradient" activeNav="Donations" />
+      <div id="main-content" tabIndex={-1} />
       <PageHero
         image="/images/heroes/donations.jpg"
         imageAlt="Oil refinery industrial landscape"

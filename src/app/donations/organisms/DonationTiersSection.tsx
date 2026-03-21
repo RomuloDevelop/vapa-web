@@ -69,12 +69,13 @@ function TierCard({
   const stripeUrl = `${process.env.NEXT_PUBLIC_STRIPE_BASE_URL!}?__prefilled_amount=${tier.stripeAmount}`;
 
   return (
-    <motion.div
+    <motion.article
       variants={fadeInUp}
       initial="hidden"
       whileInView="visible"
       viewport={defaultViewport}
       transition={staggerDelay(index)}
+      aria-label={`${tier.name} donation tier — ${tier.amount}`}
       className={`flex flex-col items-center justify-end gap-4 p-7 rounded-t-xl rounded-b-xl sm:rounded-b-none ${tier.height} ${
         tier.popular
           ? "bg-surface border-2 border-accent"
@@ -121,7 +122,7 @@ function TierCard({
         href={stripeUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className={`w-full py-2.5 text-sm font-semibold text-center rounded-md transition-colors ${
+        className={`w-full py-2.5 text-sm font-semibold text-center rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
           tier.popular
             ? "bg-accent text-surface hover:opacity-90"
             : "border border-border-interactive text-accent hover:bg-accent-10"
@@ -129,7 +130,7 @@ function TierCard({
       >
         {tier.popular ? "Donate Now" : "Donate"}
       </a>
-    </motion.div>
+    </motion.article>
   );
 }
 

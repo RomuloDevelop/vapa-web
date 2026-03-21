@@ -5,6 +5,7 @@ export default function AdvisoryPage() {
   return (
     <main className="flex flex-col min-h-screen bg-surface">
       <Header variant="gradient" activeNav="About" />
+      <div id="main-content" tabIndex={-1} />
       <PageHero
         image="/images/heroes/advisory.jpg"
         imageAlt="Business meeting"

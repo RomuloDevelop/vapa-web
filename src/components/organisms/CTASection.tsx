@@ -78,14 +78,14 @@ export function CTASection() {
               href={MEMBERSHIP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-accent text-surface text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity"
+              className="flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-accent text-surface text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               Register Now
               <ArrowRight className="w-4 h-4 md:w-[18px] md:h-[18px]" />
             </a>
             <Link
               href="/donations#donate"
-              className="px-8 md:px-12 py-4 md:py-5 text-white text-sm md:text-base font-medium rounded border border-white bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors text-center"
+              className="px-8 md:px-12 py-4 md:py-5 text-white text-sm md:text-base font-medium rounded border border-white bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               Make a Donation
             </Link>

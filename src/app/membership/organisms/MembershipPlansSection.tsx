@@ -69,12 +69,13 @@ function MembershipCard({
   const Icon = plan.icon;
 
   return (
-    <motion.div
+    <motion.article
       variants={fadeInUp}
       initial="hidden"
       whileInView="visible"
       viewport={defaultViewport}
       transition={staggerDelay(index)}
+      aria-label={`${plan.title} membership — $${plan.price}/year`}
       className="flex flex-col items-center gap-6 p-10 rounded-2xl bg-surface h-full"
       style={{ width: "100%", maxWidth: 380 }}
     >
@@ -113,11 +114,11 @@ function MembershipCard({
         href={MEMBERSHIP_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full py-4 text-base font-semibold text-center rounded-lg transition-colors border border-border-interactive text-accent hover:bg-accent-10"
+        className="w-full py-4 text-base font-semibold text-center rounded-lg transition-colors border border-border-interactive text-accent hover:bg-accent-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         {plan.buttonText}
       </a>
-    </motion.div>
+    </motion.article>
   );
 }
 

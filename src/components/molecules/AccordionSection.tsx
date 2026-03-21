@@ -29,6 +29,8 @@ export function AccordionSection({
       <button
         onClick={onToggle}
         className="flex items-center justify-between w-full py-4 lg:hidden"
+        aria-expanded={isOpen}
+        aria-controls={`accordion-${title.toLowerCase().replace(/\s+/g, "-")}`}
       >
         <span className="text-xs md:text-sm font-semibold text-accent tracking-[1.5px]">
           {title}
@@ -50,6 +52,9 @@ export function AccordionSection({
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
+            id={`accordion-${title.toLowerCase().replace(/\s+/g, "-")}`}
+            role="region"
+            aria-label={title}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}

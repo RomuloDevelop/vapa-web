@@ -39,6 +39,7 @@ export function InstagramFeed({ posts }: InstagramFeedProps) {
             href={post.permalink}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`Instagram post${post.like_count != null ? ` — ${post.like_count.toLocaleString()} likes` : ""}${post.comments_count != null ? `, ${post.comments_count.toLocaleString()} comments` : ""} (opens in new tab)`}
             variants={fadeInUp}
             initial="hidden"
             whileInView="visible"
@@ -58,7 +59,7 @@ export function InstagramFeed({ posts }: InstagramFeedProps) {
                 <Play className="w-4 h-4 text-white fill-white" />
               </div>
             )}
-            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
+            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3" aria-hidden="true">
               <div className="flex items-center gap-1.5">
                 <Heart className="w-5 h-5 text-red-500 fill-red-500" />
                 {post.like_count != null && (
@@ -85,6 +86,7 @@ export function InstagramFeed({ posts }: InstagramFeedProps) {
           <button
             onClick={() => setExpanded(true)}
             className="flex items-center gap-2 text-base font-medium text-foreground-muted hover:text-accent transition-colors"
+            aria-label="See more Instagram posts"
           >
             See more
             <ChevronDown className="w-5 h-5" />

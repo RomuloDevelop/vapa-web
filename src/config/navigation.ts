@@ -112,7 +112,7 @@ export interface SocialLink {
 }
 
 export const socialLinks: SocialLink[] = [
-  { label: "LinkedIn", icon: "linkedin", href: "https://www.linkedin.com/company/40898534/" },
-  { label: "Instagram", icon: "instagram", href: "https://www.instagram.com/vapa.us/" },
-  { label: "YouTube", icon: "youtube", href: "https://www.youtube.com/channel/UCT5ejHEYwbGAadcQ7ttmAwA" },
+  { label: "Visit VAPA on LinkedIn (opens in new tab)", icon: "linkedin", href: "https://www.linkedin.com/company/40898534/" },
+  { label: "Visit VAPA on Instagram (opens in new tab)", icon: "instagram", href: "https://www.instagram.com/vapa.us/" },
+  { label: "Visit VAPA on YouTube (opens in new tab)", icon: "youtube", href: "https://www.youtube.com/channel/UCT5ejHEYwbGAadcQ7ttmAwA" },
 ];

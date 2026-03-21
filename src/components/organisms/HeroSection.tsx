@@ -83,7 +83,11 @@ export function HeroSection() {
         modules={[EffectFade, Autoplay, Pagination, Navigation]}
         effect="fade"
         speed={1500}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+        aria-label="Hero background images"
+        aria-roledescription="carousel"
+        onFocusCapture={() => swiperRef.current?.autoplay?.stop()}
+        onBlurCapture={() => swiperRef.current?.autoplay?.start()}
         pagination={{
           clickable: true,
           bulletClass:

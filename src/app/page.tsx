@@ -23,6 +23,7 @@ export default async function Home() {
   return (
     <main className="flex flex-col min-h-screen bg-surface">
       <Header variant="gradient" showJoinButton={false} />
+      <div id="main-content" tabIndex={-1} />
       <HeroSection />
       <BrandStrip />
       <AboutSection posts={instagramPosts} />

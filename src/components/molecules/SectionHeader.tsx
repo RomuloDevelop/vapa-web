@@ -11,6 +11,7 @@ interface SectionHeaderProps {
   animate?: boolean;
   variant?: "up" | "right";
   className?: string;
+  headingLevel?: "h2" | "h3" | "h4";
 }
 
 export function SectionHeader({
@@ -21,7 +22,9 @@ export function SectionHeader({
   animate = true,
   variant = "up",
   className = "",
+  headingLevel = "h2",
 }: SectionHeaderProps) {
+  const Heading = motion[headingLevel];
   const alignClasses = align === "center" ? "items-center text-center" : "items-start text-left";
   const animationVariant = variant === "right" ? fadeInRight : fadeInUp;
 
@@ -39,7 +42,7 @@ export function SectionHeader({
           {label}
         </motion.span>
       )}
-      <motion.h2
+      <Heading
         variants={animate ? animationVariant : undefined}
         initial={animate ? "hidden" : undefined}
         whileInView={animate ? "visible" : undefined}
@@ -48,7 +51,7 @@ export function SectionHeader({
         className="text-3xl md:text-4xl lg:text-5xl font-bold text-white"
       >
         {title}
-      </motion.h2>
+      </Heading>
       {subtitle && (
         <motion.p
           variants={animate ? animationVariant : undefined}

@@ -99,14 +99,15 @@ export function Footer() {
           {/* Mobile: Accordion sections */}
           <div className="flex flex-col lg:contents">
             {Object.entries(footerLinks).map(([key, section]) => (
-              <AccordionSection
-                key={key}
-                title={section.title}
-                links={section.links}
-                isOpen={openSection === key}
-                onToggle={() => handleToggle(key)}
-                onContactClick={scrollToContact}
-              />
+              <nav key={key} aria-label={section.title}>
+                <AccordionSection
+                  title={section.title}
+                  links={section.links}
+                  isOpen={openSection === key}
+                  onToggle={() => handleToggle(key)}
+                  onContactClick={scrollToContact}
+                />
+              </nav>
             ))}
           </div>
 

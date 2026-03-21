@@ -23,6 +23,12 @@ export default function RootLayout({
         />
       </head>
       <body className="h-full font-primary antialiased">
+        <a
+          href="#main-content"
+          className="fixed top-4 left-4 z-9999 px-4 py-2 bg-accent text-surface font-semibold rounded outline-2 outline-offset-2 outline-accent -translate-y-20 focus:translate-y-0 transition-transform"
+        >
+          Skip to main content
+        </a>
         <PostHogProvider>
           {children}
         </PostHogProvider>

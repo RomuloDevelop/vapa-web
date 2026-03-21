@@ -5,6 +5,7 @@ export default function MembershipPage() {
   return (
     <main className="flex flex-col min-h-screen bg-surface">
       <Header variant="gradient" activeNav="Membership" />
+      <div id="main-content" tabIndex={-1} />
       <PageHero
         image="/images/heroes/membership.jpg"
         imageAlt="Professional business meeting"

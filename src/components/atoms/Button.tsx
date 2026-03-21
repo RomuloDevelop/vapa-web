@@ -46,7 +46,7 @@ export function Button({
   className = "",
   ...props
 }: ButtonProps) {
-  const baseClasses = `rounded transition-colors text-center ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+  const baseClasses = `rounded transition-colors text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 
   if ("href" in props && props.href) {
     const { href, external, ...anchorProps } = props;
@@ -58,6 +58,7 @@ export function Button({
         {...anchorProps}
       >
         {children}
+        {external && <span className="sr-only"> (opens in new tab)</span>}
       </a>
     );
   }
