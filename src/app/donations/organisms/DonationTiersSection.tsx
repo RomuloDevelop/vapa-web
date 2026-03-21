@@ -106,7 +106,7 @@ function TierCard({
       </div>
 
       <h3
-        className={`font-bold text-white ${tier.popular ? "text-[22px]" : "text-xl"}`}
+        className={`font-bold text-foreground ${tier.popular ? "text-[22px]" : "text-xl"}`}
       >
         {tier.name}
       </h3>

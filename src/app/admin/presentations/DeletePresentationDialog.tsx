@@ -27,12 +27,12 @@ export function DeletePresentationDialog({
 }: DeletePresentationDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-surface-section border-border-accent-light text-white sm:max-w-md">
+      <DialogContent className="bg-surface-section border-border-accent-light text-foreground sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-white">Delete Presentation</DialogTitle>
+          <DialogTitle className="text-foreground">Delete Presentation</DialogTitle>
           <DialogDescription className="text-foreground-muted">
             Are you sure you want to delete{" "}
-            <span className="font-medium text-white">
+            <span className="font-medium text-foreground">
               {presentationTitle}
             </span>
             ? This will also delete the uploaded file. This action cannot be
@@ -44,7 +44,7 @@ export function DeletePresentationDialog({
             variant="ghost"
             onClick={() => onOpenChange(false)}
             disabled={isPending}
-            className="text-foreground-muted hover:bg-accent-10 hover:text-white"
+            className="text-foreground-muted hover:bg-accent-10 hover:text-foreground"
           >
             Cancel
           </Button>

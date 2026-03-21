@@ -49,7 +49,7 @@ function PaymentCard({
       <div className="flex items-center justify-center w-14 h-14 rounded-full bg-accent-20">
         <Icon className="w-6 h-6 text-accent" />
       </div>
-      <h3 className="text-lg font-semibold text-white">{method.title}</h3>
+      <h3 className="text-lg font-semibold text-foreground">{method.title}</h3>
       <p className="text-sm text-foreground-muted text-center leading-relaxed">
         {method.description}
       </p>

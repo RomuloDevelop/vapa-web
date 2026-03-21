@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import { ScrollToTop } from "@/components";
 import { PostHogProvider } from "./providers";
@@ -15,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full" suppressHydrationWarning>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
@@ -23,23 +24,29 @@ export default function RootLayout({
         />
       </head>
       <body className="h-full font-primary antialiased">
-        <PostHogProvider>
-          {children}
-        </PostHogProvider>
-        <ScrollToTop threshold={50} />
-        <Toaster
-          position="bottom-right"
-          toastOptions={{
-            style: {
-              background: "var(--color-bg-section)",
-              border: "1px solid var(--color-border-gold-light)",
-              color: "white",
-            },
-            classNames: {
-              success: "!border-green-500/40 [&>[data-icon]]:text-green-400",
-            },
-          }}
-        />
+        <ThemeProvider
+          attribute="data-theme"
+          defaultTheme="dark"
+          enableSystem={false}
+        >
+          <PostHogProvider>
+            {children}
+          </PostHogProvider>
+          <ScrollToTop threshold={50} />
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              style: {
+                background: "var(--color-bg-section)",
+                border: "1px solid var(--color-border-gold-light)",
+                color: "var(--color-text-white)",
+              },
+              classNames: {
+                success: "!border-green-500/40 [&>[data-icon]]:text-green-400",
+              },
+            }}
+          />
+        </ThemeProvider>
       </body>
     </html>
   );

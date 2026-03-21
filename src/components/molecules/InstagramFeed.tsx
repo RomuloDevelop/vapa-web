@@ -55,22 +55,22 @@ export function InstagramFeed({ posts }: InstagramFeedProps) {
             />
             {post.media_type === "VIDEO" && (
               <div className="absolute bottom-2 left-2 bg-black/50 rounded-full p-1">
-                <Play className="w-4 h-4 text-white fill-white" />
+                <Play className="w-4 h-4 text-foreground fill-white" />
               </div>
             )}
             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
               <div className="flex items-center gap-1.5">
                 <Heart className="w-5 h-5 text-red-500 fill-red-500" />
                 {post.like_count != null && (
-                  <span className="text-white text-sm font-semibold">
+                  <span className="text-foreground text-sm font-semibold">
                     {post.like_count.toLocaleString()}
                   </span>
                 )}
               </div>
               <div className="flex items-center gap-1.5">
-                <MessageCircle className="w-5 h-5 text-white fill-white" />
+                <MessageCircle className="w-5 h-5 text-foreground fill-white" />
                 {post.comments_count != null && (
-                  <span className="text-white text-sm font-semibold">
+                  <span className="text-foreground text-sm font-semibold">
                     {post.comments_count.toLocaleString()}
                   </span>
                 )}

@@ -40,7 +40,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
               {/* Close button */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 p-1.5 text-foreground-faint hover:text-white transition-colors"
+                className="absolute top-4 right-4 p-1.5 text-foreground-faint hover:text-foreground transition-colors"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -51,7 +51,7 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
                 <span className="text-xs md:text-sm font-semibold text-accent tracking-[2px]">
                   SUPPORT VAPA
                 </span>
-                <h3 className="text-xl md:text-2xl font-bold text-white">
+                <h3 className="text-xl md:text-2xl font-bold text-foreground">
                   Ready to Make a Difference?
                 </h3>
               </div>
@@ -59,10 +59,10 @@ export function DonationModal({ isOpen, onClose }: DonationModalProps) {
               {/* Content */}
               <p className="text-sm md:text-[15px] text-foreground-muted leading-relaxed">
                 Thank you for your interest in supporting VAPA! To complete your contribution via{" "}
-                <span className="text-white font-medium">Zelle</span>,{" "}
-                <span className="text-white font-medium">QuickPay</span>,{" "}
-                <span className="text-white font-medium">ACH</span>, or{" "}
-                <span className="text-white font-medium">wire transfer</span>, please send us an email and we&apos;ll
+                <span className="text-foreground font-medium">Zelle</span>,{" "}
+                <span className="text-foreground font-medium">QuickPay</span>,{" "}
+                <span className="text-foreground font-medium">ACH</span>, or{" "}
+                <span className="text-foreground font-medium">wire transfer</span>, please send us an email and we&apos;ll
                 promptly share our Chase Bank account details.
               </p>
 

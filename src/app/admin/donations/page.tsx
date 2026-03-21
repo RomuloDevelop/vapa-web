@@ -15,7 +15,7 @@ export default async function AdminDonationsPage() {
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Donations</h1>
+          <h1 className="text-2xl font-bold text-foreground">Donations</h1>
           <p className="text-sm text-foreground-subtle mt-1">
             {totalCount} {totalCount === 1 ? "donation" : "donations"}
           </p>

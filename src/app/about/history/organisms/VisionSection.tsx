@@ -30,7 +30,7 @@ export function VisionSection() {
         <span className="text-xs md:text-sm font-semibold text-accent tracking-[2px]">
           CORE VALUE
         </span>
-        <h3 className="text-xl md:text-2xl lg:text-[32px] font-bold text-white">
+        <h3 className="text-xl md:text-2xl lg:text-[32px] font-bold text-foreground">
           Professional Networking
         </h3>
         <p className="text-sm md:text-base text-foreground-muted leading-[1.7]">

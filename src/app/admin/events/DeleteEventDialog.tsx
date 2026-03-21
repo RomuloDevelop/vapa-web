@@ -27,12 +27,12 @@ export function DeleteEventDialog({
 }: DeleteEventDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-surface-section border-border-accent-light text-white sm:max-w-md">
+      <DialogContent className="bg-surface-section border-border-accent-light text-foreground sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-white">Delete Event</DialogTitle>
+          <DialogTitle className="text-foreground">Delete Event</DialogTitle>
           <DialogDescription className="text-foreground-muted">
             Are you sure you want to delete{" "}
-            <span className="font-medium text-white">{eventName}</span>? This
+            <span className="font-medium text-foreground">{eventName}</span>? This
             action cannot be undone.
           </DialogDescription>
         </DialogHeader>
@@ -41,7 +41,7 @@ export function DeleteEventDialog({
             variant="ghost"
             onClick={() => onOpenChange(false)}
             disabled={isPending}
-            className="text-foreground-muted hover:bg-accent-10 hover:text-white"
+            className="text-foreground-muted hover:bg-accent-10 hover:text-foreground"
           >
             Cancel
           </Button>

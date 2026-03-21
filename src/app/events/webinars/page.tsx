@@ -25,7 +25,7 @@ export default async function WebinarsPage() {
             <span className="text-xs md:text-sm font-semibold text-accent tracking-[2px]">
               RECENT WEBINARS
             </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-foreground">
               Latest Sessions
             </h2>
             <p className="text-sm md:text-base text-foreground-muted max-w-2xl">

@@ -76,12 +76,12 @@ export function PricingCard({
         />
       </div>
 
-      <h3 className="text-2xl font-bold text-white">{title}</h3>
+      <h3 className="text-2xl font-bold text-foreground">{title}</h3>
 
       {price !== undefined && (
         <div className="flex items-end gap-1">
           <span className="text-2xl font-semibold text-accent">$</span>
-          <span className="text-[56px] font-bold text-white leading-none">{price}</span>
+          <span className="text-[56px] font-bold text-foreground leading-none">{price}</span>
           <span className="text-lg text-foreground-subtle mb-1">{priceLabel}</span>
         </div>
       )}

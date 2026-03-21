@@ -56,7 +56,7 @@ export function EventCard({
         </div>
 
         {/* Title */}
-        <h3 className="text-lg md:text-xl font-bold text-white leading-tight">
+        <h3 className="text-lg md:text-xl font-bold text-foreground leading-tight">
           {title}
         </h3>
 

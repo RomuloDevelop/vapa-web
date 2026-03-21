@@ -18,10 +18,10 @@ import {
 } from "@/lib/actions/auth";
 
 const inputClass =
-  "w-full px-4 py-3 rounded-lg bg-surface border border-border-accent-light text-white placeholder:text-foreground-faint text-sm focus:outline-none focus:border-accent transition-colors";
+  "w-full px-4 py-3 rounded-lg bg-surface border border-border-accent-light text-foreground placeholder:text-foreground-faint text-sm focus:outline-none focus:border-accent transition-colors";
 
 const errorInputClass =
-  "w-full px-4 py-3 rounded-lg bg-surface border border-red-500 text-white placeholder:text-foreground-faint text-sm focus:outline-none focus:border-red-500 transition-colors";
+  "w-full px-4 py-3 rounded-lg bg-surface border border-red-500 text-foreground placeholder:text-foreground-faint text-sm focus:outline-none focus:border-red-500 transition-colors";
 
 async function submitResetPassword(
   _key: string,
@@ -93,7 +93,7 @@ function ResetPasswordForm() {
           <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-400/10">
             <AlertCircle className="w-6 h-6 text-red-400" />
           </div>
-          <h1 className="text-xl font-bold text-white">Invalid Reset Link</h1>
+          <h1 className="text-xl font-bold text-foreground">Invalid Reset Link</h1>
           <p className="text-sm text-foreground-muted leading-relaxed">
             This password reset link is invalid or has expired. Please request a
             new one.
@@ -121,7 +121,7 @@ function ResetPasswordForm() {
           <div className="flex items-center justify-center w-12 h-12 rounded-full bg-accent-20">
             <CheckCircle className="w-6 h-6 text-accent" />
           </div>
-          <h1 className="text-xl font-bold text-white">Password Reset!</h1>
+          <h1 className="text-xl font-bold text-foreground">Password Reset!</h1>
           <p className="text-sm text-foreground-muted leading-relaxed">
             Your password has been reset successfully. Redirecting to login...
           </p>
@@ -134,7 +134,7 @@ function ResetPasswordForm() {
             <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-accent-20">
               <Lock className="w-6 h-6 text-accent" />
             </div>
-            <h1 className="text-2xl font-bold text-white">
+            <h1 className="text-2xl font-bold text-foreground">
               Reset Your Password
             </h1>
             <p className="text-sm text-foreground-muted text-center">

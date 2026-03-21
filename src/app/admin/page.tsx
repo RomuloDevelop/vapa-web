@@ -24,7 +24,7 @@ function EventRow({ event }: { event: Event }) {
         className="w-12 h-12 rounded-lg object-cover shrink-0"
       />
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-white truncate group-hover:text-accent transition-colors">
+        <p className="text-sm font-medium text-foreground truncate group-hover:text-accent transition-colors">
           {event.name}
         </p>
         <p className="text-xs text-foreground-subtle">
@@ -60,7 +60,7 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -75,7 +75,7 @@ export default async function AdminDashboardPage() {
                 <Icon className="w-5 h-5 text-accent" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-white">{stat.value}</p>
+                <p className="text-2xl font-bold text-foreground">{stat.value}</p>
                 <p className="text-sm text-foreground-muted">{stat.label}</p>
               </div>
             </div>
@@ -85,7 +85,7 @@ export default async function AdminDashboardPage() {
 
       {/* Quick Actions */}
       <div className="flex flex-col gap-4">
-        <h2 className="text-lg font-semibold text-white">Quick Actions</h2>
+        <h2 className="text-lg font-semibold text-foreground">Quick Actions</h2>
         <div className="flex flex-wrap gap-3">
           <Link
             href="/admin/events/new"
@@ -109,7 +109,7 @@ export default async function AdminDashboardPage() {
         {/* Latest Webinars */}
         <div className="flex flex-col gap-3 p-5 rounded-xl bg-surface-section border border-border-accent-light">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold text-white flex items-center gap-2">
+            <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
               <Video className="w-4 h-4 text-accent" />
               Latest Webinars
             </h2>
@@ -136,7 +136,7 @@ export default async function AdminDashboardPage() {
         {/* Latest Special Events */}
         <div className="flex flex-col gap-3 p-5 rounded-xl bg-surface-section border border-border-accent-light">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold text-white flex items-center gap-2">
+            <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
               <Star className="w-4 h-4 text-accent" />
               Latest Special Events
             </h2>

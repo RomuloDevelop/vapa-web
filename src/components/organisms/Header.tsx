@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSession, signOut as memberSignOut } from "@/lib/auth-client";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { ThemeToggle } from "@/components/atoms";
 import { navigationConfig, MEMBERSHIP_URL, socialLinks, type NavItem, type NavSubItem } from "@/config/navigation";
 
 const socialIconMap = {
@@ -531,7 +532,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image src="/vapa-icon.png" alt="VAPA logo" width={40} height={40} priority className="w-10 h-10 md:w-12 md:h-12 shrink-0" />
-            <span className="text-2xl md:text-[28px] font-bold text-white">VAPA</span>
+            <span className="text-2xl md:text-[28px] font-bold text-foreground">VAPA</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -559,6 +560,9 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                 );
               })}
             </div>
+
+            {/* Theme Toggle */}
+            <ThemeToggle />
 
             {/* Member Status (only shown when logged in) */}
             {!!memberSession?.user && (
@@ -609,7 +613,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 text-white z-50"
+            className="lg:hidden p-2 text-foreground z-50"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
           >
@@ -645,9 +649,12 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             >
               <div className="flex flex-col min-h-full">
                 {/* Menu Header */}
-                <div className="flex items-center gap-3 px-6 py-5 border-b border-border-accent-light">
-                  <Image src="/vapa-icon.png" alt="VAPA logo" width={40} height={40} priority className="w-10 h-10 object-contain shrink-0" />
-                  <span className="text-2xl font-bold text-white">VAPA</span>
+                <div className="flex items-center justify-between px-6 py-5 border-b border-border-accent-light">
+                  <div className="flex items-center gap-3">
+                    <Image src="/vapa-icon.png" alt="VAPA logo" width={40} height={40} priority className="w-10 h-10 object-contain shrink-0" />
+                    <span className="text-2xl font-bold text-foreground">VAPA</span>
+                  </div>
+                  <ThemeToggle />
                 </div>
 
                 {/* Navigation Links */}

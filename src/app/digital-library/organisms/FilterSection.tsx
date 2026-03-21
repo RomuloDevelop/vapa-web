@@ -115,7 +115,7 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
                       style={{
                         fontSize: "16px",
                         fontWeight: 600,
-                        color: "var(--color-text-white)",
+                        color: "var(--color-text-foreground)",
                       }}
                     >
                       Filter by Year
@@ -150,7 +150,7 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
                           cursor: "pointer",
                           backgroundColor:
                             activeFilter === year ? "var(--color-primary)" : "transparent",
-                          color: activeFilter === year ? "var(--color-bg-dark)" : "var(--color-text-white)",
+                          color: activeFilter === year ? "var(--color-bg-dark)" : "var(--color-text-foreground)",
                           fontWeight: activeFilter === year ? 600 : 400,
                         }}
                       >
@@ -186,7 +186,7 @@ export const FilterSection = forwardRef<HTMLDivElement, FilterSectionProps>(
 
         {/* Page Size Selector */}
         <div className="flex items-center gap-3">
-          <span className="text-sm md:text-base font-medium text-white">Show</span>
+          <span className="text-sm md:text-base font-medium text-foreground">Show</span>
           <MobileSelect
             value={String(pageSize)}
             onValueChange={onPageSizeChange}

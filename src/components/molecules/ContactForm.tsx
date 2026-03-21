@@ -126,7 +126,7 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
               onChange={(e) => setEmail(e.target.value)}
               onBlur={handleEmailBlur}
               disabled={isMutating}
-              className={`w-full px-3.5 py-3 text-[13px] text-white placeholder:text-foreground-faint bg-surface border rounded-md focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+              className={`w-full px-3.5 py-3 text-[13px] text-foreground placeholder:text-foreground-faint bg-surface border rounded-md focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.email
                   ? "border-red-500 focus:border-red-500"
                   : "border-border-interactive focus:border-accent"
@@ -145,7 +145,7 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={isMutating}
-            className="w-full px-3.5 py-3 text-[13px] text-white placeholder:text-foreground-faint bg-surface border border-border-accent-light rounded-md focus:outline-none focus:border-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-3.5 py-3 text-[13px] text-foreground placeholder:text-foreground-faint bg-surface border border-border-accent-light rounded-md focus:outline-none focus:border-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           />
 
           {/* Message Input */}
@@ -158,7 +158,7 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
               onBlur={handleMessageBlur}
               disabled={isMutating}
               rows={3}
-              className={`w-full px-3.5 py-3 text-[13px] text-white placeholder:text-foreground-faint bg-surface border rounded-md resize-none focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+              className={`w-full px-3.5 py-3 text-[13px] text-foreground placeholder:text-foreground-faint bg-surface border rounded-md resize-none focus:outline-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                 errors.message
                   ? "border-red-500 focus:border-red-500"
                   : "border-border-interactive focus:border-accent"

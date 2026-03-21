@@ -9,10 +9,10 @@ import { registerSchema, type RegisterFormValues } from "@/lib/schemas";
 import { registerUser } from "@/lib/actions/auth";
 
 const inputClass =
-  "w-full px-4 py-3 rounded-lg bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-border-accent-light focus:border-accent";
+  "w-full px-4 py-3 rounded-lg bg-surface border text-foreground placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-border-accent-light focus:border-accent";
 
 const errorInputClass =
-  "w-full px-4 py-3 rounded-lg bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-red-500 focus:border-red-500";
+  "w-full px-4 py-3 rounded-lg bg-surface border text-foreground placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-red-500 focus:border-red-500";
 
 function RegisterForm() {
   const [loading, setLoading] = useState(false);
@@ -56,7 +56,7 @@ function RegisterForm() {
           <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-accent-20">
             <CheckCircle className="w-6 h-6 text-accent" />
           </div>
-          <h1 className="text-2xl font-bold text-white">Registration Submitted</h1>
+          <h1 className="text-2xl font-bold text-foreground">Registration Submitted</h1>
           <p className="text-sm text-foreground-muted text-center">
             Your account has been created and is pending approval. An admin will
             review your registration and you&apos;ll receive an email once
@@ -89,7 +89,7 @@ function RegisterForm() {
         <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-accent-20">
           <UserPlus className="w-6 h-6 text-accent" />
         </div>
-        <h1 className="text-2xl font-bold text-white">Create Account</h1>
+        <h1 className="text-2xl font-bold text-foreground">Create Account</h1>
         <p className="text-sm text-foreground-muted text-center">
           Register for a VAPA membership. Your account will be reviewed by an
           admin before activation.

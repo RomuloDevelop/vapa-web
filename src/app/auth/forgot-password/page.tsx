@@ -12,10 +12,10 @@ import {
 import { requestPasswordReset } from "@/lib/actions/auth";
 
 const inputClass =
-  "w-full px-4 py-3 rounded-lg bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-border-accent-light focus:border-accent";
+  "w-full px-4 py-3 rounded-lg bg-surface border text-foreground placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-border-accent-light focus:border-accent";
 
 const errorInputClass =
-  "w-full px-4 py-3 rounded-lg bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-red-500 focus:border-red-500";
+  "w-full px-4 py-3 rounded-lg bg-surface border text-foreground placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-red-500 focus:border-red-500";
 
 async function sendResetEmail(
   _key: string,
@@ -53,7 +53,7 @@ export default function ForgotPasswordPage() {
             <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-accent-20">
               <Mail className="w-6 h-6 text-accent" />
             </div>
-            <h1 className="text-2xl font-bold text-white">Check Your Email</h1>
+            <h1 className="text-2xl font-bold text-foreground">Check Your Email</h1>
             <p className="text-sm text-foreground-muted leading-relaxed">
               If an account exists with that email address, we&apos;ve sent a
               link to reset your password. The link will expire in 1 hour.
@@ -81,7 +81,7 @@ export default function ForgotPasswordPage() {
               <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-accent-20">
                 <Mail className="w-6 h-6 text-accent" />
               </div>
-              <h1 className="text-2xl font-bold text-white">
+              <h1 className="text-2xl font-bold text-foreground">
                 Forgot Password?
               </h1>
               <p className="text-sm text-foreground-muted text-center">

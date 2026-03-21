@@ -34,7 +34,7 @@ export function MissionSection({ viewport = defaultViewport }: MissionSectionPro
         <span className="inline-flex px-4 py-2 rounded-full bg-accent-20 text-xs md:text-sm font-semibold text-accent tracking-[1.5px] w-fit">
           Opportunities
         </span>
-        <h2 className="text-2xl md:text-3xl lg:text-[32px] font-bold text-white leading-[1.2]">
+        <h2 className="text-2xl md:text-3xl lg:text-[32px] font-bold text-foreground leading-[1.2]">
           Connecting Venezuelan Talent with Global Opportunities
         </h2>
         <div className="flex flex-col gap-5">
@@ -63,7 +63,7 @@ export function MissionSection({ viewport = defaultViewport }: MissionSectionPro
         <span className="inline-flex px-4 py-2 rounded-full bg-accent-20 text-xs md:text-sm font-semibold text-accent tracking-[1.5px] w-fit">
           OUR VISION
         </span>
-        <h2 className="text-2xl md:text-3xl lg:text-[32px] font-bold text-white leading-[1.2]">
+        <h2 className="text-2xl md:text-3xl lg:text-[32px] font-bold text-foreground leading-[1.2]">
           Leading the Global Energy Network
         </h2>
         <p className="text-sm md:text-base lg:text-[16px] text-foreground-muted leading-[1.7]">

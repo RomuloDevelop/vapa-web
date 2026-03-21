@@ -79,7 +79,7 @@ export function PersonCard({
         className={`flex flex-col items-center ${config.gap} ${config.padding}`}
       >
         <span
-          className={`${config.nameSize} font-semibold text-white text-center`}
+          className={`${config.nameSize} font-semibold text-foreground text-center`}
         >
           {name}
         </span>

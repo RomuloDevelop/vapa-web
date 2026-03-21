@@ -41,7 +41,7 @@ export function CTASection() {
             whileInView="visible"
             viewport={defaultViewport}
             transition={{ ...slowTransition, delay: 0.1 }}
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-[52px] font-bold text-white text-center"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-[52px] font-bold text-foreground text-center"
           >
             Why Join VAPA?
           </motion.h2>
@@ -85,7 +85,7 @@ export function CTASection() {
             </a>
             <Link
               href="/donations#donate"
-              className="px-8 md:px-12 py-4 md:py-5 text-white text-sm md:text-base font-medium rounded border border-white bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors text-center"
+              className="px-8 md:px-12 py-4 md:py-5 text-foreground text-sm md:text-base font-medium rounded border border-white bg-black/20 backdrop-blur-sm hover:bg-white/10 transition-colors text-center"
             >
               Make a Donation
             </Link>

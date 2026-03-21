@@ -73,7 +73,7 @@ function SetPasswordForm() {
           <div className="flex items-center justify-center w-12 h-12 rounded-full bg-red-400/10">
             <AlertCircle className="w-6 h-6 text-red-400" />
           </div>
-          <h1 className="text-xl font-bold text-white">Invalid Invitation</h1>
+          <h1 className="text-xl font-bold text-foreground">Invalid Invitation</h1>
           <p className="text-sm text-foreground-muted leading-relaxed">
             This invitation link is invalid or has expired. Please contact your administrator to request a new one.
           </p>
@@ -85,7 +85,7 @@ function SetPasswordForm() {
           <div className="flex items-center justify-center w-12 h-12 rounded-full bg-accent-20">
             <CheckCircle className="w-6 h-6 text-accent" />
           </div>
-          <h1 className="text-xl font-bold text-white">Password Set!</h1>
+          <h1 className="text-xl font-bold text-foreground">Password Set!</h1>
           <p className="text-sm text-foreground-muted leading-relaxed">
             Your password has been set successfully. Redirecting to login...
           </p>
@@ -98,9 +98,9 @@ function SetPasswordForm() {
             <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-accent-20">
               <Lock className="w-6 h-6 text-accent" />
             </div>
-            <h1 className="text-2xl font-bold text-white">Set Your Password</h1>
+            <h1 className="text-2xl font-bold text-foreground">Set Your Password</h1>
             <p className="text-sm text-foreground-muted text-center">
-              Welcome, <span className="text-white font-medium">{name}</span>! Create a password to activate your account.
+              Welcome, <span className="text-foreground font-medium">{name}</span>! Create a password to activate your account.
             </p>
           </div>
 
@@ -117,7 +117,7 @@ function SetPasswordForm() {
                 placeholder="Min. 8 characters"
                 required
                 minLength={8}
-                className="w-full px-4 py-3 rounded-lg bg-surface border border-border-accent-light text-white placeholder:text-foreground-faint text-sm focus:outline-none focus:border-accent transition-colors"
+                className="w-full px-4 py-3 rounded-lg bg-surface border border-border-accent-light text-foreground placeholder:text-foreground-faint text-sm focus:outline-none focus:border-accent transition-colors"
               />
             </div>
 
@@ -133,7 +133,7 @@ function SetPasswordForm() {
                 placeholder="Repeat password"
                 required
                 minLength={8}
-                className="w-full px-4 py-3 rounded-lg bg-surface border border-border-accent-light text-white placeholder:text-foreground-faint text-sm focus:outline-none focus:border-accent transition-colors"
+                className="w-full px-4 py-3 rounded-lg bg-surface border border-border-accent-light text-foreground placeholder:text-foreground-faint text-sm focus:outline-none focus:border-accent transition-colors"
               />
             </div>
 

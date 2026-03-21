@@ -15,10 +15,10 @@ const ERROR_MESSAGES: Record<string, string> = {
 };
 
 const inputClass =
-  "w-full px-4 py-3 rounded-lg bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-border-accent-light focus:border-accent";
+  "w-full px-4 py-3 rounded-lg bg-surface border text-foreground placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-border-accent-light focus:border-accent";
 
 const errorInputClass =
-  "w-full px-4 py-3 rounded-lg bg-surface border text-white placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-red-500 focus:border-red-500";
+  "w-full px-4 py-3 rounded-lg bg-surface border text-foreground placeholder:text-foreground-faint text-sm focus:outline-none transition-colors border-red-500 focus:border-red-500";
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -78,7 +78,7 @@ function LoginForm() {
         <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-accent-20">
           <Lock className="w-6 h-6 text-accent" />
         </div>
-        <h1 className="text-2xl font-bold text-white">Sign In</h1>
+        <h1 className="text-2xl font-bold text-foreground">Sign In</h1>
         <p className="text-sm text-foreground-muted text-center">
           Access the VAPA members area with your credentials.
         </p>
