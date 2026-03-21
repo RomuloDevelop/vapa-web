@@ -103,11 +103,11 @@ function EventCardInternal({
       {ripples.map((ripple) => (
         <motion.span
           key={ripple.id}
-          className="absolute rounded-full bg-white/20 pointer-events-none md:hidden"
+          className="absolute rounded-full bg-white/10 pointer-events-none md:hidden"
           style={{ left: ripple.x, top: ripple.y }}
-          initial={{ width: 0, height: 0, x: 0, y: 0, opacity: 0.5 }}
-          animate={{ width: 300, height: 300, x: -150, y: -150, opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          initial={{ width: 0, height: 0, x: 0, y: 0, opacity: 0.3 }}
+          animate={{ width: 200, height: 200, x: -100, y: -100, opacity: 0 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
         />
       ))}
       <div className="relative h-[160px] md:h-[180px] w-full">
@@ -196,13 +196,16 @@ function EventsGrid({ events }: { events: Event[] }) {
         whileInView="visible"
         viewport={smallViewport}
         transition={slowTransition}
-        className="block md:hidden"
+        className="block md:hidden -mx-5 overflow-visible"
       >
         <Swiper
           modules={[Pagination, Autoplay]}
-          spaceBetween={16}
+          spaceBetween={12}
           slidesPerView={1.15}
           centeredSlides={false}
+          slidesOffsetBefore={20}
+          slidesOffsetAfter={20}
+          style={{ overflow: "visible" }}
           pagination={{
             clickable: true,
             bulletClass:
@@ -245,7 +248,7 @@ function EventsGrid({ events }: { events: Event[] }) {
 
 export function EventsSection({ events, specialEvents = [] }: EventsSectionProps) {
   return (
-    <section className="flex flex-col gap-8 md:gap-12 lg:gap-[60px] px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface">
+    <section className="flex flex-col gap-8 md:gap-12 lg:gap-[60px] px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface overflow-x-clip">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 w-full">
         <div className="flex flex-col gap-2 md:gap-4">
