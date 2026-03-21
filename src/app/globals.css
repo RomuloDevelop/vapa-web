@@ -153,7 +153,7 @@
    Safari-compatible: use these instead of var() in class names.
    ============================================================ */
 
-@theme inline {
+@theme {
   /* ACCENT COLORS (Gold - draws attention, 10-20% of UI) */
   --color-accent: #DCBA60;
   --color-accent-hover: #C49D48;
