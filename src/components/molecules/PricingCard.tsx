@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import type { LucideIcon } from "lucide-react";
 import { Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { fadeInUp, defaultViewport, staggerDelay } from "../utils/animations";
 
 interface PricingCardProps {
@@ -38,6 +39,7 @@ export function PricingCard({
   variant = "membership",
   className = "",
 }: PricingCardProps) {
+  const tc = useTranslations("Common");
   const Component = animate ? motion.div : "div";
   const motionProps = animate
     ? {
@@ -60,7 +62,7 @@ export function PricingCard({
     >
       {popular && (
         <span className="px-4 py-2 text-xs font-bold tracking-wider text-surface bg-accent rounded-full">
-          {isDonation ? "POPULAR" : "MOST POPULAR"}
+          {isDonation ? tc("popular") : tc("mostPopular")}
         </span>
       )}
 

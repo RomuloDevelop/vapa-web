@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Linkedin, Instagram, Youtube, MapPin, Mail } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { AccordionSection, ContactForm } from "../molecules";
 import { socialLinks } from "@/config/navigation";
 
@@ -12,36 +13,44 @@ const socialIconMap = {
   youtube: Youtube,
 } as const;
 
-const footerLinks = {
-  organization: {
-    title: "ABOUT US",
-    links: [
-      { label: "Our History", href: "/about/history" },
-      { label: "Board of Directors", href: "/about/directors" },
-      { label: "Advisory Board", href: "/about/advisory" },
-      { label: "VAPALink", href: "/about/links" },
-      { label: "VAPAResPro", href: "/about/respro" },
-    ],
-  },
-  events: {
-    title: "EVENTS",
-    links: [
-      { label: "Weekly Webinars", href: "/events/webinars" },
-      { label: "Special Events", href: "/events/special" },
-      { label: "Digital Library", href: "/digital-library" },
-    ],
-  },
-  getInvolved: {
-    title: "GET INVOLVED",
-    links: [
-      { label: "Membership", href: "/membership" },
-      { label: "Donations", href: "/donations" },
-    ],
-  },
-};
-
 
 export function Footer() {
+  const t = useTranslations("Footer");
+  const tn = useTranslations("Navigation");
+
+  const socialLabelKeys: Record<string, string> = {
+    "Visit VAPA on LinkedIn (opens in new tab)": "visitLinkedIn",
+    "Visit VAPA on Instagram (opens in new tab)": "visitInstagram",
+    "Visit VAPA on YouTube (opens in new tab)": "visitYouTube",
+  };
+
+  const footerLinks = {
+    organization: {
+      title: t("aboutUs"),
+      links: [
+        { label: tn("ourHistory"), href: "/about/history" },
+        { label: tn("boardOfDirectors"), href: "/about/directors" },
+        { label: tn("advisoryBoard"), href: "/about/advisory" },
+        { label: t("vapaLink"), href: "/about/links" },
+        { label: t("vapaResPro"), href: "/about/respro" },
+      ],
+    },
+    events: {
+      title: t("events"),
+      links: [
+        { label: t("weeklyWebinars"), href: "/events/webinars" },
+        { label: tn("specialEvents"), href: "/events/special" },
+        { label: tn("digitalLibrary"), href: "/digital-library" },
+      ],
+    },
+    getInvolved: {
+      title: t("getInvolved"),
+      links: [
+        { label: tn("membership"), href: "/membership" },
+        { label: tn("donations"), href: "/donations" },
+      ],
+    },
+  };
   const [openSection, setOpenSection] = useState<string | null>(null);
 
   const handleToggle = (key: string) => {
@@ -70,8 +79,7 @@ export function Footer() {
 
           {/* Tagline */}
           <p className="text-sm text-foreground-subtle leading-[1.6]">
-            Venezuelan-American Petroleum Association. Uniting energy
-            professionals for technical advancement and sustainable development.
+            {t("tagline")}
           </p>
 
           {/* Social Links */}
@@ -84,7 +92,7 @@ export function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={social.label}
+                  aria-label={tn(socialLabelKeys[social.label] || social.label)}
                   className="flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-md border border-accent-30 hover:border-accent transition-colors"
                 >
                   <Icon className="w-4 h-4 md:w-5 md:h-5 text-accent" />
@@ -121,13 +129,13 @@ export function Footer() {
       {/* Bottom Bar */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 px-5 md:px-10 lg:px-20 py-5 md:py-6 border-t border-border-accent-light">
         <span className="text-sm text-foreground-faint">
-          © 2025 VAPA. All rights reserved.
+          {t("copyright")}
         </span>
         <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 md:gap-8">
           <div className="flex items-center gap-2">
             <MapPin className="w-3.5 h-3.5 text-foreground-faint flex-shrink-0" />
             <span className="text-sm text-foreground-faint">
-              26009 Budde Rd. Suite A-200, The Woodlands, TX 77380
+              {t("address")}
             </span>
           </div>
           <div className="flex items-center gap-2">

@@ -1,21 +1,18 @@
-import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import { ScrollToTop } from "@/components";
 import { PostHogProvider } from "./providers";
+import { getLocale } from "next-intl/server";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "VAPA - Venezuelan-American Petroleum Association",
-  description: "A nonprofit professional organization uniting experts in the Hydrocarbon industry and related energies to promote technical advancement, education, and sustainable development.",
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" className="h-full">
+    <html lang={locale} className="h-full">
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { Heart, MessageCircle, Instagram, Play, ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 import type { InstagramPost } from "@/lib/services/instagram";
 import { fadeInUp, defaultViewport, staggerDelay } from "../utils/animations";
 
@@ -14,6 +15,7 @@ interface InstagramFeedProps {
 }
 
 export function InstagramFeed({ posts }: InstagramFeedProps) {
+  const t = useTranslations("Instagram");
   const [expanded, setExpanded] = useState(false);
 
   if (!posts.length) return null;
@@ -30,7 +32,7 @@ export function InstagramFeed({ posts }: InstagramFeedProps) {
         className="flex items-center gap-2 px-6 py-3 bg-accent text-surface text-sm md:text-base font-semibold rounded hover:opacity-90 transition-opacity"
       >
         <Instagram className="w-5 h-5" />
-        Follow us on Instagram
+        {t("followUs")}
       </a>
       <div className="instagram-grid gap-2 md:gap-3 mx-auto">
         {visiblePosts.map((post, index) => (
@@ -86,9 +88,9 @@ export function InstagramFeed({ posts }: InstagramFeedProps) {
           <button
             onClick={() => setExpanded(true)}
             className="flex items-center gap-2 text-base font-medium text-foreground-muted hover:text-accent transition-colors"
-            aria-label="See more Instagram posts"
+            aria-label={t("seeMore")}
           >
-            See more
+            {t("seeMore")}
             <ChevronDown className="w-5 h-5" />
           </button>
         )}

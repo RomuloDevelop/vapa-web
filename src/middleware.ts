@@ -1,31 +1,33 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getSessionCookie } from "better-auth/cookies";
+import createIntlMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
+
+const intlMiddleware = createIntlMiddleware(routing);
 
 const LOGIN_URL = "/login";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Cookie-based check (fast, no DB call).
-  // Actual session + role validation happens in server components/actions.
-  const sessionCookie = getSessionCookie(request);
+  // Strip locale prefix to check the actual route
+  const pathnameWithoutLocale =
+    pathname.replace(/^\/(en|es)/, "") || "/";
 
   // ── ADMIN ROUTES ─────────────────────────────────────
-  if (pathname.startsWith("/admin")) {
+  if (pathnameWithoutLocale.startsWith("/admin")) {
+    const sessionCookie = getSessionCookie(request);
     if (!sessionCookie) {
       const loginUrl = new URL(LOGIN_URL, request.url);
       loginUrl.searchParams.set("callbackUrl", request.url);
       return NextResponse.redirect(loginUrl);
     }
-
-    return NextResponse.next();
   }
 
-  return NextResponse.next();
+  // ── INTL ROUTING ─────────────────────────────────────
+  return intlMiddleware(request);
 }
 
 export const config = {
-  matcher: [
-    "/admin/:path*",
-  ],
+  matcher: ["/((?!api|_next|_vercel|monitoring|.*\\..*).*)"],
 };

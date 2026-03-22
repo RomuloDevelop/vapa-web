@@ -66,7 +66,7 @@ export function AccordionSection({
                 <a
                   key={link.label}
                   href={link.href}
-                  onClick={link.label === "Contact Us" ? onContactClick : undefined}
+                  onClick={link.href === "#contact-form" ? onContactClick : undefined}
                   className="text-sm text-foreground-muted hover:text-accent transition-colors"
                 >
                   {link.label}
@@ -83,7 +83,7 @@ export function AccordionSection({
           <a
             key={link.label}
             href={link.href}
-            onClick={link.label === "Contact Us" ? onContactClick : undefined}
+            onClick={link.href === "#contact-form" ? onContactClick : undefined}
             className="text-sm text-foreground-muted hover:text-accent transition-colors"
           >
             {link.label}

@@ -3,10 +3,12 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Menu, X, ChevronDown, Linkedin, Instagram, Youtube, LogOut, User, Shield } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { useSession, signOut as memberSignOut } from "@/lib/auth-client";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { LanguageSwitcher } from "@/components/atoms/LanguageSwitcher";
 import { navigationConfig, MEMBERSHIP_URL, socialLinks, type NavItem, type NavSubItem } from "@/config/navigation";
 
 const socialIconMap = {
@@ -24,9 +26,43 @@ interface HeaderProps {
 const SCROLL_THRESHOLD = 500; // px before hide/show kicks in
 
 export function Header({ variant = "solid", activeNav = "Home", showJoinButton = true }: HeaderProps) {
+  const t = useTranslations("Navigation");
+  const tc = useTranslations("Common");
   const { data: sessionData } = useSession();
   const memberSession = sessionData ? { user: { ...sessionData.user, role: (sessionData.user as Record<string, unknown>).role as string } } : null;
   const analytics = useAnalytics();
+
+  // Translation lookup maps: config labels → translation keys
+  const navLabelKeys: Record<string, string> = {
+    "Home": "home", "About": "about", "Our History": "ourHistory",
+    "VAPA Links": "vapaLinks", "Board of Directors": "boardOfDirectors",
+    "VAPA ResPro": "vapaResPro", "Advisory Board": "advisoryBoard",
+    "Events": "events", "Webinars": "webinars", "Special Events": "specialEvents",
+    "Membership": "membership", "Donations": "donations",
+    "Digital Library": "digitalLibrary", "References": "references",
+    "Presentations": "presentations", "Contact": "contact",
+  };
+  const navDescKeys: Record<string, string> = {
+    "Learn about VAPA's mission, history, and vision.": "ourHistoryDesc",
+    "Useful resources and partner connections.": "vapaLinksDesc",
+    "Meet our leadership team guiding VAPA's strategic vision.": "boardOfDirectorsDesc",
+    "Our professional responsibility and ethics program.": "vapaResProDesc",
+    "Industry experts providing guidance and expertise.": "advisoryBoardDesc",
+    "Weekly webinars on energy, economics, and Venezuela.": "webinarsDesc",
+    "Conferences, galas, and landmark occasions.": "specialEventsDesc",
+    "Recordings and materials from past webinars.": "dlWebinarsDesc",
+    "Reference documents and technical resources.": "referencesDesc",
+    "Slides and materials from presentations.": "presentationsDesc",
+  };
+  const socialLabelKeys: Record<string, string> = {
+    "Visit VAPA on LinkedIn (opens in new tab)": "visitLinkedIn",
+    "Visit VAPA on Instagram (opens in new tab)": "visitInstagram",
+    "Visit VAPA on YouTube (opens in new tab)": "visitYouTube",
+  };
+
+  const tLabel = (label: string) => t(navLabelKeys[label] || label);
+  const tDesc = (desc: string) => t(navDescKeys[desc] || desc);
+  const tSocial = (label: string) => t(socialLabelKeys[label] || label);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileExpandedItem, setMobileExpandedItem] = useState<string | null>(null);
@@ -140,9 +176,9 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
     if (isChildDisabled) {
       return (
         <div className="mega-menu-item" aria-disabled="true">
-          <span className="mega-menu-item-title">{child.label}</span>
+          <span className="mega-menu-item-title">{tLabel(child.label)}</span>
           {child.description && (
-            <span className="mega-menu-item-description">{child.description}</span>
+            <span className="mega-menu-item-description">{tDesc(child.description)}</span>
           )}
         </div>
       );
@@ -160,10 +196,10 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           className="mega-menu-item-title"
           style={{ color: isHovered ? "var(--color-primary)" : undefined }}
         >
-          {child.label}
+          {tLabel(child.label)}
         </span>
         {child.description && (
-          <span className="mega-menu-item-description">{child.description}</span>
+          <span className="mega-menu-item-description">{tDesc(child.description)}</span>
         )}
       </Link>
     );
@@ -209,7 +245,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
               aria-expanded={openDropdown === item.label}
               onKeyDown={(e) => handleDropdownKeyDown(e, item.label)}
             >
-              {item.label}
+              {tLabel(item.label)}
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
                   openDropdown === item.label ? "rotate-180" : ""
@@ -225,7 +261,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
               aria-expanded={openDropdown === item.label}
               onKeyDown={(e) => handleDropdownKeyDown(e, item.label)}
             >
-              {item.label}
+              {tLabel(item.label)}
               <ChevronDown
                 className={`w-4 h-4 transition-transform duration-200 ${
                   openDropdown === item.label ? "rotate-180" : ""
@@ -308,7 +344,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           className="text-sm xl:text-[15px] font-medium text-foreground-faint cursor-not-allowed"
           aria-disabled="true"
         >
-          {item.label}
+          {tLabel(item.label)}
         </span>
       );
     }
@@ -325,7 +361,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             isActive ? "text-accent" : "text-foreground-muted"
           }`}
         >
-          {item.label}
+          {tLabel(item.label)}
         </a>
       );
     }
@@ -340,7 +376,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             isActive ? "text-accent" : "text-foreground-muted"
           }`}
         >
-          {item.label}
+          {tLabel(item.label)}
         </button>
       );
     }
@@ -354,7 +390,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           isActive ? "text-accent" : "text-foreground-muted"
         }`}
       >
-        {item.label}
+        {tLabel(item.label)}
       </Link>
     );
   };
@@ -385,20 +421,20 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                 className="flex-1 py-1 transition-colors hover:text-accent"
                 onClick={() => setIsMenuOpen(false)}
               >
-                {item.label}
+                {tLabel(item.label)}
               </Link>
             ) : (
               <span
                 className="flex-1 py-1"
                 onClick={() => setMobileExpandedItem(isExpanded ? null : item.label)}
               >
-                {item.label}
+                {tLabel(item.label)}
               </span>
             )}
             <button
               onClick={() => setMobileExpandedItem(isExpanded ? null : item.label)}
               className="p-2 -mr-2 transition-colors hover:text-accent"
-              aria-label={isExpanded ? `Collapse ${item.label} submenu` : `Expand ${item.label} submenu`}
+              aria-label={t(isExpanded ? "collapseSubmenu" : "expandSubmenu", { label: tLabel(item.label) })}
               aria-expanded={isExpanded}
               aria-controls={`mobile-submenu-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
             >
@@ -418,7 +454,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                 className="overflow-hidden"
                 id={`mobile-submenu-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
                 role="region"
-                aria-label={`${item.label} submenu`}
+                aria-label={`${tLabel(item.label)} submenu`}
               >
                 <div className="pl-4 py-2 space-y-1">
                   {item.children!.map((child) => {
@@ -430,7 +466,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                           className="block py-3 text-base text-foreground-subtle"
                           aria-disabled="true"
                         >
-                          {child.label}
+                          {tLabel(child.label)}
                         </span>
                       );
                     }
@@ -445,7 +481,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                         }`}
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        {child.label}
+                        {tLabel(child.label)}
                       </Link>
                     );
                   })}
@@ -467,7 +503,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           transition={{ delay: index * 0.05 + 0.1 }}
         >
           <span className="block py-4 text-lg font-medium text-foreground-faint border-b border-border-accent-light/30 cursor-not-allowed" aria-disabled="true">
-            {item.label}
+            {tLabel(item.label)}
           </span>
         </motion.div>
       );
@@ -491,7 +527,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             }`}
             onClick={() => setIsMenuOpen(false)}
           >
-            {item.label}
+            {tLabel(item.label)}
           </a>
         </motion.div>
       );
@@ -515,7 +551,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
               setTimeout(() => scrollToElement(e, item.href), 300);
             }}
           >
-            {item.label}
+            {tLabel(item.label)}
           </button>
         </motion.div>
       );
@@ -536,7 +572,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           }`}
           onClick={() => setIsMenuOpen(false)}
         >
-          {item.label}
+          {tLabel(item.label)}
         </Link>
       </motion.div>
     );
@@ -578,7 +614,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={social.label}
+                    aria-label={tSocial(social.label)}
                     className="flex items-center justify-center w-8 h-8 rounded-md text-foreground-muted hover:text-accent transition-colors"
                   >
                     <Icon className="w-4 h-4" />
@@ -598,7 +634,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                       className="flex items-center gap-1 text-xs text-accent hover:text-accent-hover transition-colors"
                     >
                       <Shield className="w-3.5 h-3.5" />
-                      Admin
+                      {tc("admin")}
                     </Link>
                   )}
                   <div className="flex items-center gap-2">
@@ -610,13 +646,16 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                   <button
                     onClick={() => { analytics.reset(); memberSignOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } }); }}
                     className="flex items-center gap-1 text-xs text-foreground-faint hover:text-accent transition-colors"
-                    aria-label="Log out"
+                    aria-label={tc("logOut")}
                   >
                     <LogOut className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </>
             )}
+
+            {/* Language Switcher */}
+            <LanguageSwitcher />
 
             {/* Divider */}
             <div className={`w-px h-6 bg-border-accent-light ${showJoinButton ? "" : "invisible"}`} />
@@ -630,7 +669,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                 showJoinButton ? "" : "invisible"
               }`}
             >
-              Join VAPA
+              {tc("joinVapa")}
             </a>
           </div>
 
@@ -638,7 +677,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
           <button
             className="lg:hidden p-2 text-white z-50"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-label={isMenuOpen ? t("closeMenu") : t("openMenu")}
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"
           >
@@ -668,7 +707,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             <motion.div
               id="mobile-menu"
               role="dialog"
-              aria-label="Navigation menu"
+              aria-label={t("navigationMenu")}
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
@@ -700,7 +739,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                           href={social.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          aria-label={social.label}
+                          aria-label={tSocial(social.label)}
                           className="flex items-center justify-center w-10 h-10 rounded-md border border-accent-30 hover:border-accent text-accent transition-colors"
                         >
                           <Icon className="w-4 h-4" />
@@ -708,6 +747,9 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                       );
                     })}
                   </div>
+
+                  {/* Language Switcher (Mobile) */}
+                  <LanguageSwitcher />
 
                   {/* Member Status (Mobile) - only shown when logged in */}
                   {!!memberSession?.user && (
@@ -719,7 +761,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                           className="flex items-center gap-2 py-3 px-4 rounded-lg bg-accent-10 border border-accent-30 text-sm font-medium text-accent"
                         >
                           <Shield className="w-4 h-4" />
-                          Admin Panel
+                          {tc("adminPanel")}
                         </Link>
                       )}
                       <div className="flex items-center justify-between py-3 px-4 rounded-lg bg-surface-section border border-border-accent-light">
@@ -737,7 +779,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                           }}
                           className="text-xs text-foreground-faint hover:text-accent transition-colors"
                         >
-                          Log out
+                          {tc("logOut")}
                         </button>
                       </div>
                     </div>
@@ -750,7 +792,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                     className="block w-full py-4 bg-accent text-surface text-base font-semibold rounded hover:opacity-90 transition-opacity text-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Join VAPA
+                    {tc("joinVapa")}
                   </a>
                 </div>
               </div>

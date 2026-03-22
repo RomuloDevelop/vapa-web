@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import useSWRMutation from "swr/mutation";
 import { ExternalToast, toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { submitContactForm } from "@/lib/actions/contact";
 import type { EmailResult } from "@/lib/services/email";
 
@@ -41,6 +42,8 @@ const commonErrorToastOptions: ExternalToast = {
 };
 
 export function ContactForm({ id, className = "" }: ContactFormProps) {
+  const t = useTranslations("ContactForm");
+  const tc = useTranslations("Common");
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
@@ -52,16 +55,16 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
 
     // Email validation (only show if touched and has content)
     if (touched.email && email.length > 0 && !EMAIL_REGEX.test(email)) {
-      errs.email = "Please enter a valid email address";
+      errs.email = t("invalidEmail");
     }
 
     // Message validation (only show if touched and has content)
     if (touched.message && message.length > 0 && message.length < MIN_MESSAGE_LENGTH) {
-      errs.message = `Message must be at least ${MIN_MESSAGE_LENGTH} characters (${message.length}/${MIN_MESSAGE_LENGTH})`;
+      errs.message = t("messageTooShort", { min: MIN_MESSAGE_LENGTH, current: message.length });
     }
 
     return errs;
-  }, [email, message, touched]);
+  }, [email, message, touched, t]);
 
   const hasValidationErrors = Object.keys(errors).length > 0;
   const isFormValid = email.length > 0 && EMAIL_REGEX.test(email) && message.length >= MIN_MESSAGE_LENGTH;
@@ -73,22 +76,22 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
         setName("");
         setMessage("");
         setTouched({ email: false, message: false });
-        toast.success("Message sent!", {
-          description: "We'll get back to you soon.",
+        toast.success(t("messageSent"), {
+          description: t("messageSentDesc"),
           className: "!bg-green-950/80 !backdrop-blur-sm !border-green-900/50 !text-white",
           ...commonToastOptions,
         });
       } else {
         // Server error - show passive toast with blur effect
-        toast.error("Failed to send message", {
-          description: result.error || "Please try again later.",
+        toast.error(t("failedToSend"), {
+          description: result.error || t("failedToSendDesc"),
           ...commonErrorToastOptions,
         });
       }
     },
     onError: () => {
-      toast.error("Network error", {
-        description: "Please check your connection and try again.",
+      toast.error(t("networkError"), {
+        description: t("networkErrorDesc"),
         ...commonErrorToastOptions,
       });
     },
@@ -118,12 +121,12 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           {/* Email Input */}
           <div className="flex flex-col gap-1">
-            <label htmlFor="contact-email" className="sr-only">Email address</label>
+            <label htmlFor="contact-email" className="sr-only">{t("emailLabel")}</label>
             <input
               id="contact-email"
               type="email"
               name="email"
-              placeholder="Your email"
+              placeholder={t("emailPlaceholder")}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               onBlur={handleEmailBlur}
@@ -142,12 +145,12 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
           </div>
 
           {/* Name Input (Optional) */}
-          <label htmlFor="contact-name" className="sr-only">Name (optional)</label>
+          <label htmlFor="contact-name" className="sr-only">{t("nameLabel")}</label>
           <input
             id="contact-name"
             type="text"
             name="name"
-            placeholder="Your name (optional)"
+            placeholder={t("namePlaceholder")}
             value={name}
             onChange={(e) => setName(e.target.value)}
             disabled={isMutating}
@@ -156,11 +159,11 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
 
           {/* Message Input */}
           <div className="flex flex-col gap-1">
-            <label htmlFor="contact-message" className="sr-only">Message</label>
+            <label htmlFor="contact-message" className="sr-only">{t("messageLabel")}</label>
             <textarea
               id="contact-message"
               name="message"
-              placeholder="Your message..."
+              placeholder={t("messagePlaceholder")}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onBlur={handleMessageBlur}
@@ -187,10 +190,10 @@ export function ContactForm({ id, className = "" }: ContactFormProps) {
             {isMutating ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Sending...
+                {tc("sending")}
               </>
             ) : (
-              "Send Message"
+              tc("sendMessage")
             )}
           </button>
         </form>

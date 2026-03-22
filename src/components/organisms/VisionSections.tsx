@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
+import { useTranslations } from "next-intl";
 import {
   fadeInUp,
   smallViewport,
@@ -24,48 +25,6 @@ interface VisionItem {
   imageAlt: string;
 }
 
-const visionItems: VisionItem[] = [
-  {
-    number: 1,
-    title: "Envision the Future",
-    description:
-      "Develop and share strategic scenarios for the rehabilitation of Venezuela's energy sector through collaborative planning and foresight initiatives",
-    imageSrc: "/images/sections/vision-1.jpg",
-    imageAlt: "Energy sector planning",
-  },
-  {
-    number: 2,
-    title: "Empower Talent",
-    description:
-      "Connect experts and young professionals through mentorship, training, and knowledge-sharing to build the skills needed for tomorrow's energy landscape",
-    imageSrc: "/images/sections/vision-2.jpg",
-    imageAlt: "Professional mentorship and training",
-  },
-  {
-    number: 3,
-    title: "Innovate with Purpose",
-    description:
-      "Promote ideas and integrate technology, economics, and environmental sustainability to address Venezuela's unique challenges",
-    imageSrc: "/images/sections/vision-3.jpg",
-    imageAlt: "Innovation in energy technology",
-  },
-  {
-    number: 4,
-    title: "Build Global Bridges",
-    description:
-      "Facilitate international alliances for technology transfer, investment, and best practices exchange among energy professionals",
-    imageSrc: "/images/sections/vision-4.jpg",
-    imageAlt: "Global professional collaboration",
-  },
-  {
-    number: 5,
-    title: "Preserve and Evolve the Legacy",
-    description:
-      "Protect Venezuela's oil & gas heritage while opening pathways to new energies and innovative business models that ensure long-term prosperity",
-    imageSrc: "/images/sections/vision-5.jpg",
-    imageAlt: "Energy industry heritage",
-  },
-];
 
 // Compute fade-in keyframes for accumulation (items fade in and STAY)
 // +1 segment: hold after last item so all stay visible before scrolling away
@@ -230,7 +189,8 @@ function MobileVisionRow({
    Desktop wrapper (isolates useScroll hooks)
    ────────────────────────────────────────────── */
 
-function DesktopVisionSections() {
+function DesktopVisionSections({ items }: { items: VisionItem[] }) {
+  const t = useTranslations("Vision");
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -241,7 +201,7 @@ function DesktopVisionSections() {
     <div
       ref={containerRef}
       className="hidden lg:block"
-      style={{ height: `${(visionItems.length + 1) * SCROLL_VH_PER_ITEM}vh` }}
+      style={{ height: `${(items.length + 1) * SCROLL_VH_PER_ITEM}vh` }}
     >
       <div
         className="sticky top-0 h-screen overflow-hidden flex items-center bg-gradient-vision"
@@ -249,15 +209,15 @@ function DesktopVisionSections() {
         <div className="w-full px-20 xl:px-[5%] 2xl:px-[8%]">
           <div className="flex flex-col gap-8 max-w-5xl mx-auto">
             <h2 className="text-4xl font-bold text-white text-center">
-              Our Objectives
+              {t("ourObjectives")}
             </h2>
             <div className="flex flex-col gap-6">
-              {visionItems.map((item, index) => (
+              {items.map((item, index) => (
                 <VisionRow
                   key={item.number}
                   item={item}
                   index={index}
-                  total={visionItems.length}
+                  total={items.length}
                   scrollYProgress={scrollYProgress}
                 />
               ))}
@@ -276,7 +236,46 @@ function DesktopVisionSections() {
 const LG_BREAKPOINT = 1024;
 
 export function VisionSections() {
+  const t = useTranslations("Vision");
   const [isDesktop, setIsDesktop] = useState(false);
+
+  const visionItems: VisionItem[] = [
+    {
+      number: 1,
+      title: t("envisionTitle"),
+      description: t("envisionDesc"),
+      imageSrc: "/images/vision/envision.jpg",
+      imageAlt: "Strategic planning for Venezuela's energy future",
+    },
+    {
+      number: 2,
+      title: t("empowerTitle"),
+      description: t("empowerDesc"),
+      imageSrc: "/images/vision/empower.jpg",
+      imageAlt: "Mentorship and professional development",
+    },
+    {
+      number: 3,
+      title: t("innovateTitle"),
+      description: t("innovateDesc"),
+      imageSrc: "/images/vision/innovate.jpg",
+      imageAlt: "Technology and sustainable innovation",
+    },
+    {
+      number: 4,
+      title: t("bridgesTitle"),
+      description: t("bridgesDesc"),
+      imageSrc: "/images/vision/bridges.jpg",
+      imageAlt: "International alliances and collaboration",
+    },
+    {
+      number: 5,
+      title: t("legacyTitle"),
+      description: t("legacyDesc"),
+      imageSrc: "/images/vision/legacy.jpg",
+      imageAlt: "Preserving heritage and new energy pathways",
+    },
+  ];
 
   useEffect(() => {
     const mql = window.matchMedia(`(min-width: ${LG_BREAKPOINT}px)`);
@@ -287,7 +286,7 @@ export function VisionSections() {
   }, []);
 
   if (isDesktop) {
-    return <DesktopVisionSections />;
+    return <DesktopVisionSections items={visionItems} />;
   }
 
   return (
@@ -303,7 +302,7 @@ export function VisionSections() {
           transition={slowTransition}
           className="text-2xl md:text-3xl font-bold text-white text-center"
         >
-          Our Objectives
+          {t("ourObjectives")}
         </motion.h2>
         <div className="flex flex-col gap-6">
           {visionItems.map((item, index) => (

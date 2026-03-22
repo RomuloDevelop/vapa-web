@@ -2,9 +2,10 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Calendar, ArrowRight, Play, Clock, Info } from "lucide-react";
 import { motion } from "motion/react";
+import { useTranslations, useLocale } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -26,8 +27,8 @@ interface EventsSectionProps {
   specialEvents?: Event[];
 }
 
-function formatDate(dateString: string): string {
-  return parseLocalDate(dateString).toLocaleDateString("en-US", {
+function formatDate(dateString: string, locale: string): string {
+  return parseLocalDate(dateString).toLocaleDateString(locale === "es" ? "es-ES" : "en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
@@ -55,6 +56,8 @@ function EventCardInternal({
   event: Event;
   className?: string;
 }) {
+  const tc = useTranslations("Common");
+  const locale = useLocale();
   const [expanded, setExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
   const [ripples, setRipples] = useState<Ripple[]>([]);
@@ -117,7 +120,7 @@ function EventCardInternal({
         <div className="flex items-center gap-2">
           <Calendar className="w-3.5 h-3.5 text-accent" />
           <span className="text-sm font-medium text-accent">
-            {formatDate(event.date)}
+            {formatDate(event.date, locale)}
           </span>
         </div>
         <div>
@@ -142,7 +145,7 @@ function EventCardInternal({
               onClick={() => setExpanded(!expanded)}
               className="text-sm text-accent hover:underline mt-1"
             >
-              {expanded ? "less" : "more"}
+              {expanded ? tc("less") : tc("more")}
             </button>
           )}
         </div>
@@ -170,12 +173,12 @@ function EventCardInternal({
               {event.type === "special_event" ? (
                 <>
                   <Info className="w-3 h-3" />
-                  More Info
+                  {tc("moreInfo")}
                 </>
               ) : (
                 <>
                   <Play className="w-3 h-3" />
-                  Join us
+                  {tc("joinUs")}
                 </>
               )}
             </a>
@@ -247,6 +250,9 @@ function EventsGrid({ events }: { events: Event[] }) {
 }
 
 export function EventsSection({ events, specialEvents = [] }: EventsSectionProps) {
+  const t = useTranslations("Events");
+  const tc = useTranslations("Common");
+
   return (
     <section className="flex flex-col gap-8 md:gap-12 lg:gap-[60px] px-5 md:px-10 lg:px-20 py-16 md:py-20 lg:py-[100px] bg-surface overflow-x-clip">
       {/* Header */}
@@ -260,7 +266,7 @@ export function EventsSection({ events, specialEvents = [] }: EventsSectionProps
             transition={slowTransition}
             className="text-xs md:text-sm font-semibold text-accent tracking-[2px]"
           >
-            UPCOMING EVENTS
+            {t("upcomingEvents")}
           </motion.span>
           <motion.h2
             variants={fadeInLeft}
@@ -270,7 +276,7 @@ export function EventsSection({ events, specialEvents = [] }: EventsSectionProps
             transition={{ ...slowTransition, delay: 0.1 }}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-bold text-white"
           >
-            Programs & Webinars
+            {t("programsWebinars")}
           </motion.h2>
         </div>
         <motion.div
@@ -285,7 +291,7 @@ export function EventsSection({ events, specialEvents = [] }: EventsSectionProps
             className="flex items-center justify-center sm:justify-start gap-2 px-4 md:px-6 py-2.5 md:py-3 rounded border border-border-interactive hover:bg-white/5 transition-colors w-full sm:w-auto"
           >
             <span className="text-sm font-medium text-accent">
-              View All Events
+              {tc("viewAllEvents")}
             </span>
             <ArrowRight className="w-4 h-4 text-accent" />
           </Link>
@@ -303,7 +309,7 @@ export function EventsSection({ events, specialEvents = [] }: EventsSectionProps
             transition={slowTransition}
             className="text-lg md:text-xl font-semibold text-white"
           >
-            Recent Events
+            {t("recentEvents")}
           </motion.h3>
           <EventsGrid events={events} />
         </div>
@@ -320,7 +326,7 @@ export function EventsSection({ events, specialEvents = [] }: EventsSectionProps
             transition={slowTransition}
             className="text-lg md:text-xl font-semibold text-white"
           >
-            Special Events
+            {t("specialEvents")}
           </motion.h3>
           <EventsGrid events={specialEvents} />
         </div>
