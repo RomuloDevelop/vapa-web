@@ -69,6 +69,7 @@ export const createEvent = adminAction(
       .from("events")
       .insert({
         name: formData.get("name") as string,
+        name_en: (formData.get("name_en") as string) || null,
         img: formData.get("img") as string,
         date: formData.get("date") as string,
         type: formData.get("type") as EventType,
@@ -76,6 +77,7 @@ export const createEvent = adminAction(
         presenters: parseArrayField((formData.get("presenters") as string) || ""),
         links: parseArrayField((formData.get("links") as string) || ""),
         description: (formData.get("description") as string) || null,
+        description_en: (formData.get("description_en") as string) || null,
       })
       .select("id")
       .single();
@@ -100,6 +102,7 @@ export const updateEvent = adminAction(
       .from("events")
       .update({
         name: formData.get("name") as string,
+        name_en: (formData.get("name_en") as string) || null,
         img: formData.get("img") as string,
         date: formData.get("date") as string,
         type: formData.get("type") as EventType,
@@ -107,6 +110,7 @@ export const updateEvent = adminAction(
         presenters: parseArrayField((formData.get("presenters") as string) || ""),
         links: parseArrayField((formData.get("links") as string) || ""),
         description: (formData.get("description") as string) || null,
+        description_en: (formData.get("description_en") as string) || null,
       })
       .eq("id", id);
 

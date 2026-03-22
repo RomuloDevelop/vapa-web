@@ -6,11 +6,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import useSWRMutation from "swr/mutation";
-import { Upload, X, ImageIcon, FileText } from "lucide-react";
+import { Upload, X, ImageIcon, FileText, Loader2 } from "lucide-react";
 import {
   createPresentation,
   updatePresentation,
 } from "@/lib/actions/presentations";
+import { translateTexts } from "@/lib/actions/translate";
 import type { Presentation } from "@/lib/database.types";
 import { presentationSchema, type PresentationFormValues } from "@/lib/schemas";
 import { ImageSearchPopover } from "@/components/molecules";
@@ -70,6 +71,17 @@ async function uploadFile(
 
 // ── Component ───────────────────────────────────────────────────────────────
 
+async function doTranslate(
+  _key: string,
+  { arg }: { arg: string[] }
+): Promise<{ translations: string[] }> {
+  const result = await translateTexts(arg);
+  if (!result.success) {
+    throw new Error(result.error.message || "Translation failed");
+  }
+  return result.data;
+}
+
 interface PresentationFormProps {
   presentation?: Presentation;
 }
@@ -85,6 +97,12 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
   const [isPending, startTransition] = useTransition();
   const isEdit = !!presentation;
 
+  // Translation
+  const { trigger: translateTrigger, isMutating: isTranslating } = useSWRMutation(
+    "translate-presentation",
+    doTranslate
+  );
+
   // React Hook Form
   const {
     register,
@@ -96,7 +114,9 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
     resolver: zodResolver(presentationSchema),
     defaultValues: {
       title: presentation?.title ?? "",
+      title_en: presentation?.title_en ?? "",
       description: presentation?.description ?? "",
+      description_en: presentation?.description_en ?? "",
       img: presentation?.img ?? "",
       file_path: presentation?.file_path ?? "",
     },
@@ -105,6 +125,54 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
   const imgValue = watch("img");
   const filePathValue = watch("file_path");
   const titleValue = watch("title");
+
+  const [activeLang, setActiveLang] = useState<"es" | "en">("es");
+
+  // Auto-translate when switching languages
+  const handleLangSwitch = async (newLang: "es" | "en") => {
+    setActiveLang(newLang);
+
+    const title = watch("title");
+    const titleEn = watch("title_en");
+    const desc = watch("description");
+    const descEn = watch("description_en");
+
+    if (newLang === "en") {
+      const needsTitle = title.trim() && !titleEn.trim();
+      const needsDesc = desc.trim() && !descEn.trim();
+      if (!needsTitle && !needsDesc) return;
+
+      const texts: string[] = [];
+      if (needsTitle) texts.push(title);
+      if (needsDesc) texts.push(desc);
+
+      try {
+        const result = await translateTrigger(texts);
+        let i = 0;
+        if (needsTitle) setValue("title_en", result.translations[i++], { shouldValidate: true });
+        if (needsDesc) setValue("description_en", result.translations[i], { shouldValidate: true });
+      } catch {
+        toast.error("Translation failed — you can type the English text manually");
+      }
+    } else {
+      const needsTitle = titleEn.trim() && !title.trim();
+      const needsDesc = descEn.trim() && !desc.trim();
+      if (!needsTitle && !needsDesc) return;
+
+      const texts: string[] = [];
+      if (needsTitle) texts.push(titleEn);
+      if (needsDesc) texts.push(descEn);
+
+      try {
+        const result = await translateTrigger(texts);
+        let i = 0;
+        if (needsTitle) setValue("title", result.translations[i++], { shouldValidate: true });
+        if (needsDesc) setValue("description", result.translations[i], { shouldValidate: true });
+      } catch {
+        toast.error("Translation failed — you can type the Spanish text manually");
+      }
+    }
+  };
 
   // Image upload
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -312,7 +380,9 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
 
       const fd = new FormData();
       fd.set("title", data.title);
+      fd.set("title_en", data.title_en);
       fd.set("description", data.description);
+      fd.set("description_en", data.description_en);
       fd.set("img", imgUrl);
       fd.set("file_path", filePath);
 
@@ -341,8 +411,56 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
 
   const isUploading = isUploadingImage || isUploadingFile;
 
+  const titleField = activeLang === "es" ? "title" as const : "title_en" as const;
+  const descField = activeLang === "es" ? "description" as const : "description_en" as const;
+  const titleLabel = activeLang === "es" ? "Título (Español) *" : "Title (English) *";
+  const descLabel = activeLang === "es" ? "Descripción (Español) *" : "Description (English) *";
+  const titlePlaceholder = activeLang === "es"
+    ? "ej. Panorama de la Transición Energética"
+    : "e.g. Energy Transition Overview";
+  const descPlaceholder = activeLang === "es"
+    ? "Descripción de la presentación..."
+    : "Presentation description...";
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8 max-w-2xl">
+      {/* Language Toggle */}
+      <div className="flex items-center gap-3 justify-end">
+        <div className="relative flex items-center bg-surface-sunken rounded-lg p-0.5 border border-border-accent">
+          <div
+            className={`absolute top-0.5 left-0.5 h-[calc(100%-4px)] w-[calc(50%-2px)] rounded-md bg-accent transition-transform duration-200 ${
+              activeLang === "en" ? "translate-x-full" : "translate-x-0"
+            }`}
+          />
+          <button
+            type="button"
+            onClick={() => handleLangSwitch("es")}
+            disabled={isTranslating}
+            className={`relative z-10 px-4 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+              activeLang === "es" ? "text-surface" : "text-foreground-muted"
+            }`}
+          >
+            ES
+          </button>
+          <button
+            type="button"
+            onClick={() => handleLangSwitch("en")}
+            disabled={isTranslating}
+            className={`relative z-10 px-4 py-1.5 text-xs font-semibold rounded-md transition-colors ${
+              activeLang === "en" ? "text-surface" : "text-foreground-muted"
+            }`}
+          >
+            EN
+          </button>
+        </div>
+        {isTranslating && (
+          <div className="flex items-center gap-1.5 text-xs text-accent">
+            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            Translating...
+          </div>
+        )}
+      </div>
+
       {/* Details */}
       <fieldset className="flex flex-col gap-5">
         <legend className="text-xs font-semibold text-accent tracking-[2px] uppercase mb-1">
@@ -350,31 +468,36 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
         </legend>
 
         <div className="flex flex-col gap-2">
-          <Label htmlFor="title" className="text-foreground-muted">
-            Title *
+          <Label htmlFor={titleField} className="text-foreground-muted">
+            {titleLabel}
           </Label>
           <Input
-            id="title"
-            {...register("title")}
-            placeholder="e.g. Energy Transition Overview"
-            className={errors.title ? errorInputClass : inputClass}
+            id={titleField}
+            key={titleField}
+            {...register(titleField)}
+            placeholder={titlePlaceholder}
+            className={errors[titleField] ? errorInputClass : inputClass}
           />
-          {errors.title && (
-            <span className="text-xs text-red-400">{errors.title.message}</span>
+          {errors[titleField] && (
+            <span className="text-xs text-red-400">{errors[titleField]?.message}</span>
           )}
         </div>
 
         <div className="flex flex-col gap-2">
-          <Label htmlFor="description" className="text-foreground-muted">
-            Description
+          <Label htmlFor={descField} className="text-foreground-muted">
+            {descLabel}
           </Label>
           <Textarea
-            id="description"
-            {...register("description")}
-            placeholder="Optional description..."
+            id={descField}
+            key={descField}
+            {...register(descField)}
+            placeholder={descPlaceholder}
             rows={4}
-            className={inputClass}
+            className={errors[descField] ? errorInputClass : inputClass}
           />
+          {errors[descField] && (
+            <span className="text-xs text-red-400">{errors[descField]?.message}</span>
+          )}
         </div>
       </fieldset>
 

@@ -4,9 +4,10 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { Calendar, Clock, Play, Info } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 import { fadeInUp, staggerDelay, smallViewport, cardHover } from "@/components/utils/animations";
 import { formatDate, getVideoUrl } from "../utils";
-import { getEventTypeLabel, type Event } from "@/lib/database.types";
+import { type Event } from "@/lib/database.types";
 
 interface Ripple {
   x: number;
@@ -20,10 +21,21 @@ interface EventCardProps {
   animate?: boolean;
 }
 
+const EVENT_TYPE_LABELS: Record<string, Record<string, string>> = {
+  en: { webinar: "WEBINAR", special_event: "SPECIAL EVENT" },
+  es: { webinar: "WEBINAR", special_event: "EVENTO ESPECIAL" },
+};
+
 export function EventCard({ event, index, animate = true }: EventCardProps) {
+  const locale = useLocale();
+  const t = useTranslations("Events");
+  const tc = useTranslations("Common");
   const videoUrl = getVideoUrl(event.links);
   const [ripples, setRipples] = useState<Ripple[]>([]);
   const cardRef = useRef<HTMLElement>(null);
+
+  const displayName = locale === "en" ? (event.name_en || event.name) : event.name;
+  const displayDesc = locale === "en" ? (event.description_en || event.description) : event.description;
 
   const handleTouch = (e: React.TouchEvent<HTMLElement>) => {
     const card = cardRef.current;
@@ -64,14 +76,14 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
 
       {/* Image */}
       <div className="relative w-full sm:w-[200px] md:w-[240px] lg:w-[280px] h-[180px] sm:h-auto sm:min-h-[200px] flex-shrink-0">
-        <Image src={event.img} alt={event.name} fill className="object-cover" />
+        <Image src={event.img} alt={displayName} fill className="object-cover" />
       </div>
 
       {/* Content */}
       <div className="flex flex-col gap-3 md:gap-4 p-5 md:p-6 lg:p-8 justify-center">
         {/* Badge */}
         <span className="px-3 py-1.5 text-xs md:text-sm font-semibold tracking-[1px] text-accent bg-accent-20 rounded-full w-fit">
-          {getEventTypeLabel(event.type).toUpperCase()}
+          {EVENT_TYPE_LABELS[locale]?.[event.type] ?? event.type.toUpperCase()}
         </span>
 
         {/* Date and Time Row */}
@@ -80,7 +92,7 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
           <div className="flex items-center gap-2.5">
             <Calendar className="w-4 h-4 md:w-[18px] md:h-[18px] text-accent" />
             <span className="text-sm md:text-[15px] font-medium text-accent">
-              {formatDate(event.date)}
+              {formatDate(event.date, locale)}
             </span>
           </div>
 
@@ -97,20 +109,20 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
 
         {/* Title */}
         <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white leading-[1.2]">
-          {event.name}
+          {displayName}
         </h3>
 
         {/* Description */}
-        {event.description && (
+        {displayDesc && (
           <p className="text-sm md:text-base text-foreground-muted line-clamp-2">
-            {event.description}
+            {displayDesc}
           </p>
         )}
 
         {/* Presenters */}
         {event.presenters.length > 0 && event.presenters.some((p) => p.trim()) && (
           <p className="text-sm md:text-base text-foreground-subtle">
-            Presented by{" "}
+            {t("presentedBy")}{" "}
             {event.presenters
               .filter((p) => p.trim() && !p.startsWith("Presentador:"))
               .join(", ")}
@@ -129,12 +141,12 @@ export function EventCard({ event, index, animate = true }: EventCardProps) {
               {event.type === "special_event" ? (
                 <>
                   <Info className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                  More Info
+                  {tc("moreInfo")}
                 </>
               ) : (
                 <>
                   <Play className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                  Watch Recording
+                  {t("watchRecording")}
                 </>
               )}
             </a>

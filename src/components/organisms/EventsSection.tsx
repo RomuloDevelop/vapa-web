@@ -58,6 +58,8 @@ function EventCardInternal({
 }) {
   const tc = useTranslations("Common");
   const locale = useLocale();
+  const displayName = locale === "en" ? (event.name_en || event.name) : event.name;
+  const displayDesc = locale === "en" ? (event.description_en || event.description) : event.description;
   const [expanded, setExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
   const [ripples, setRipples] = useState<Ripple[]>([]);
@@ -79,7 +81,7 @@ function EventCardInternal({
       el.style.cssText = originalStyle;
       setIsClamped(fullHeight > twoLineHeight);
     }
-  }, [event.name]);
+  }, [displayName]);
 
   const handleTouch = (e: React.TouchEvent<HTMLDivElement>) => {
     const card = cardRef.current;
@@ -114,7 +116,7 @@ function EventCardInternal({
         />
       ))}
       <div className="relative h-[160px] md:h-[180px] w-full">
-        <Image src={event.img} alt={event.name} fill className="object-cover" />
+        <Image src={event.img} alt={displayName} fill className="object-cover" />
       </div>
       <div className="flex flex-col gap-3 md:gap-4 p-5 md:p-7 flex-1">
         <div className="flex items-center gap-2">
@@ -138,7 +140,7 @@ function EventCardInternal({
                 : undefined
             }
           >
-            {event.name}
+            {displayName}
           </h3>
           {isClamped && (
             <button
@@ -149,9 +151,9 @@ function EventCardInternal({
             </button>
           )}
         </div>
-        {event.description && (
+        {displayDesc && (
           <p className="text-sm text-foreground-muted line-clamp-2">
-            {event.description}
+            {displayDesc}
           </p>
         )}
         {event.time && (

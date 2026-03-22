@@ -4,6 +4,7 @@ import { z } from "zod";
 
 export const eventSchema = z.object({
   name: z.string().min(1, "Event name is required"),
+  name_en: z.string().min(1, "English name is required"),
   type: z.enum(["webinar", "special_event"], {
     message: "Event type is required",
   }),
@@ -12,7 +13,8 @@ export const eventSchema = z.object({
   img: z.string().min(1, "Image is required"),
   links: z.string(),
   presenters: z.string(),
-  description: z.string(),
+  description: z.string().min(1, "Spanish description is required"),
+  description_en: z.string().min(1, "English description is required"),
 });
 
 export type EventFormValues = z.infer<typeof eventSchema>;
@@ -21,7 +23,9 @@ export type EventFormValues = z.infer<typeof eventSchema>;
 
 export const presentationSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  description: z.string(),
+  title_en: z.string().min(1, "English title is required"),
+  description: z.string().min(1, "Spanish description is required"),
+  description_en: z.string().min(1, "English description is required"),
   img: z.string().min(1, "Cover image is required"),
   file_path: z.string().min(1, "File is required"),
 });

@@ -717,9 +717,12 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
             >
               <div className="flex flex-col min-h-full">
                 {/* Menu Header */}
-                <div className="flex items-center gap-3 px-6 py-5 border-b border-border-accent-light">
-                  <Image src="/vapa-icon.png" alt="VAPA logo" width={40} height={40} priority className="w-10 h-10 object-contain shrink-0" />
-                  <span className="text-2xl font-bold text-white">VAPA</span>
+                <div className="flex items-center justify-between px-6 py-5 border-b border-border-accent-light">
+                  <div className="flex items-center gap-3">
+                    <Image src="/vapa-icon.png" alt="VAPA logo" width={40} height={40} priority className="w-10 h-10 object-contain shrink-0" />
+                    <span className="text-2xl font-bold text-white">VAPA</span>
+                  </div>
+                  <LanguageSwitcher />
                 </div>
 
                 {/* Navigation Links */}
@@ -747,9 +750,6 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
                       );
                     })}
                   </div>
-
-                  {/* Language Switcher (Mobile) */}
-                  <LanguageSwitcher />
 
                   {/* Member Status (Mobile) - only shown when logged in */}
                   {!!memberSession?.user && (

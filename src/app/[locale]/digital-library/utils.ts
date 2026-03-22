@@ -3,12 +3,11 @@
 import { parseLocalDate } from "@/lib/utils";
 
 // Format date from ISO string to readable format
-export function formatDate(dateString: string): string {
-  return parseLocalDate(dateString).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
+export function formatDate(dateString: string, locale: string = "en"): string {
+  return parseLocalDate(dateString).toLocaleDateString(
+    locale === "es" ? "es-ES" : "en-US",
+    { month: "long", day: "numeric", year: "numeric" }
+  );
 }
 
 // Get year from ISO date string

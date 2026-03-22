@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           id: string;
           name: string;
+          name_en: string | null;
           img: string;
           date: string;
           type: EventType;
@@ -25,11 +26,13 @@ export type Database = {
           presenters: string[];
           links: string[];
           description: string | null;
+          description_en: string | null;
           created_at: string;
         };
         Insert: {
           id?: string;
           name: string;
+          name_en?: string | null;
           img: string;
           date: string;
           type: EventType;
@@ -37,11 +40,13 @@ export type Database = {
           presenters: string[];
           links: string[];
           description?: string | null;
+          description_en?: string | null;
           created_at?: string;
         };
         Update: {
           id?: string;
           name?: string;
+          name_en?: string | null;
           img?: string;
           date?: string;
           type?: EventType;
@@ -49,6 +54,7 @@ export type Database = {
           presenters?: string[];
           links?: string[];
           description?: string | null;
+          description_en?: string | null;
           created_at?: string;
         };
         Relationships: [];
@@ -57,7 +63,9 @@ export type Database = {
         Row: {
           id: string;
           title: string;
+          title_en: string | null;
           description: string | null;
+          description_en: string | null;
           img: string;
           file_path: string;
           created_at: string;
@@ -65,7 +73,9 @@ export type Database = {
         Insert: {
           id?: string;
           title: string;
+          title_en?: string | null;
           description?: string | null;
+          description_en?: string | null;
           img: string;
           file_path: string;
           created_at?: string;
@@ -73,7 +83,9 @@ export type Database = {
         Update: {
           id?: string;
           title?: string;
+          title_en?: string | null;
           description?: string | null;
+          description_en?: string | null;
           img?: string;
           file_path?: string;
           created_at?: string;

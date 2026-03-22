@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
+import { useTranslations } from "next-intl";
 import {
   fadeInLeft,
   fadeInRight,
@@ -10,6 +11,7 @@ import {
 } from "../utils/animations";
 
 export function BrandStrip() {
+  const t = useTranslations("BrandStrip");
   return (
     <section className="bg-surface-sunken border-y border-border-accent px-5 md:px-10 lg:px-20 py-12 md:py-16 lg:py-20">
       <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 lg:gap-16">
@@ -41,7 +43,7 @@ export function BrandStrip() {
             transition={slowTransition}
             className="text-xs md:text-sm font-semibold text-accent tracking-[2px] text-center md:text-left"
           >
-            ABOUT VAPA
+            {t("label")}
           </motion.span>
           <motion.h2
             variants={fadeInRight}
@@ -51,7 +53,7 @@ export function BrandStrip() {
             transition={{ ...slowTransition, delay: 0.1 }}
             className="text-3xl sm:text-4xl md:text-5xl font-bold text-white text-center md:text-left"
           >
-            United for Energy Excellence
+            {t("title")}
           </motion.h2>
           <motion.p
             variants={fadeInRight}
@@ -61,10 +63,7 @@ export function BrandStrip() {
             transition={{ ...slowTransition, delay: 0.2 }}
             className="text-sm md:text-base lg:text-lg text-foreground-muted leading-[1.6] text-center md:text-left max-w-full lg:max-w-[700px]"
           >
-            Venezuelan-American Petroleum Association aims to establish
-            relationships with organizations and institutions that can provide
-            technical support, education and training for the sustainable
-            development of the energy sector.
+            {t("description")}
           </motion.p>
         </div>
       </div>

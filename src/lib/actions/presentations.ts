@@ -108,7 +108,9 @@ export const createPresentation = adminAction(
   async (formData: FormData): Promise<{ id: string }> => {
     const result = await insertPresentation({
       title: formData.get("title") as string,
+      title_en: (formData.get("title_en") as string) || null,
       description: (formData.get("description") as string) || null,
+      description_en: (formData.get("description_en") as string) || null,
       img: formData.get("img") as string,
       file_path: formData.get("file_path") as string,
     });
@@ -125,7 +127,9 @@ export const updatePresentation = adminAction(
   async (id: string, formData: FormData) => {
     const updateData: Record<string, unknown> = {
       title: formData.get("title") as string,
+      title_en: (formData.get("title_en") as string) || null,
       description: (formData.get("description") as string) || null,
+      description_en: (formData.get("description_en") as string) || null,
       img: formData.get("img") as string,
     };
 

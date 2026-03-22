@@ -94,7 +94,9 @@ export async function getPresentationsCount(search?: string): Promise<number> {
  */
 export async function insertPresentation(data: {
   title: string;
+  title_en?: string | null;
   description: string | null;
+  description_en?: string | null;
   img: string;
   file_path: string;
 }): Promise<{ id: string }> {

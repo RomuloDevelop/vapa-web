@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useLocale, useTranslations } from "next-intl";
 import {
   fadeInUp,
   staggerDelay,
@@ -50,6 +51,10 @@ export function PresentationCard({
   index,
   animate = true,
 }: PresentationCardProps) {
+  const locale = useLocale();
+  const t = useTranslations("DigitalLibrary");
+  const displayTitle = locale === "en" ? (presentation.title_en || presentation.title) : presentation.title;
+  const displayDesc = locale === "en" ? (presentation.description_en || presentation.description) : presentation.description;
   const [isDownloading, setIsDownloading] = useState(false);
   const [ripples, setRipples] = useState<Ripple[]>([]);
   const cardRef = useRef<HTMLElement>(null);
@@ -112,7 +117,7 @@ export function PresentationCard({
       <div className="relative w-full sm:w-[200px] md:w-[240px] lg:w-[280px] h-[180px] sm:h-auto sm:min-h-[200px] flex-shrink-0">
         <Image
           src={presentation.img}
-          alt={presentation.title}
+          alt={displayTitle}
           fill
           className="object-cover"
         />
@@ -129,13 +134,13 @@ export function PresentationCard({
 
         {/* Title */}
         <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-white leading-[1.2]">
-          {presentation.title}
+          {displayTitle}
         </h3>
 
         {/* Description */}
-        {presentation.description && (
+        {displayDesc && (
           <p className="text-sm md:text-base text-foreground-muted line-clamp-2">
-            {presentation.description}
+            {displayDesc}
           </p>
         )}
 
@@ -149,12 +154,12 @@ export function PresentationCard({
             {isDownloading ? (
               <>
                 <Loader2 className="w-3.5 h-3.5 md:w-4 md:h-4 animate-spin" />
-                Generating link...
+                {t("generatingLink")}
               </>
             ) : (
               <>
                 <Download className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                Download File
+                {t("downloadFile")}
               </>
             )}
           </button>

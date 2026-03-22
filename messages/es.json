@@ -3,6 +3,11 @@
     "title": "VAPA - Asociación Venezolano-Americana del Petróleo",
     "description": "Una organización profesional sin fines de lucro que une a expertos en la industria de hidrocarburos y energías relacionadas para promover el avance técnico, la educación y el desarrollo sostenible."
   },
+  "BrandStrip": {
+    "label": "ACERCA DE VAPA",
+    "title": "Unidos por la Excelencia Energética",
+    "description": "La Asociación Venezolano-Americana del Petróleo busca establecer relaciones con organizaciones e instituciones que puedan brindar soporte técnico, educación y capacitación para el desarrollo sostenible del sector energético."
+  },
   "Common": {
     "skipToContent": "Ir al contenido principal",
     "joinVapa": "Únete a VAPA",
@@ -107,7 +112,9 @@
     "latestSessionsDesc": "Ponte al día con nuestros webinars más recientes sobre tendencias energéticas, análisis económico y desarrollos en Venezuela.",
     "specialEventsLabel": "EVENTOS ESPECIALES",
     "upcomingSpecialEvents": "Próximos Eventos Especiales",
-    "upcomingSpecialEventsDesc": "Únete a conferencias, galas y eventos especiales que reúnen a profesionales de la energía."
+    "upcomingSpecialEventsDesc": "Únete a conferencias, galas y eventos especiales que reúnen a profesionales de la energía.",
+    "presentedBy": "Presentado por",
+    "watchRecording": "Ver Grabación"
   },
   "ContactForm": {
     "emailPlaceholder": "Tu correo electrónico",
@@ -344,6 +351,8 @@
     "showingOfEvents": "Mostrando {shown} de {total} eventos",
     "forFilter": "({filter})",
     "previousPage": "Página anterior",
-    "nextPage": "Página siguiente"
+    "nextPage": "Página siguiente",
+    "downloadFile": "Descargar Archivo",
+    "generatingLink": "Generando enlace..."
   }
 }
