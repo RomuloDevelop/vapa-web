@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { motion } from "motion/react";
 import { Heart, MessageCircle, Instagram, Play, ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -49,12 +48,11 @@ export function InstagramFeed({ posts }: InstagramFeedProps) {
             transition={staggerDelay(index)}
             className="group relative aspect-square overflow-hidden rounded bg-surface-raised"
           >
-            <Image
+            <img
               src={post.thumbnail_url || post.media_url}
               alt={post.caption?.slice(0, 80) ?? "VAPA Instagram post"}
-              fill
-              sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 16vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
             {post.media_type === "VIDEO" && (
               <div className="absolute bottom-2 left-2 bg-black/50 rounded-full p-1">
