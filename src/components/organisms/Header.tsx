@@ -39,6 +39,7 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
     "VAPA ResPro": "vapaResPro", "Advisory Board": "advisoryBoard",
     "Events": "events", "Webinars": "webinars", "Special Events": "specialEvents",
     "Membership": "membership", "Donations": "donations",
+    "VAPA Donations": "vapaDonations", "Venezuela Earthquake Support": "venezuelaEarthquake",
     "Digital Library": "digitalLibrary", "References": "references",
     "Presentations": "presentations", "Contact": "contact",
   };
@@ -52,6 +53,8 @@ export function Header({ variant = "solid", activeNav = "Home", showJoinButton =
     "Conferences, galas, and landmark occasions.": "specialEventsDesc",
     "Recordings and materials from past webinars.": "dlWebinarsDesc",
     "Reference documents and technical resources.": "referencesDesc",
+    "Support VAPA's mission, programs, and community.": "vapaDonationsDesc",
+    "Help families affected by the earthquakes in Venezuela.": "venezuelaEarthquakeDesc",
     "Slides and materials from presentations.": "presentationsDesc",
   };
   const socialLabelKeys: Record<string, string> = {

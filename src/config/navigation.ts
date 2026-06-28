@@ -73,6 +73,18 @@ export const navigationConfig: NavItem[] = [
   {
     label: "Donations",
     href: "/donations",
+    children: [
+      {
+        label: "VAPA Donations",
+        href: "/donations",
+        description: "Support VAPA's mission, programs, and community.",
+      },
+      {
+        label: "Venezuela Earthquake Support",
+        href: "/donations/venezuela-earthquake",
+        description: "Help families affected by the earthquakes in Venezuela.",
+      },
+    ],
   },
   {
     label: "Digital Library",
