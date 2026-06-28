@@ -72,7 +72,7 @@ export const navigationConfig: NavItem[] = [
   },
   {
     label: "Donations",
-    href: "/donations",
+    href: "",
     children: [
       {
         label: "VAPA Donations",
