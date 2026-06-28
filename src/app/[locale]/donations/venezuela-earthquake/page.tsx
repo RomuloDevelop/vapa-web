@@ -1,5 +1,6 @@
 import { Header, PageHero, Footer } from "@/components";
 import { getTranslations } from "next-intl/server";
+import { TaxBadge } from "../organisms";
 import { EarthquakeReliefContent } from "./EarthquakeReliefContent";
 import { WaysToGiveSection } from "./WaysToGiveSection";
 
@@ -18,6 +19,7 @@ export default async function VenezuelaEarthquakePage() {
         subtitle={t("subtitle")}
         height={450}
       />
+      <TaxBadge />
       <EarthquakeReliefContent />
       <WaysToGiveSection />
       <Footer />

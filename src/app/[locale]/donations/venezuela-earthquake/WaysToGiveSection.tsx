@@ -15,6 +15,7 @@ const BANK_ROWS = [
   { labelKey: "checkingAccount", value: "531353586" },
   { labelKey: "achRouting", value: "111000614" },
   { labelKey: "wireRouting", value: "021000021" },
+  { labelKey: "swift", value: "CHASUS33" },
 ];
 
 export function WaysToGiveSection() {

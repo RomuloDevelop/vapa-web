@@ -230,10 +230,9 @@
     "label": "HUMANITARIAN SUPPORT",
     "title": "Venezuela Earthquake Support",
     "subtitle": "Standing with the families affected by the earthquakes in Venezuela.",
-    "p1": "In this time of urgent need, when Venezuela has been struck by two devastating earthquakes, causing widespread damage to infrastructure and leaving many families sick, displaced, and without shelter.",
-    "p2": "The Venezuelan American Association (VAPA) respectfully asks for your support. Your donation—no matter the amount—can make a meaningful difference.",
-    "p3": "All contributions will be directed to trusted and reputable organizations that are actively providing humanitarian aid on the ground in Venezuela. As applicable, your donation may be tax-deductible.",
-    "p4": "Children, mothers, and the elderly in Venezuela deeply need and appreciate your generosity during this critical time.",
+    "p1": "In this time of urgent need, when Venezuela has been struck by two devastating earthquakes, causing widespread damage to infrastructure and leaving many families sick, displaced, and without shelter, the Venezuelan American Association (VAPA) respectfully asks for your support. Your donation—no matter the amount—can make a meaningful difference.",
+    "p2": "All contributions will be directed to trusted and reputable organizations that are actively providing humanitarian aid on the ground in Venezuela. As applicable, your donation may be tax-deductible.",
+    "p3": "Children, mothers, and the elderly in Venezuela deeply need and appreciate your generosity during this critical time.",
     "waysToGive": "WAYS TO GIVE",
     "howToDonate": "How to Donate",
     "zelleTitle": "Zelle",
@@ -244,7 +243,8 @@
     "bank": "Bank",
     "checkingAccount": "Checking Account No.",
     "achRouting": "Routing No. (ACH / Direct Deposit)",
-    "wireRouting": "Routing No. (Wire Transfer)"
+    "wireRouting": "Routing No. (Wire Transfer)",
+    "swift": "SWIFT Code"
   },
   "Membership": {
     "joinCommunity": "JOIN OUR COMMUNITY",

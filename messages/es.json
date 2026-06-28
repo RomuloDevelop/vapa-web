@@ -230,10 +230,9 @@
     "label": "APOYO HUMANITARIO",
     "title": "Apoyo a Terremoto en Venezuela",
     "subtitle": "Junto a las familias afectadas por los terremotos en Venezuela.",
-    "p1": "En este momento de necesidad urgente, cuando Venezuela ha sido golpeada por dos terremotos devastadores, causando daños generalizados a la infraestructura y dejando a muchas familias enfermas, desplazadas y sin refugio.",
-    "p2": "La Asociación Venezolano Americana (VAPA) solicita respetuosamente su apoyo. Su donación—sin importar el monto—puede marcar una diferencia significativa.",
-    "p3": "Todas las contribuciones serán dirigidas a organizaciones confiables y de buena reputación que están brindando activamente ayuda humanitaria sobre el terreno en Venezuela. Cuando corresponda, su donación puede ser deducible de impuestos.",
-    "p4": "Los niños, las madres y los ancianos en Venezuela necesitan y agradecen profundamente su generosidad durante este momento crítico.",
+    "p1": "En este momento de necesidad urgente, cuando Venezuela ha sido golpeada por dos terremotos devastadores, causando daños generalizados a la infraestructura y dejando a muchas familias enfermas, desplazadas y sin refugio, la Asociación Venezolano Americana (VAPA) solicita respetuosamente su apoyo. Su donación—sin importar el monto—puede marcar una diferencia significativa.",
+    "p2": "Todas las contribuciones serán dirigidas a organizaciones confiables y de buena reputación que están brindando activamente ayuda humanitaria sobre el terreno en Venezuela. Cuando corresponda, su donación puede ser deducible de impuestos.",
+    "p3": "Los niños, las madres y los ancianos en Venezuela necesitan y agradecen profundamente su generosidad durante este momento crítico.",
     "waysToGive": "FORMAS DE DONAR",
     "howToDonate": "Cómo Donar",
     "zelleTitle": "Zelle",
@@ -244,7 +243,8 @@
     "bank": "Banco",
     "checkingAccount": "Cuenta Corriente No.",
     "achRouting": "Routing No. (ACH / Depósito Directo)",
-    "wireRouting": "Routing No. (Transferencia Wire)"
+    "wireRouting": "Routing No. (Transferencia Wire)",
+    "swift": "Código SWIFT"
   },
   "Membership": {
     "joinCommunity": "ÚNETE A NUESTRA COMUNIDAD",

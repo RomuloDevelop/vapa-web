@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { fadeInUp, defaultViewport } from "@/components/utils/animations";
 
-const PARAGRAPHS = ["p1", "p2", "p3", "p4"] as const;
+const PARAGRAPHS = ["p1", "p2", "p3"];
 
 export function EarthquakeReliefContent() {
   const t = useTranslations("EarthquakeRelief");
