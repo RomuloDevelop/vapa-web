@@ -83,6 +83,26 @@ export function WaysToGiveSection() {
           </dl>
         </motion.div>
       </div>
+
+      <motion.p
+        variants={fadeInUp}
+        initial="hidden"
+        whileInView="visible"
+        viewport={defaultViewport}
+        transition={staggerDelay(2)}
+        className="max-w-[1000px] text-center text-sm text-foreground-muted leading-relaxed"
+      >
+        {t.rich("certificateNote", {
+          email: (chunks) => (
+            <a
+              href="mailto:donations@vapa-us.org"
+              className="font-medium text-accent hover:underline"
+            >
+              {chunks}
+            </a>
+          ),
+        })}
+      </motion.p>
     </section>
   );
 }

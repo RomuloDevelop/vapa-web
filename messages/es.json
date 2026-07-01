@@ -244,7 +244,8 @@
     "checkingAccount": "Cuenta Corriente No.",
     "achRouting": "Routing No. (ACH / Depósito Directo)",
     "wireRouting": "Routing No. (Transferencia Wire)",
-    "swift": "Código SWIFT"
+    "swift": "Código SWIFT",
+    "certificateNote": "Para certificados de donación, envíe su nombre legal y el monto a <email>donations@vapa-us.org</email>"
   },
   "Membership": {
     "joinCommunity": "ÚNETE A NUESTRA COMUNIDAD",
