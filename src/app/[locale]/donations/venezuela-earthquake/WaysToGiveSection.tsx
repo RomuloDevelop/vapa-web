@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { fadeInUp, defaultViewport, staggerDelay } from "@/components/utils/animations";
 import { SectionHeader } from "@/components/molecules";
 
-const ZELLE_EMAILS = ["donations@vapa-us.org", "donations@gmail.com"];
+const ZELLE_EMAILS = ["donations@vapa-us.org", "donations.vapa@gmail.com"];
 
 // Bank data is constant, not translatable — labels come from messages.
 const BANK_ROWS = [
