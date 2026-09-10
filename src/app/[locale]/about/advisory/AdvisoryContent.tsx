@@ -22,10 +22,9 @@ const advisors = [
     linkedin: "https://www.linkedin.com/in/julio-monsalve-m/",
   },
   {
-    name: "Alberto Rial",
+    name: "Alfonso Quaglia",
     title: "Advisor",
-    image: "/members/Alberto Rial.png",
-    linkedin: "https://www.linkedin.com/in/alberto-rial-bab79a11/",
+    image: "/members/Alfonso Quaglia.jpg",
   },
   {
     name: "Freddy Goerke",

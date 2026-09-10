@@ -36,22 +36,31 @@ export const translateTexts = adminAction(
 
 ${numberedTexts}`;
 
-    const response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.1,
-          responseMimeType: "application/json",
-        },
-      }),
+    const body = JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        temperature: 0.1,
+        responseMimeType: "application/json",
+      },
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Gemini API error:", response.status, errorText);
-      throw new ActionError("SERVER_ERROR", `Translation API error: ${response.status}`);
+    // ponytail: retry transient rate limits (429) / overload (503) with backoff.
+    // Won't help if the daily quota is exhausted — then upgrade the plan or model.
+    let response: Response | undefined;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+      });
+      if (response.ok || (response.status !== 429 && response.status !== 503)) break;
+      if (attempt < 2) await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt));
+    }
+
+    if (!response || !response.ok) {
+      const errorText = response ? await response.text() : "no response";
+      console.error("Gemini API error:", response?.status, errorText);
+      throw new ActionError("SERVER_ERROR", `Translation API error: ${response?.status}`);
     }
 
     const data = await response.json();

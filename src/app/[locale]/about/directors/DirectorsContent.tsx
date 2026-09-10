@@ -28,10 +28,10 @@ const directors = [
     linkedin: "https://www.linkedin.com/in/tyrone-perdomo-a3196513",
   },
   {
-    name: "Flor Pineda",
+    name: "Alberto Rial",
     title: "Director",
-    image: "/members/Flor.jpg",
-    linkedin: "https://www.linkedin.com/in/flor-pineda-054a9216",
+    image: "/members/Alberto Rial.png",
+    linkedin: "https://www.linkedin.com/in/alberto-rial-bab79a11/",
   },
   {
     name: "Lirio Quintero",
