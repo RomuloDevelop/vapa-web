@@ -11,7 +11,7 @@ import {
   createPresentation,
   updatePresentation,
 } from "@/lib/actions/presentations";
-import { translateTexts } from "@/lib/actions/translate";
+import { translateTexts, type Lang } from "@/lib/translate";
 import type { Presentation } from "@/lib/database.types";
 import { presentationSchema, type PresentationFormValues } from "@/lib/schemas";
 import { ImageSearchPopover } from "@/components/molecules";
@@ -73,13 +73,9 @@ async function uploadFile(
 
 async function doTranslate(
   _key: string,
-  { arg }: { arg: string[] }
+  { arg }: { arg: { texts: string[]; from: Lang } }
 ): Promise<{ translations: string[] }> {
-  const result = await translateTexts(arg);
-  if (!result.success) {
-    throw new Error(result.error.message || "Translation failed");
-  }
-  return result.data;
+  return { translations: await translateTexts(arg.texts, arg.from) };
 }
 
 interface PresentationFormProps {
@@ -147,12 +143,13 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
       if (needsDesc) texts.push(desc);
 
       try {
-        const result = await translateTrigger(texts);
-        let i = 0;
-        if (needsTitle) setValue("title_en", result.translations[i++], { shouldValidate: true });
-        if (needsDesc) setValue("description_en", result.translations[i], { shouldValidate: true });
-      } catch {
-        toast.error("Translation failed — you can type the English text manually");
+        const result = await translateTrigger({ texts, from: "es" });
+        if (needsTitle && !watch("title_en").trim()) setValue("title_en", result.translations[0], { shouldValidate: true });
+        if (needsDesc && !watch("description_en").trim()) setValue("description_en", result.translations[needsTitle ? 1 : 0], { shouldValidate: true });
+      } catch (error) {
+        toast.error("Translation failed — you can type the English text manually", {
+          description: error instanceof Error ? error.message : undefined,
+        });
       }
     } else {
       const needsTitle = titleEn.trim() && !title.trim();
@@ -164,12 +161,13 @@ export function PresentationForm({ presentation }: PresentationFormProps) {
       if (needsDesc) texts.push(descEn);
 
       try {
-        const result = await translateTrigger(texts);
-        let i = 0;
-        if (needsTitle) setValue("title", result.translations[i++], { shouldValidate: true });
-        if (needsDesc) setValue("description", result.translations[i], { shouldValidate: true });
-      } catch {
-        toast.error("Translation failed — you can type the Spanish text manually");
+        const result = await translateTrigger({ texts, from: "en" });
+        if (needsTitle && !watch("title").trim()) setValue("title", result.translations[0], { shouldValidate: true });
+        if (needsDesc && !watch("description").trim()) setValue("description", result.translations[needsTitle ? 1 : 0], { shouldValidate: true });
+      } catch (error) {
+        toast.error("Translation failed — you can type the Spanish text manually", {
+          description: error instanceof Error ? error.message : undefined,
+        });
       }
     }
   };

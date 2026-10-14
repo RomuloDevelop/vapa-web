@@ -10,7 +10,7 @@ import { format, parse } from "date-fns";
 import { Upload, CalendarIcon, X, ImageIcon, Loader2 } from "lucide-react";
 import { formatEventTime, parseEventTime } from "./format-time";
 import { createEvent, updateEvent } from "@/lib/actions/events";
-import { translateTexts } from "@/lib/actions/translate";
+import { translateTexts, type Lang } from "@/lib/translate";
 import { EVENT_TYPES, type Event, type EventType } from "@/lib/database.types";
 import { eventSchema, type EventFormValues } from "@/lib/schemas";
 import { ImageSearchPopover } from "@/components/molecules";
@@ -55,13 +55,9 @@ async function uploadImage(
 
 async function doTranslate(
   _key: string,
-  { arg }: { arg: string[] }
+  { arg }: { arg: { texts: string[]; from: Lang } }
 ): Promise<{ translations: string[] }> {
-  const result = await translateTexts(arg);
-  if (!result.success) {
-    throw new Error(result.error.message || "Translation failed");
-  }
-  return result.data;
+  return { translations: await translateTexts(arg.texts, arg.from) };
 }
 
 interface EventFormProps {
@@ -141,12 +137,13 @@ export function EventForm({ event }: EventFormProps) {
       if (needsDesc) texts.push(desc);
 
       try {
-        const result = await translateTrigger(texts);
-        let i = 0;
-        if (needsName) setValue("name_en", result.translations[i++], { shouldValidate: true });
-        if (needsDesc) setValue("description_en", result.translations[i], { shouldValidate: true });
-      } catch {
-        toast.error("Translation failed — you can type the English text manually");
+        const result = await translateTrigger({ texts, from: "es" });
+        if (needsName && !watch("name_en").trim()) setValue("name_en", result.translations[0], { shouldValidate: true });
+        if (needsDesc && !watch("description_en").trim()) setValue("description_en", result.translations[needsName ? 1 : 0], { shouldValidate: true });
+      } catch (error) {
+        toast.error("Translation failed — you can type the English text manually", {
+          description: error instanceof Error ? error.message : undefined,
+        });
       }
     } else {
       // Translate EN → ES for empty ES fields
@@ -159,12 +156,13 @@ export function EventForm({ event }: EventFormProps) {
       if (needsDesc) texts.push(descEn);
 
       try {
-        const result = await translateTrigger(texts);
-        let i = 0;
-        if (needsName) setValue("name", result.translations[i++], { shouldValidate: true });
-        if (needsDesc) setValue("description", result.translations[i], { shouldValidate: true });
-      } catch {
-        toast.error("Translation failed — you can type the Spanish text manually");
+        const result = await translateTrigger({ texts, from: "en" });
+        if (needsName && !watch("name").trim()) setValue("name", result.translations[0], { shouldValidate: true });
+        if (needsDesc && !watch("description").trim()) setValue("description", result.translations[needsName ? 1 : 0], { shouldValidate: true });
+      } catch (error) {
+        toast.error("Translation failed — you can type the Spanish text manually", {
+          description: error instanceof Error ? error.message : undefined,
+        });
       }
     }
   };
