@@ -12,6 +12,15 @@ import { ImageSearchBar } from "@/components/molecules/ImageSearchBar";
 import { ImageResultsGrid, type UnsplashImage } from "@/components/molecules/ImageResultsGrid";
 import type { ImageSearchResult } from "@/lib/services/image-search";
 
+type EventDraft = Record<string, unknown>;
+
+/** What happens after a pick when the chat passed an event: the picker saves it itself. */
+type SaveState =
+  | { status: "idle" }
+  | { status: "saving" }
+  | { status: "done" }
+  | { status: "error"; message: string };
+
 interface SearchArg {
   app: App;
   prompt: string;
@@ -44,6 +53,10 @@ async function searchImages(_key: string, { arg }: { arg: SearchArg }): Promise<
 function ImagePicker() {
   const [prompt, setPrompt] = useState("oil energy industry");
   const [eventName, setEventName] = useState<string>();
+  const [draft, setDraft] = useState<EventDraft>();
+  const [save, setSave] = useState<SaveState>({ status: "idle" });
+  // set once the event exists: later picks change its image instead of creating another event
+  const [createdId, setCreatedId] = useState<string | null>(null);
   const { trigger, data, error, isMutating } = useSWRMutation("image-search", searchImages);
 
   const { app } = useApp({
@@ -58,6 +71,7 @@ function ImagePicker() {
         const name = typeof args?.eventName === "string" ? args.eventName : undefined;
         setPrompt(initialPrompt);
         setEventName(name);
+        if (args?.event && typeof args.event === "object") setDraft(args.event as EventDraft);
         trigger({ app, prompt: initialPrompt, eventName: name });
       };
       app.ontoolresult = (toolResult) => report("tool result received", Object.keys(toolResult));
@@ -68,17 +82,45 @@ function ImagePicker() {
     if (app && prompt.trim()) trigger({ app, prompt, eventName });
   };
 
-  const handleSelectImage = (image: UnsplashImage) => {
-    app?.sendMessage({
-      role: "user",
-      content: [{ type: "text", text: `Use this image for the event: ${image.url}` }],
-    });
+  const handleSelectImage = async (image: UnsplashImage) => {
+    if (!app || save.status === "saving") return;
+    // no event to create: hand the choice back to the chat (the host may only prefill the input box)
+    if (!draft) {
+      app.sendMessage({
+        role: "user",
+        content: [{ type: "text", text: `Use this image for the event: ${image.url}` }],
+      });
+      return;
+    }
+
+    setSave({ status: "saving" });
+    try {
+      const result = await app.callServerTool(
+        createdId
+          ? { name: "set_event_image", arguments: { id: createdId, img: image.url } }
+          : { name: "create_event", arguments: { event: { ...draft, img: image.url } } }
+      );
+      const text = result.content.map((part) => (part.type === "text" ? part.text : "")).join("\n");
+      if (result.isError) throw new Error(text || "Failed to create the event");
+      const created = result.structuredContent as { id: string | null };
+      setCreatedId(created.id);
+      setSave({ status: "done" });
+      // let the chat know without posting anything (hosts may not let an app send a message by itself)
+      app
+        .updateModelContext({
+          content: [{ type: "text", text: `The user picked an image in the picker (it saves the event itself).\n${text}` }],
+        })
+        .catch((error) => report("updateModelContext failed", error));
+    } catch (error) {
+      report("create_event call failed", error);
+      setSave({ status: "error", message: error instanceof Error ? error.message : String(error) });
+    }
   };
 
   const refinedQuery = data?.query && data.query !== prompt.trim() ? data.query : null;
 
   return (
-    <div className="flex flex-col max-h-[560px] bg-surface-section border border-border-accent-light rounded-xl overflow-hidden">
+    <div className="flex flex-col aspect-video max-h-[560px] bg-surface-section border border-border-accent-light rounded-xl overflow-hidden">
       <ImageSearchBar
         prompt={prompt}
         onPromptChange={setPrompt}
@@ -86,6 +128,13 @@ function ImagePicker() {
         isSearching={isMutating}
         refinedQuery={refinedQuery}
       />
+      {save.status === "saving" && (
+        <p className="px-4 py-2 text-sm">{createdId ? "Updating the image…" : "Creating the event…"}</p>
+      )}
+      {save.status === "done" && (
+        <p className="px-4 py-2 text-sm">Saved. Pick another image to change it.</p>
+      )}
+      {save.status === "error" && <p className="px-4 py-2 text-sm text-red-600">{save.message}</p>}
       <ImageResultsGrid
         images={data?.results ?? []}
         isSearching={isMutating}

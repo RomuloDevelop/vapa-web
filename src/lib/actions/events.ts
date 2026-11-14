@@ -170,6 +170,19 @@ export const updateEvent = adminAction(
 );
 
 /**
+ * Change only an event's image (admin-only). Used by the AI chat image picker to re-pick.
+ * Returns the updated event.
+ */
+export const setEventImage = adminAction(async (id: string, img: string): Promise<Event> => {
+  if (!/^https:\/\//.test(img)) throw new ActionError("VALIDATION", "Image must be an https URL");
+  const supabase = createServerClient();
+  const { data, error } = await supabase.from("events").update({ img }).eq("id", id).select().single();
+  if (error) throw new ActionError("SERVER_ERROR", error.message);
+  revalidateEventPaths();
+  return data as Event;
+});
+
+/**
  * Delete an event (admin-only)
  */
 export const deleteEvent = adminAction(async (id: string) => {

@@ -1,6 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js";
-import { createEventFromInput } from "@/lib/actions/events";
+import { createEventFromInput, setEventImage } from "@/lib/actions/events";
 import { eventInputShape } from "@/lib/services/event-input";
 import { getSession } from "@/lib/auth";
 import { z } from "zod";
@@ -36,7 +36,31 @@ function buildServer() {
       }
       const { id, event } = result.data;
       const heading = id ? `Created event ${id}` : "Preview (not saved)";
-      return { content: [{ type: "text", text: `${heading}\n${JSON.stringify(event, null, 2)}` }] };
+      return {
+        structuredContent: { id: id ?? null, event },
+        content: [{ type: "text", text: `${heading}\n${JSON.stringify(event, null, 2)}` }],
+      };
+    }
+  );
+
+  server.registerTool(
+    "set_event_image",
+    {
+      description:
+        "Change the image of an existing event. The image picker uses it when the user picks a different " +
+        "image after the event was created.",
+      inputSchema: {
+        id: z.string().min(1).describe("Event id"),
+        img: z.string().url().describe("New image URL"),
+      },
+    },
+    async ({ id, img }) => {
+      const result = await setEventImage(id, img);
+      if (!result.success) return { isError: true, content: [{ type: "text", text: result.error.message }] };
+      return {
+        structuredContent: { id, event: result.data },
+        content: [{ type: "text", text: `Updated the image of event ${id}\n${JSON.stringify(result.data, null, 2)}` }],
+      };
     }
   );
 
@@ -68,11 +92,16 @@ function buildServer() {
     "choose_event_image",
     {
       description:
-        "Open an image picker so the user can search and choose the event image visually. The user's choice " +
-        "arrives as a message with the image URL; use it as `event.img` in create_event.",
+        "Open an image picker so the user can search and choose the event image visually. Pass `event` (e.g. the " +
+        "details read from a flyer): when the user picks an image, the picker creates the event itself and shows " +
+        "the result, so do NOT call create_event afterwards. Without `event`, the user's choice arrives as a " +
+        "message with the image URL; use it as `event.img` in create_event.",
       inputSchema: {
         prompt: z.string().optional().describe("Initial search, e.g. the event topic"),
         eventName: z.string().optional().describe("Event name, to refine the search"),
+        event: eventInputShape.event.describe(
+          "Event to create with the chosen image (same fields as create_event's `event`, without img)"
+        ),
       },
       _meta: { ui: { resourceUri: IMAGE_PICKER_URI } },
     },
