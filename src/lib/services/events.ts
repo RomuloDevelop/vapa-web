@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { createPublicServerClient } from "../supabase-server";
 import type { Event, EventType } from "../database.types";
 import { parseLocalDate } from "../utils";
@@ -207,4 +208,18 @@ export async function getRecentSpecialEvents(limit = 3): Promise<Event[]> {
   }
 
   return data ?? [];
+}
+
+const EVENT_REVALIDATION_PATHS = [
+  "/",
+  "/events/webinars",
+  "/digital-library",
+  "/digital-library/webinars",
+  "/admin",
+  "/admin/events",
+];
+
+/** Refresh every cached page that lists events. Call after any event write. */
+export function revalidateEventPaths() {
+  EVENT_REVALIDATION_PATHS.forEach((path) => revalidatePath(path));
 }

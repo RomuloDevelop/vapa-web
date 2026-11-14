@@ -1,8 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { createServerClient } from "../supabase-server";
-import { getEvents, getEventsCount } from "../services/events";
+import { getEvents, getEventsCount, revalidateEventPaths } from "../services/events";
 import { adminAction, ActionError } from "./safe-action";
 import type { Event, EventType } from "../database.types";
 
@@ -43,19 +42,6 @@ function parseArrayField(value: string): string[] {
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
-}
-
-const EVENT_REVALIDATION_PATHS = [
-  "/",
-  "/events/webinars",
-  "/digital-library",
-  "/digital-library/webinars",
-  "/admin",
-  "/admin/events",
-];
-
-function revalidateEventPaths() {
-  EVENT_REVALIDATION_PATHS.forEach((path) => revalidatePath(path));
 }
 
 /**

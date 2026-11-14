@@ -12,6 +12,7 @@
   "dependencies": {
     "@axe-core/react": "^4.11.1",
     "@hookform/resolvers": "^5.2.2",
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "@radix-ui/react-select": "^2.2.6",
     "@sentry/nextjs": "^10.40.0",
     "@supabase/supabase-js": "^2.93.3",
