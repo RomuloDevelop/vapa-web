@@ -57,6 +57,8 @@ function ImagePicker() {
   const [save, setSave] = useState<SaveState>({ status: "idle" });
   // set once the event exists: later picks change its image instead of creating another event
   const [createdId, setCreatedId] = useState<string | null>(null);
+  // image saved on the event (gold indicator in the grid)
+  const [selectedId, setSelectedId] = useState<string>();
   const { trigger, data, error, isMutating } = useSWRMutation("image-search", searchImages);
 
   const { app } = useApp({
@@ -93,6 +95,8 @@ function ImagePicker() {
       return;
     }
 
+    const previousId = selectedId;
+    setSelectedId(image.id);
     setSave({ status: "saving" });
     try {
       const result = await app.callServerTool(
@@ -113,6 +117,7 @@ function ImagePicker() {
         .catch((error) => report("updateModelContext failed", error));
     } catch (error) {
       report("create_event call failed", error);
+      setSelectedId(previousId);
       setSave({ status: "error", message: error instanceof Error ? error.message : String(error) });
     }
   };
@@ -141,6 +146,7 @@ function ImagePicker() {
         hasSearched={!!data || !!error}
         error={!!error}
         onSelectImage={handleSelectImage}
+        selectedId={selectedId}
       />
     </div>
   );

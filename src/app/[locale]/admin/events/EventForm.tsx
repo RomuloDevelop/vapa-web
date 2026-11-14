@@ -303,7 +303,7 @@ export function EventForm({ event }: EventFormProps) {
   const nameField = activeLang === "es" ? "name" : "name_en";
   const descField = activeLang === "es" ? "description" : "description_en";
   const nameLabel = activeLang === "es" ? "Nombre del Evento (Español) *" : "Event Name (English) *";
-  const descLabel = activeLang === "es" ? "Descripción (Español) *" : "Description (English) *";
+  const descLabel = activeLang === "es" ? "Descripción (Español)" : "Description (English)";
   const namePlaceholder = activeLang === "es"
     ? "ej. Webinar VAPA: Transición Energética"
     : "e.g. VAPA Webinar: Energy Transition";

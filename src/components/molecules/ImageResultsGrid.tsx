@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 
 export interface UnsplashImage {
   id: string;
@@ -17,6 +17,8 @@ interface ImageResultsGridProps {
   hasSearched: boolean;
   error: boolean;
   onSelectImage: (image: UnsplashImage) => void;
+  /** Id of the chosen image, shown with the gold selected indicator */
+  selectedId?: string;
 }
 
 /**
@@ -30,6 +32,7 @@ export function ImageResultsGrid({
   hasSearched,
   error,
   onSelectImage,
+  selectedId,
 }: ImageResultsGridProps) {
   return (
     <div className="@container p-4 min-h-0 overflow-y-auto">
@@ -55,12 +58,17 @@ export function ImageResultsGrid({
       {!isSearching && images.length > 0 && (
         <>
           <div className="grid grid-cols-3 @3xl:grid-cols-4 gap-2">
-            {images.map((image) => (
+            {images.map((image) => {
+              const selected = image.id === selectedId;
+              return (
               <button
                 key={image.id}
                 type="button"
                 onClick={() => onSelectImage(image)}
-                className="group relative aspect-[16/10] rounded-lg overflow-hidden border border-transparent hover:border-accent transition-all cursor-pointer"
+                aria-pressed={selected}
+                className={`group relative aspect-[16/10] rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
+                  selected ? "border-accent ring-2 ring-accent/20" : "border-transparent hover:border-accent"
+                }`}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -68,8 +76,14 @@ export function ImageResultsGrid({
                   alt={image.alt}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
                 />
+                {selected && (
+                  <span className="absolute top-1.5 right-1.5 flex items-center justify-center w-6 h-6 rounded-full bg-accent">
+                    <Check className="w-4 h-4 text-surface" />
+                  </span>
+                )}
               </button>
-            ))}
+              );
+            })}
           </div>
 
           <p className="text-xs text-foreground-faint text-center mt-3">

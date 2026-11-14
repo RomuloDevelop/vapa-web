@@ -13,8 +13,9 @@ export const eventSchema = z.object({
   img: z.string().min(1, "Image is required"),
   links: z.string(),
   presenters: z.string(),
-  description: z.string().min(1, "Spanish description is required"),
-  description_en: z.string().min(1, "English description is required"),
+  // optional: an empty description is saved as null
+  description: z.string(),
+  description_en: z.string(),
 });
 
 export type EventFormValues = z.infer<typeof eventSchema>;
