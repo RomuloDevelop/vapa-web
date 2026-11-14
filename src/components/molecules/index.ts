@@ -9,5 +9,7 @@ export { DonationModal } from "./DonationModal";
 export { MobileSelect, type SelectOption } from "./MobileSelect";
 export { SlideEmbed } from "./SlideEmbed";
 export { ImageSearchPopover } from "./ImageSearchPopover";
+export { ImageSearchBar } from "./ImageSearchBar";
+export { ImageResultsGrid, type UnsplashImage } from "./ImageResultsGrid";
 export { InstagramFeed } from "./InstagramFeed";
 export { MemberAccessGate } from "./MemberAccessGate";
