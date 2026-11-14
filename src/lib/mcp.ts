@@ -86,7 +86,9 @@ function buildServer() {
         mimeType: RESOURCE_MIME_TYPE,
         text: imagePickerHtml,
         // the picker shows Unsplash thumbnails
-        _meta: { ui: { csp: { resourceDomains: ["https://images.unsplash.com"] } } },
+        _meta: {
+          ui: { csp: { resourceDomains: ["https://images.unsplash.com"], connectDomains: [process.env.BETTER_AUTH_URL!] } },
+        },
       },
     ],
   }));

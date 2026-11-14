@@ -20,7 +20,10 @@ for (const name of APPS) {
     entrypoints: [`${dir}/main.tsx`],
     target: "browser",
     minify: true,
-    define: { "process.env.NODE_ENV": '"production"' },
+    define: {
+      "process.env.NODE_ENV": '"production"',
+      "process.env.MCP_LOG_URL": JSON.stringify(`${process.env.BETTER_AUTH_URL}/api/mcp-log`),
+    },
   });
   if (!build.success) throw new AggregateError(build.logs, `MCP app "${name}" failed to build`);
   const js = (await build.outputs[0].text()).replaceAll("</script", "<\\/script");
