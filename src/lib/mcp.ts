@@ -3,6 +3,12 @@ import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/
 import { createEventFromInput } from "@/lib/actions/events";
 import { eventInputShape } from "@/lib/services/event-input";
 import { getSession } from "@/lib/auth";
+import { z } from "zod";
+import { registerAppTool, registerAppResource, RESOURCE_MIME_TYPE } from "@modelcontextprotocol/ext-apps/server";
+import { searchEventImages } from "@/lib/actions/images";
+import imagePickerHtml from "@/lib/mcp-apps/image-picker.html";
+
+const IMAGE_PICKER_URI = "ui://vapa/image-picker.html";
 
 /**
  * VAPA MCP server (Streamable HTTP, stateless), served at /api/mcp.
@@ -33,6 +39,57 @@ function buildServer() {
       return { content: [{ type: "text", text: `${heading}\n${JSON.stringify(event, null, 2)}` }] };
     }
   );
+
+  server.registerTool(
+    "search_images",
+    {
+      description:
+        "Search stock photos (Unsplash, query refined by AI) for an event image. Returns image URLs to use " +
+        "as `event.img` in create_event. Prefer choose_event_image when the chat can show apps.",
+      inputSchema: {
+        prompt: z.string().min(1).describe("What the image should show"),
+        eventName: z.string().optional().describe("Event name, to refine the search"),
+      },
+    },
+    async ({ prompt, eventName }) => {
+      const result = await searchEventImages(prompt, eventName);
+      if (!result.success) return { isError: true, content: [{ type: "text", text: result.error.message }] };
+      const list = result.data.results.map((image, i) => `${i + 1}. ${image.alt} — ${image.url}`).join("\n");
+      return {
+        structuredContent: { ...result.data },
+        content: [{ type: "text", text: `Search: "${result.data.query}"\n${list}` }],
+      };
+    }
+  );
+
+  // Visual picker (same search bar + grid as the admin) for chats that show MCP Apps
+  registerAppTool(
+    server,
+    "choose_event_image",
+    {
+      description:
+        "Open an image picker so the user can search and choose the event image visually. The user's choice " +
+        "arrives as a message with the image URL; use it as `event.img` in create_event.",
+      inputSchema: {
+        prompt: z.string().optional().describe("Initial search, e.g. the event topic"),
+        eventName: z.string().optional().describe("Event name, to refine the search"),
+      },
+      _meta: { ui: { resourceUri: IMAGE_PICKER_URI } },
+    },
+    async () => ({ content: [{ type: "text", text: "Image picker opened. Waiting for the user to choose an image." }] })
+  );
+
+  registerAppResource(server, "Event image picker", IMAGE_PICKER_URI, {}, async () => ({
+    contents: [
+      {
+        uri: IMAGE_PICKER_URI,
+        mimeType: RESOURCE_MIME_TYPE,
+        text: imagePickerHtml,
+        // the picker shows Unsplash thumbnails
+        _meta: { ui: { csp: { resourceDomains: ["https://images.unsplash.com"] } } },
+      },
+    ],
+  }));
 
   return server;
 }

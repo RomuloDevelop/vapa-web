@@ -12,7 +12,7 @@ const eslintConfig = defineConfig([
       ...jsxA11y.flatConfigs.recommended.rules,
     },
   },
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts", "src/lib/mcp-apps/**"]),
 ]);
 
 export default eslintConfig;
