@@ -2,8 +2,7 @@
   "mcpServers": {
     "vapa": {
       "type": "http",
-      "url": "${VAPA_MCP_URL:-http://localhost:3000/api/mcp}",
-      "headers": { "Cookie": "${VAPA_SESSION_COOKIE}" }
+      "url": "${VAPA_MCP_URL:-http://localhost:3000/api/mcp}"
     }
   }
 }

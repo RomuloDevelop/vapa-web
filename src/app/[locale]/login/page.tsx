@@ -69,6 +69,9 @@ function LoginForm() {
       return;
     }
 
+    // An AI chat sent the user here to connect: better-auth's client is already navigating back to it
+    if (result.data?.redirect) return;
+
     router.push(callbackUrl || "/");
   };
 
