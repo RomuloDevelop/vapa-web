@@ -1,11 +1,3 @@
-# Project Rules
-
-## Git Policy
-- **NEVER push to remote** - always let the user push manually
-- Do not run `git push`, `git push --force`, or any push variants
-
----
-
 # VAPA Project Guidelines
 
 This document outlines the design system, patterns, and conventions established for the VAPA (Venezuelan-American Petroleum Association) landing page project.
